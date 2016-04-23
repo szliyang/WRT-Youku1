@@ -7,3 +7,5 @@
 
 http://desktop.youku.com/openwrt/2.0.1201.63462-firmware-1-000000/openwrt.bin
 http://desktop.youku.com/openwrt/2.1.0420.5035-firmware-1-000000/openwrt.bin
+
+本分支是在主分支基础上，实现Web页面里切换root功能
