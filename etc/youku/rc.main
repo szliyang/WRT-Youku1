@@ -1,0 +1,478 @@
+#!/bin/sh
+#=============================================================================
+#  Copyright (c) YOUKU, 2014. All rights reserved.
+# 
+#  @author    yang <yangjingyu@youku.com>
+# 
+#  @brief	  
+# 
+#  Revision History:
+#=============================================================================
+
+export YoukuHome="/tmp/youku"
+
+##################################################################
+ylog() 
+{
+    #format: /etc/youku/rc.main ylog "logstring" 
+    [ -n "$@" ] &&	echo `date +%Y-%m-%d-%H-%M-%m`"  $@" | tee -ai /tmp/boot.log
+}
+
+help()
+{
+    cat <<EOF
+    Syntax: $action 
+    Available commands:
+    start		Start all youku services
+    stop		Stop  all youku services
+    ikuacc		start|stop 
+    tf 		mount|umount dectect TF storage card
+    usb	 	mount|umount dectect USB storage disk
+    help
+EOF
+}
+
+##################################################################
+#this is invoked by /etc/init.d/youku
+start() 
+{
+    ylog "rc.main start ..."
+
+    bootup
+    tf mount
+    usb mount
+    setup
+
+    versionupdate
+    youku_luci 
+    modify_gateway  
+
+    # add by xiongying 2015-03-17
+    sysctl -p /etc/youku/sysctl.conf
+    init_plugin
+
+    # add by xiongying 2015-10-10 
+    # turn down wan6 interface for dhcp v6 bug
+    ubus call network.interface.wan6 down
+    uci set network.wan6.proto=none
+    uci commit
+
+    ylog "rc.main start finished ..."
+    return 0
+}
+
+stop() 
+{
+    ylog "rc.main stop ..."
+
+    usb umount
+    tf  umount
+
+    ylog "rc.main stop finished ..."
+    return 0
+}
+
+shutdown() 
+{
+    [ -d "$YoukuHome" ] || return 1;
+
+    umount $YoukuHome/data
+    umount $YoukuHome
+    rm -r  $YoukuHome
+
+    ylog "rc.main shutdown. $@"
+    return 0
+}
+
+notify() 
+{
+    ylog "rc.main notify $@"
+    return 0;
+}
+
+###################################################################
+
+bootup() 
+{
+    ylog  `date +%Y-%m-%d-%H-%M-%S`"  rc.main bootup ..."
+
+    [ -d "$YoukuHome" ] && return 0;
+
+    #  ensure youku directory structure and env var.
+
+    #use /tmp/youku/* to point the latest youku app, web, and script.
+    # use system tmpfs or ourselves. the later is easy to evaluation memory used.
+
+    mkdir -p $YoukuHome
+    mount -t tmpfs tmpfs $YoukuHome -o size=4m
+
+    mkdir -p $YoukuHome/mnt  #used for tf storage card and usb storage
+    mkdir -p $YoukuHome/sys
+
+    mkdir -p $YoukuHome/stat
+    mkdir -p $YoukuHome/cfg
+    mkdir -p $YoukuHome/bin
+    mkdir -p $YoukuHome/pub  #used for link shared resources which can be seen out of router.
+    mkdir -p $YoukuHome/ver  #used for save version info of firmware and packages.
+
+    mkdir -p $YoukuHome/data #used for storage big size of data.  visit if from  $YoukuHome/var
+    mount -t tmpfs tmpfs $YoukuHome/data -o size=4m  #give 4m as default, 
+
+    ln  -sfn $YoukuHome/data $YoukuHome/pkg #redirect $YoukuHome/pkg to tf or usb storage if possible.
+    #ln  -sfn $YoukuHome/data $YoukuHome/var #redirect $YoukuHome/var to tf or usb storage if possible.
+    ln  -sfn $YoukuHome/data $YoukuHome/tmp #redirect $YoukuHome/tmp to tf or usb storage if possible.
+    ln  -sfn $YoukuHome/data $YoukuHome/log
+
+    mkdir -p $YoukuHome/var
+    mkdir -p $YoukuHome/var/ikucmc
+    mkdir -p $YoukuHome/var/ikuacc/data/
+
+    ylog "rc.main bootup finished ..."
+    return 0
+}
+
+link_dir() 
+{
+    for i in `ls ${2}/${3}`; do
+        [ -f ${2}/${3}/${i} ] && {
+            ln -fs ${2}/${3}/${i} ${1}/${3}/${i}
+        }
+        [ -d ${2}/${3}/${i} ] && {
+            mkdir -p ${1}/${3}/${i}
+            link_dir ${1} ${2} ${3}/${i}
+        }
+    done
+}
+
+init_plugin() 
+{
+    #export PKG_HOME=/tmp/youku/pkg
+    #export PATH=${PKG_HOME}/bin:${PKG_HOME}/sbin:${PKG_HOME}/usr/bin/:${PKG_HOME}/sbin:$PATH
+    #export LD_LIBRARY_PATH=${PKG_HOME}/lib:${PKG_HOME}/usr/lib/:$LD_LIBRARY_PATH
+    ## TODO, hard code tf1, concerning usb
+    #echo ${PKG_HOME}
+    #[ -d ${PKG_HOME} ] && rm -rf ${PKG_HOME}
+    #ln -fsn /tmp/youku/mnt/tf1 ${PKG_HOME}
+    ##[ -d ${PKG_HOME}/etc ] && link_dir /etc ${PKG_HOME}/etc 
+
+    # for plugin needed
+    touch /etc/crontabs/root
+    /etc/init.d/cron enable
+    /etc/init.d/cron start
+}
+
+setup() 
+{
+    ylog "rc.main setup ..."
+
+    #set default .or when some disk umounted
+    [ -L $YoukuHome/bin/youkucmc -a -f "`readlink -f $YoukuHome/bin/youkucmc`" ] || ln -sfn  /usr/sbin/guard $YoukuHome/bin/youkucmc
+    [ -L $YoukuHome/bin/ikuacc  -a -f "`readlink -f $YoukuHome/bin/ikuacc`"   ] || ln -sfn  /usr/sbin/ikuacc $YoukuHome/bin/ikuacc
+    [ -L $YoukuHome/bin/sn_youku -a -f "`readlink -f $YoukuHome/bin/sn_youku`" ] || ln -sfn  /usr/sbin/sn_youku $YoukuHome/bin/sn_youku
+    [ -L $YoukuHome/www -a -d "`readlink -f $YoukuHome/www`" ] || ln -sfn /www/ $YoukuHome/www
+
+    #let publish resouces can be seen from web
+    [ -L $YoukuHome/www/pub -o -d $YoukuHome/www/pub ] || ln -sfn $YoukuHome/pub $YoukuHome/www/pub 
+
+    ylog "rc.main setup: cur www path=>[`readlink -f $YoukuHome/www`]"
+    ylog "rc.main setup: cur var path=>[`readlink -f $YoukuHome/var`]"
+
+    cd $YoukuHome/mnt
+    #get first start partition for meta disk
+    for p in `ls $YoukuHome/mnt | grep -e tf -e usb | sort`; do
+        size=$((`df -m | grep $YoukuHome/mnt/$p | awk '{print $2}'`))
+        # TODO only check size, should check r/w ability
+        [ ${size} -gt 100 ] && {
+            metadisk=${YoukuHome}/mnt/$p
+        
+            if [ "${metadisk}/meta" != "`readlink -f ${YoukuHome}/var/ikuacc/meta`" ]; then
+                mkdir -p ${metadisk}/meta
+                [ -d ${YoukuHome}/var/ikuacc/meta ] && cp -rfp ${YoukuHome}/var/ikuacc/meta/* ${metadisk}/meta
+                ln -sfn ${metadisk}/meta ${YoukuHome}/var/ikuacc/meta
+            fi
+
+            # TODO check what this use for...
+            if [ "`readlink -f $YoukuHome/pkg`" != "${metadisk}/youku/bin" ]; then
+                #mkdir -p ${metadisk}/youku/bin 
+                #ln -sfn  ${metadisk}/youku/bin $YoukuHome/pkg
+                mkdir -p ${metadisk}/youku/tmp
+                ln -sfn  ${metadisk}/youku/tmp $YoukuHome/tmp
+                mkdir -p ${metadisk}/youku/log
+                ln -sfn  ${metadisk}/youku/log $YoukuHome/log
+                ylog "rc.main setup: set pkg path=>[size=$size Mb,${metadisk}/youku/bin"
+                ylog "rc.main setup: set tmp path=>[size=$size Mb,${metadisk}/youku/tmp"
+            fi
+
+            break
+        }
+    done
+
+    #mount data0~data3
+    cnt=0
+    for p in `ls $YoukuHome/mnt | grep -e tf | sort`; do
+        partsize=$((`df -m | grep $YoukuHome/mnt/$p | awk '{print $2}'`))
+        [ ${partsize} -gt 500 ] && {
+            ln -sfn $YoukuHome/mnt/$p $YoukuHome/var/ikuacc/data/data${cnt}
+            cnt=$((${cnt}+1))
+        }
+    done
+
+    cd $YoukuHome/tmp
+
+    ylog "rc.main setup finished ..."
+    return 1
+}
+
+partition_sd() 
+{
+    ylog "rc.main partition ..."
+
+    num=0
+    for devfile in `ls /dev/ | grep mmcblk | grep p`; do
+        num=$((${num}+1))
+    done
+
+    # change repartition condition from eq 7 to lt 4
+    if [ ${num} -lt 4 ]; then
+        ylog "new partition begin ..."
+        sdcard=`ls /dev/ | grep -w mmcblk0`
+        mkfs.vfat /dev/${sdcard}
+        fdisk /dev/${sdcard} << EOF
+m
+p
+n
+p
+1
+
++128M
+n
+p
+2
+
++128M
+n
+p
+3
+
++2G
+n
+e
+4
+
+
+n
+
++2G
+n
+
++2G
+n
+
+
+p
+w
+EOF
+        partprobe
+        for devfile in `ls /dev/ | grep mmcblk | grep p`; do
+            if [ ${devfile} = "mmcblk0p4" ]; then
+                continue
+            fi
+            mkfs.vfat /dev/${devfile}
+        done
+        ylog "new partition end ..."
+    fi
+
+    ylog "rc.main partition finished ..."
+}
+
+tf() 
+{
+    ylog "rc.main tf ...[$@]"
+
+    index=0;
+    #do mount operation
+    if [ "-$1" == "-mount" ]; then
+        ###################################################
+        #partitions,add by David
+        partition_sd
+        [ `find /dev/ -type b -name mmcblk* | wc -l` -gt 0 ] || {                                                                   
+            ylog "rc.main tf: no tf device found, exit 1"                                                                       
+            return 1                                                                                                            
+        }
+
+        for devfile in `ls /dev/ | grep mmcblk | grep p`; do
+            mkdir $YoukuHome/mnt/tf$index
+            mount  /dev/$devfile $YoukuHome/mnt/tf$index -o errors=continue,umask=000
+            RETVAL=$?
+            if [ $RETVAL = 0 ]; then 	
+                ylog "rc.main tf mounted: /dev/$devfile  ==> $YoukuHome/mnt/tf$index"
+                index=$(($index+1)) 
+            else
+                ylog "rc.main tf mounted failure: /dev/$devfile  ==> $YoukuHome/mnt/tf$index"
+                rmdir $YoukuHome/mnt/tf$index
+            fi
+        done
+
+        last=$(($index-1))
+        for i in `seq 0 $last`; do
+            storage_mounted "tf" "$YoukuHome/mnt/tf$i" "$index" "$i"
+        done
+    fi
+
+    ####################################################
+    #do unmount operation
+    if [ "-$1" == "-umount" ]; then
+        for tfdir in `ls $YoukuHome/mnt/ | grep tf`; do
+            umount $YoukuHome/mnt/$tfdir
+            rmdir  $YoukuHome/mnt/$tfdir
+            #rm     $YoukuHome/pub/$tfdir
+            index=$(($index+1))
+
+            ylog "rc.main tf umounted ==> $YoukuHome/mnt/$tfdir"
+        done
+    fi
+
+    #setup bin links again if something changed.
+    [ $index -gt 0 ] && setup
+
+    ylog "rc.main tf finished ...[$@]"
+    return 0
+}
+
+usb() 
+{
+    ylog "rc.main usb ...[$@]"
+
+    index=0;
+    ###################################################
+    #do mount operation
+    if [ "-$1" == "-mount" ]; then
+        [ `find /dev/ -type b -name sd* | wc -l` -gt 0 ] || {
+            ylog "rc.main usb: no usb storage device found, exit 1"
+            return 1
+        }
+
+        for devfile in `ls /dev/ | grep -e sda -e sdb -e sdc`; do
+            mkdir $YoukuHome/mnt/usb$index
+            mount  /dev/$devfile $YoukuHome/mnt/usb$index  -o errors=continue,umask=000
+            RETVAL=$?
+            if [ $RETVAL = 0 ]; then 	
+                ylog "rc.main usb mounted: /dev/$devfile  ==> $YoukuHome/mnt/usb$index"
+                index=$(($index+1)) #prepare to mount next
+            else
+                ylog "rc.main usb mounted failure: /dev/$devfile  ==> $YoukuHome/mnt/usb$index"
+                rmdir $YoukuHome/mnt/usb$index
+            fi
+        done
+
+        last=$(($index-1))
+        for i in `seq 0 $last`; do
+            storage_mounted "usb" "$YoukuHome/mnt/usb$i" "$index" "$i"
+        done
+    fi
+
+    ####################################################
+    #do unmount operation
+    if [ "-$1" == "-umount" ]; then
+        for usbdir in `ls $YoukuHome/mnt/ | grep usb`; do
+            umount $YoukuHome/mnt/$usbdir
+            rmdir  $YoukuHome/mnt/$usbdir
+            rm     $YoukuHome/pub/$usbdir
+            index=$(($index+1))
+
+            ylog "rc.main usb umounted ==> $YoukuHome/mnt/$usbdir"
+        done
+    fi
+
+    #setup bin links again if something changed.
+    [ $index -gt 0 ] && setup
+
+    ylog "rc.main usb finished ...[$@]"
+    return 0;
+}
+
+
+#$1 type: tf, usb
+#$2 mount point
+#$3 total partitions
+#$4 no. of partitions
+storage_mounted() 
+{
+    ylog "rc.main storage_mounted ..."
+
+    # forbid external links for security reason by xiongying at 2015-10-19
+    ##setup link to external when new partition mounted.
+    ##[ -f $2/youku/bin/guard  ]   && ln -sfn  $2/youku/bin/guard    $YoukuHome/bin/youkucmc
+    ##[ -f $2/youku/bin/ikuacc ]   && ln -sfn  $2/youku/bin/ikuacc   $YoukuHome/bin/ikuacc
+    ##[ -f $2/youku/bin/sn_youku ] && ln -sfn  $2/youku/bin/sn_youku $YoukuHome/bin/sn_youku
+    #[ -d $2/youku/www ] &&          ln -sfn  $2/youku/www/         $YoukuHome/www
+
+    #yang,2014-08-27,publish it, only for usb storage device
+    [ "$1" == "usb" ] && {
+        ylog "rc.main storage_mounted: ln -sf $2  $YoukuHome/pub/$1$4"
+        ln -sfn $2  $YoukuHome/pub/$1$4
+    }
+
+    #whatever, do init script if have.
+    #if [ -d $2 -a -f $2/youku/bin/init ]; then
+
+    #	ylog "rc.main storage_mounted: init script found, do it==> $2/youku/bin/init"
+    #	chmod +x $2/youku/bin/init
+    #	$2/youku/bin/init
+    #	ylog "rc.main storage_mounted: done ==> $2/youku/bin/init"
+    #fi
+
+    ylog "rc.main storage_mounted finished ..."
+    return 0
+}
+
+versionupdate() 
+{
+    firmver="0.0.0.0"  #"0.0.0.0"
+    [ -f /etc/youku/build/mainver ] && firmver=`cat /etc/youku/build/mainver`
+
+    version=$firmver  
+    cd /etc/youku/build/
+    for pkg in `ls /etc/youku/build/ | grep -e youku -e iku `; do 
+        pkgver=`head -n 1 $pkg | awk -F '-' '{print $1}'`
+        version=`echo -n "$version.$pkgver" | awk -F '.' '{if( NF != 8 || $1 > $5 || $1 == $5 && $2 > $6 || $1 == $5 && $2 == $6 && $3 > $7 || $1 == $5 && $2 == $6 && $3 == $7 && $4 > $8 ) {print $1"."$2"."$3"."$4} else {print $5"."$6"."$7"."$8}}'`
+    done
+
+    if [ $version != $firmver -o  ! -f /etc/youku/build/mainver ]; then
+        echo -n $version > /etc/youku/build/mainver
+        ylog "rc.main versionupdate from $firmver to $version"
+    fi
+
+    #tell web page system version info.
+    mkdir -p $YoukuHome/ver
+    # now only the firmware version is the main version to show.
+    # by xiongying at 2015-04-27
+    cat /etc/youku/build/firmware > $YoukuHome/ver/main
+
+    ylog "rc.main versionupdate ....[`cat $YoukuHome/ver/main`]"
+}
+
+# remove ikuacc section by xiongying at 2015-10-19
+# remove checksn section by xiongying at 2015-10-19
+# remove factory_setup section by xiongying at 2015-10-19
+
+youku_luci() 
+{
+    #Boot execute youku_luci scripts 
+    [ -f /usr/sbin/macfilter.lua ] &&  /usr/sbin/macfilter.lua  2>/dev/null
+
+    return 0
+}
+
+#######################################################
+# main :
+[ $# -gt 0 ] || return 0
+
+action=$1
+shift 1
+
+$action "$@"
+RETVAL=$?
+exit $RETVAL
+
+

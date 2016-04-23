@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>优酷土豆路由宝</title>
+ <link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111"></link>
+ <link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20151111"></link>
+ <script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20151111"></script>
+</head>
+<body class="bg_color">
+     <div class="min_btp"><img src="images/sed.png"/></div>
+    <p class="bai">白来一趟，该网站被管理员屏蔽或存在安全风险，去别处逛逛？</p>
+    <a href="##" class="close_bn_shield">关闭页面</a>
+<script type="text/javascript"> 
+    
+	$(".close_bn_shield").on("click",function(){
+	    CloseWebPage();
+	});
+    	
+    function CloseWebPage() {
+        if (navigator.userAgent.indexOf("MSIE") > 0) {
+            if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+                window.opener = null; window.close();
+            }
+            else {
+                window.open('', '_top'); window.top.close();
+            }
+        }
+        else if (navigator.userAgent.indexOf("Firefox") > 0 || navigator.userAgent.indexOf("Chrome") > 0) {
+            window.location.href = 'about:blank ';
+        }
+        else {
+            window.opener = null;
+            window.open('', '_self', '');
+            window.close();
+        }
+    }
+</script>
+</body>
+</html>

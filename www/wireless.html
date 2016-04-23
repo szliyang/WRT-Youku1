@@ -1,0 +1,894 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>优酷土豆路由宝</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="css/tab.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="css/wireless.css?ver=20151111">
+<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20151111"></script>
+
+</head>
+<body>
+<div class="header_body" style="min-width: 1250px;">
+    <div class="logo"></div>
+    <div class="nav">
+       	<ul class="nav_top" id="topmenu">
+	        <li><a href="##" dataurl="dashboard.html" class="topmenu">首页</a></li>
+	        <li><a href="##" dataurl="wan.html" class="topmenu">连网设置</a></li>
+	        <li class="current"><a href="##" dataurl="wireless.html" class="topmenu current">Wi-Fi设置</a></li>
+	        <li><a href="##" dataurl="device.html" class="topmenu">设备管理</a></li>
+	        <li><a href="##" dataurl="advanced_setting.html" class="topmenu">更多设置</a></li>
+       	</ul>
+    </div>
+    <div class="nav_right"></div>
+</div>
+ <div class="box box_p">
+	<form id="wifiModeSetForm">
+		<div class="setModel clearfix wifi24">
+			<label class="wifiStandard model">2.4G网络</label>
+			<div class="switch model ">
+	     		<span class="active_btn guanbi switchStyle"></span>
+			</div>
+		    <div class="wife model clearfix">
+		        <label>名称:</label>
+		        <input type="text" class="comn-input" style="float:none;" id="routerName1" data-rules="required|pwd|ssid=30" data-required-error="WiFi名称不能为空" data-pwd-error="只能输入字母数字及!@#$%^&*+-_="  data-ssid-error="WiFi名称最多30个字节" maxlength="30"/>
+				<div class="error-tip" style="left:34px;top:-30px;width: 210px;display:none;"></div>
+				<div class="dislabel" style="margin-left: 35px;display:none;" id="routerName2"></div>
+		    </div>
+		    <div class="wife model clearfix">
+		        <label>密码:</label>
+		        <input type="password" class="comn-input" style="float:none;" id="routerPassword1"  data-rules="required|pwd|length=8,32" data-required-error="密码不能为空" data-pwd-error="只能输入字母数字及!@#$%^&*+-_=" data-length-error="最少8个字符，最多32个字符" maxlength="32" />
+				<div class="error-tip" style="left:34px;top:-30px;display:none;"></div>
+				<div class="dislabel" style="margin-left: 35px;display:none;" id="routerPassword2"></div>
+		    </div>
+		    <div class="xindao model">
+		       	<label>信道:</label>
+		      	<div class="select" id="iphone1">
+		         	<span class='show sel-val'>自动</span>
+		         	<ul class="dropList bd options">
+						<li class='selected' date-value = '0'>自动</li>
+						<li date-value ='1'>1</li>
+						<li date-value ='2'>2</li>
+						<li date-value ='3'>3</li>
+						<li date-value ='4'>4</li>
+						<li date-value ='5'>5</li>
+						<li date-value ='6'>6</li>
+						<li date-value ='7'>7</li>
+						<li date-value ='8'>8</li>
+						<li date-value ='9'>9</li>
+						<li date-value ='10'>10</li>
+						<li date-value ='11'>11</li>
+						<li date-value ='12'>12</li>
+						<li date-value ='13'>13</li>
+		         	</ul>
+		      	</div>
+		    </div>
+		    <div class="yincang model mr0" >
+		        <span type="checkbox" value='1' class="checkbox2 checkbox"></span>
+		        <span class="chbox-val">隐藏本网络不被发现</span>
+		    </div>
+		</div>
+		<div class="setModel clearfix wifi5" style="display:none;">
+			<label class="wifiStandard model">5G网络</label>
+			<div class="switch model ">
+	     		<span class="active_btn guanbi switchStyle"></span>
+			</div>
+		    <div class="wife model clearfix">
+		        <label>名称:</label>
+		        <input type="text" class="comn-input" style="float:none;" id="routerName5g1" data-rules="required|pwd|ssid=30" data-required-error="WiFi名称不能为空" data-pwd-error="只能输入字母数字及!@#$%^&*+-_="  data-ssid-error="WiFi名称最多30个字节" maxlength="30"/>
+				<div class="error-tip" style="left:34px;top:-30px;width: 210px;display:none;"></div>
+				<div class="dislabel" style="margin-left: 35px;display:none;" id="routerName5g2"></div>
+		    </div>
+		    <div class="wife model clearfix">
+		        <label>密码:</label>
+		        <input type="password" class="comn-input" style="float:none;" id="routerPassword5g1"  data-rules="required|pwd|length=8,32" data-required-error="密码不能为空" data-pwd-error="只能输入字母数字及!@#$%^&*+-_=" data-length-error="最少8个字符，最多32个字符" maxlength="32" />
+				<div class="error-tip" style="left:34px;top:-30px;display:none;"></div>
+				<div class="dislabel" style="margin-left: 35px;display:none;" id="routerPassword5g2"></div>
+		    </div>
+		    <div class="xindao model">
+		       	<label>信道:</label>
+		      	<div class="select" id="iphone2">
+		         	<span class='show sel-val'>自动</span>
+		         	<ul class="dropList bd options">
+						<li class='selected' date-value = '0'>自动</li>
+						<li date-value ='36'>36</li>
+						<li date-value ='40'>40</li>
+						<li date-value ='44'>44</li>
+						<li date-value ='48'>48</li>
+						<li date-value ='52'>52</li>
+						<li date-value ='56'>56</li>
+						<li date-value ='60'>60</li>
+						<li date-value ='64'>64</li>
+						<li date-value ='149'>149</li>
+						<li date-value ='153'>153</li>
+						<li date-value ='157'>157</li>
+						<li date-value ='161'>161</li>
+						<li date-value ='165'>165</li>
+		         	</ul>
+		      	</div>
+		    </div>
+		    <div class="yincang model mr0" >
+		        <span type="checkbox" value='1' class="checkbox2 checkbox"></span>
+		        <span class="chbox-val">隐藏本网络不被发现</span>
+		    </div>
+		</div>
+		<div class="setModel clearfix">
+			<label class="wifiStandard model">信号强度</label>
+			<div class="tongguo model clearfix" id="radiolist">
+			   <div class="lvse">
+			       <span class="activ hRadio" id="radiogreen" data-value="0"></span>
+			      <span class="activd">绿色</span>
+			   </div>
+			   <div class="zhun_p">
+			      <span  class="activ hRadio" id="radiobase" data-value="1"></span>
+			      <span class="activd">标准</span>
+			   </div>
+			   <div class="qiang">
+			      <span  class="activ hRadio" id="radiowall" data-value="2"></span>
+			      <span class="activd">穿墙</span>
+			   </div>
+			</div>
+			<div class="timeslot model" id="othertime">
+				<div class="clearfix fll" id="otswitch">
+					<span type="checkbox" value='1' class="checkBox1 fll"></span>
+			    	<span class="chbox-val">其他时段设置</span>
+		    	</div>
+		    	<div class="timeslot_set clearfix">
+					<div class="select" id="begintime_h">
+			         	<span class='show sel-val'>00</span>
+			         	<ul class="dropList bd options">
+							<li date-value='00'>00</li>
+							<li date-value='01'>01</li>
+							<li date-value='02'>02</li>
+							<li date-value='03'>03</li>
+							<li date-value='04'>04</li>
+							<li date-value='05'>05</li>
+							<li date-value='06'>06</li>
+							<li date-value='07'>07</li>
+							<li date-value='08'>08</li>
+							<li date-value='09'>09</li>
+							<li date-value='10'>10</li>
+							<li date-value='11'>11</li>
+							<li date-value='12'>12</li>
+							<li date-value='13'>13</li>
+							<li date-value='14'>14</li>
+							<li date-value='15'>15</li>
+							<li date-value='16'>16</li>
+							<li date-value='17'>17</li>
+							<li date-value='18'>18</li>
+							<li date-value='19'>19</li>
+							<li date-value='20'>20</li>
+							<li date-value='21'>21</li>
+							<li date-value='22'>22</li>
+							<li date-value='23'>23</li>
+			         	</ul>
+			      	</div>
+			      	<label class="t_s_label fll">:</label>
+					<div class="select" id="begintime_m">
+			         	<span class='show sel-val'>00</span>
+			         	<ul class="dropList bd options">
+							<li date-value='00'>00</li>
+							<li date-value='05'>05</li>
+							<li date-value='10'>10</li>
+							<li date-value='15'>15</li>
+							<li date-value='20'>20</li>
+							<li date-value='25'>25</li>
+							<li date-value='30'>30</li>
+							<li date-value='35'>35</li>
+							<li date-value='40'>40</li>
+							<li date-value='45'>45</li>
+							<li date-value='50'>50</li>
+							<li date-value='55'>55</li>
+			         	</ul>
+			      	</div>
+			      	<label class="t_s_label fll">-</label>
+					<div class="select" id="endtime_h">
+			         	<span class='show sel-val'>00</span>
+			         	<ul class="dropList bd options">
+							<li date-value='00'>00</li>
+							<li date-value='01'>01</li>
+							<li date-value='02'>02</li>
+							<li date-value='03'>03</li>
+							<li date-value='04'>04</li>
+							<li date-value='05'>05</li>
+							<li date-value='06'>06</li>
+							<li date-value='07'>07</li>
+							<li date-value='08'>08</li>
+							<li date-value='09'>09</li>
+							<li date-value='10'>10</li>
+							<li date-value='11'>11</li>
+							<li date-value='12'>12</li>
+							<li date-value='13'>13</li>
+							<li date-value='14'>14</li>
+							<li date-value='15'>15</li>
+							<li date-value='16'>16</li>
+							<li date-value='17'>17</li>
+							<li date-value='18'>18</li>
+							<li date-value='19'>19</li>
+							<li date-value='20'>20</li>
+							<li date-value='21'>21</li>
+							<li date-value='22'>22</li>
+							<li date-value='23'>23</li>
+			         	</ul>
+			      	</div>
+			      	<label class="t_s_label fll">:</label>
+					<div class="select" id="endtime_m">
+			         	<span class='show sel-val'>00</span>
+			         	<ul class="dropList bd options">
+							<li date-value='00'>00</li>
+							<li date-value='05'>05</li>
+							<li date-value='10'>10</li>
+							<li date-value='15'>15</li>
+							<li date-value='20'>20</li>
+							<li date-value='25'>25</li>
+							<li date-value='30'>30</li>
+							<li date-value='35'>35</li>
+							<li date-value='40'>40</li>
+							<li date-value='45'>45</li>
+							<li date-value='50'>50</li>
+							<li date-value='55'>55</li>
+			         	</ul>
+			      	</div>
+		    	</div>
+		    	<div class="select" id="timeslot_model">
+		         	<span class='show sel-val'>绿色</span>
+		         	<ul class="dropList bd options">
+						<li class='current' date-value = '0'>绿色</li>
+						<li date-value ='1'>标准</li>
+						<li date-value ='2'>穿墙</li>
+		         	</ul>
+		      	</div>
+			</div>
+			<div class="tongguo model" id="radiolist2" style="display:none">
+			   <span class="close_wifioff">开启Wi-Fi才能设置信号强度</span>
+			</div>
+		</div>
+		<div class="setModel clearfix">
+			<label class="wifiStandard model">访客模式</label>
+			 <div class="activ_wife" id="guestpanal">
+		        <span class="close_bn"></span>
+		        <span class="close_ba">访客可以通过专属的Wi-Fi上网，无需密码。</span>
+			 </div>
+			<div class="activ_wife" id="guestpanal2" style="display:none">
+			     <span class="close_wifioff">开启2.4G网络才能设置访客模式</span>
+			</div>
+		</div>
+		<div class="xiugai" style="display:none">未做任何更改，无需保存</div>
+		<a href="##" class="btn_baocun save-btn">保 存</a>
+		<div class="sheng_xiao">已生效正在重启...<span id="shengxiaosecond">10</span><span id="secondText">秒</span></div>
+	    </form>
+	</div> 
+	<div class="footer"></div>
+	<!-- 设置成功弹窗开始-->
+	<div class="shenhjiwan shenhjiwan_bn" id="setwifiokbox">
+	    <a href="##" class="guan_bt close"></a>
+	    <span></span>
+	    <p id="okwifiname">Wi-Fi设置成功！请重新连接</p>
+	    <p>提示：管理密码未随Wi-Fi密码改变。</p>
+	    <a href="##" class="wozhidao ok">我知道了</a >
+	</div>
+	<!-- 设置成功弹窗结束-->
+	
+	<!--询问修改后重启浮层开始--->
+	<div class="xunwen xunwen_btm" id="setwifibox">
+	  <a href="##" class="close close_ni"></a>
+	   <p>提示</p>
+	    <p>修改后，Wi-Fi将重启（10秒后网络恢复正常），您确定修改吗？</p>
+	    <div class="queding">
+	      <a href="#" class="btn_que ok">确定</a>
+	      <a href="#" class="btn_xiao cancel">取消</a>  
+	    </div>
+	</div>
+	<!--询问修改后重启浮层结束--->
+	<!--关闭后重启浮层开始--->
+	<div class="xunwen xunwen_btnm" id="closewifibox">
+	  	<a href="##" class="close close_ni"></a>
+	   	<p>提示</p>
+	    <p>
+	    	关闭后将无法通过Wi-Fi上网！您确定关闭Wi-Fi吗？<br/>
+			(若要重新开启，请用网线连接路由宝，打开管理页面，修改Wi-Fi设置)
+		</p>
+	    <div class="queding">
+	      <a href="#" class="btn_que ok">确定</a>
+	      <a href="#" class="btn_xiao cancel">取消</a>  
+	    </div>
+	</div>
+	<!--关闭后重启浮层结束--->
+	
+	<!-- 关闭2.4同时关闭访客 -->
+	<div class="xunwen xunwen_btnm" id="close24andguest">
+	  	<a href="##" class="close close_ni"></a>
+	   	<p>提示</p>
+	    <p>
+			关闭2.4G网络将会自动关闭Wi-Fi访客模式
+		</p>
+	    <div class="queding">
+	      <a href="#" class="btn_que ok">确定</a>
+	      <a href="#" class="btn_xiao cancel">取消</a>  
+	    </div>
+	</div>
+	
+	<!-- 公用提示浮层 开始-->
+	<div class="publiclayer" id="publiclayer">
+		<a href="##" class="p_close"></a>
+		<span class="p_ok_icon"></span>
+		<p class="p_title">提示</p>
+		<p class="p_content"></p>
+		<div class="p_operation">
+			<a href="#" class="op_but op_ok">确定</a>
+	      	<a href="#" class="op_but op_cancel">取消</a>
+		</div>
+	</div>
+	<!-- 公用提示浮层 结束-->
+	
+ <script>    
+$(function(){
+  
+	checkcookie();
+	var curNetBaseSet={};
+	var innerNetBaseSet={};
+	var curNetBaseSet_5G={};
+	var innerNetBaseSet_5G={};
+	var has5G;
+
+ 	$("#iphone1").selectNode();
+ 	$("#iphone2").selectNode();
+ 	$("#timeslot_model").selectNode();
+ 	$("#begintime_h").selectNode();
+ 	$("#begintime_m").selectNode();
+ 	$("#endtime_h").selectNode();
+ 	$("#endtime_m").selectNode();
+ 	
+	$(".yincang").find(".checkbox2").on("click",function(){
+		if($(this).parents(".select_Gray").length>0){return false;}
+		$(this).toggleClass("checked");
+		$(this).toggleClass("checkbox");
+	});
+	
+	$("#othertime").find(".checkBox1").on("click",function(){
+		$(this).toggleClass("boxChecked");
+		if ($(this).hasClass("boxChecked")) {
+			$(".timeslot_set,#timeslot_model").show();
+		}else{
+			$(".timeslot_set,#timeslot_model").hide();
+		}
+	});
+ 
+	$('.active_btn').on("click",function(){
+	    var _this=$(this);
+	    if (_this.parents(".setModel").hasClass("wifi24")) {
+	    	//2.4G网络：closed：开启状态；guanbi：关闭状态
+	    	if(_this.hasClass("guanbi")){
+	 		   setWifistatus("wifi24",true);
+	 		   curNetBaseSet.status="true";
+	 		}else{
+	 		   setWifistatus("wifi24",false);
+	 		   curNetBaseSet.status="false";
+	 		}
+		}else if(_this.parents(".setModel").hasClass("wifi5")){
+			//5G网络
+			if(_this.hasClass("guanbi")){
+	 		   setWifistatus("wifi5",true);
+	 		   curNetBaseSet_5G.status="true";
+	 		}else{
+	 		   setWifistatus("wifi5",false);
+	 		   curNetBaseSet_5G.status="false";
+	 		}
+		}else{
+			return false;
+		}
+		
+	});
+	
+	$('.close_bn').on("click",function(){
+		var _this=$(this);
+		if(_this.hasClass("guanbi")){
+			_this.removeClass("guanbi");
+			curNetBaseSet.guestMode = "true";
+		}else{
+			_this.addClass("guanbi");
+			curNetBaseSet.guestMode = "false";
+		}
+	});
+	
+	validate($("#wifiModeSetForm"),{ignore:":hidden .comn-input",autoReset:true, valiBreak:true,
+		submitHandler:function(){
+			if(checksubmitenable()){
+				if(curNetBaseSet.status=="true"){
+					popup.showId("setwifibox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},
+						closeBtn:".close",okBnt:".ok",okBtnClick:function(a,b){
+						   popup.close(a,b,"hide"); 
+						   setwifiinfo();
+						}  
+					});
+				}else{
+					if(curNetBaseSet.status=="false" && curNetBaseSet_5G.status=="false"){
+						popup.showId("closewifibox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},
+							closeBtn:".close",okBnt:".ok",okBtnClick:function(a,b){
+								popup.close(a,b,"hide"); setwifiinfo(); 
+							}  
+						});
+					}else{
+						popup.showId("close24andguest",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},
+							closeBtn:".close",okBnt:".ok",okBtnClick:function(a,b){
+								popup.close(a,b,"hide"); setwifiinfo(); 
+							}
+						});   
+					}
+				}
+			}else{
+				popup.tip("您未做任何修改,无需保存！","","noupdate");
+			}
+		}
+	});
+ 
+	function setwifiinfo(){
+		
+		var setParam = {};
+		var wifi = {};
+		var wifi_5G = {};
+		
+		if(innerNetBaseSet.status != curNetBaseSet.status){
+		    wifi.wifi_enable = curNetBaseSet.status;
+		}
+		if(innerNetBaseSet.name != curNetBaseSet.name || innerNetBaseSet.pwd != curNetBaseSet.pwd){
+		    wifi.wifi_ssid = curNetBaseSet.name;
+		    wifi.wifi_pwd = curNetBaseSet.pwd;
+		}
+		if(innerNetBaseSet.signalpath != curNetBaseSet.signalpath){
+		    wifi.wifi_channal = curNetBaseSet.signalpath;
+		}
+		if(innerNetBaseSet.hidden != curNetBaseSet.hidden){
+		    wifi.wifi_hidden = curNetBaseSet.hidden;
+		}
+		if(innerNetBaseSet.guestMode != curNetBaseSet.guestMode){
+		    wifi.wifi_guest = curNetBaseSet.guestMode;
+		}
+		if(innerNetBaseSet.strengthmode != curNetBaseSet.strengthmode){
+		    wifi.wifi_txpwr = curNetBaseSet.strengthmode;
+		}
+		if (curNetBaseSet.txptimingenable=="true") {
+			wifi.txptimingenable = curNetBaseSet.txptimingenable;
+			wifi.txptimemode = curNetBaseSet.txptimemode;
+			wifi.txptime = curNetBaseSet.txptime;
+			wifi.txpfullmode = curNetBaseSet.txpfullmode;
+			
+			var t_t_arr = curNetBaseSet.txptime.replace("-",":").split(":");
+	 		if (t_t_arr[0] == t_t_arr[2] && t_t_arr[1] == t_t_arr[3]) {
+				popup.tip("请设置正确的结束时间！","","fail");
+				return false;
+			}
+	 		
+	 		if (curNetBaseSet.txptimemode == curNetBaseSet.txpfullmode) {
+	 			popup.tip("时段信号强度不正确！","","fail");
+				return false;
+			}
+		}else{
+			wifi.wifi_txpwr = curNetBaseSet.strengthmode;
+			wifi.txptimingenable = "false";
+		}
+		
+		if (has5G) {
+			/**5G信息**/
+			if(innerNetBaseSet_5G.status != curNetBaseSet_5G.status){
+				wifi_5G.wifi_enable = curNetBaseSet_5G.status;
+			}
+			if(innerNetBaseSet_5G.name != curNetBaseSet_5G.name || innerNetBaseSet_5G.pwd != curNetBaseSet_5G.pwd){
+				wifi_5G.wifi_ssid = curNetBaseSet_5G.name;
+				wifi_5G.wifi_pwd = curNetBaseSet_5G.pwd;
+			}
+			if(innerNetBaseSet_5G.signalpath != curNetBaseSet_5G.signalpath){
+				wifi_5G.wifi_channal = curNetBaseSet_5G.signalpath;
+			}
+			if(innerNetBaseSet_5G.hidden != curNetBaseSet_5G.hidden){
+				wifi_5G.wifi_hidden = curNetBaseSet_5G.hidden;
+			}
+			
+			setParam.wifi_5G = wifi_5G;
+		}
+		setParam.wifi = wifi;
+		
+		$('.btn_baocun').hide();
+		$('.sheng_xiao').show();
+		$("#shengxiaosecond").hide();
+		$('#secondText').hide();
+		$.getJSON(baseUrl,{op:"set",context:createSetContext(setParam),key:$.cookie("key")},function (data) {
+		    checkresult(data);
+		    if(data.result==0 && data.data.mode==0){
+			    setwifisuccess();
+			}else{
+			    var timer=null,delay=10000;
+			    $("#shengxiaosecond").html(Math.ceil(delay/1000)).show();
+			    $('#secondText').show();
+			    if(timer) clearInterval(timer);
+			    timer=setInterval(function(){
+					if(delay<=0){
+						clearInterval(timer);
+						timer=null;
+						setwifisuccess();
+						$("#shengxiaosecond").html("");
+					}else{
+						delay-=1000;
+						$("#shengxiaosecond").html(Math.ceil(delay/1000));	
+					} 
+				},1000);	
+			}   
+		});
+	}
+ 
+	function setwifisuccess(){
+// 		$("#okwifiname").html("Wi-Fi设置成功！请重新连接 "+curNetBaseSet.name);	
+		popup.showId("setwifiokbox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},
+		closeBtn:".close",okBnt:".ok",okBtnClick:function(a,b){popup.close(a,b,"hide"); }  });	
+
+		innerNetBaseSet.status = curNetBaseSet.status;
+		innerNetBaseSet.name = curNetBaseSet.name;
+		innerNetBaseSet.pwd = curNetBaseSet.pwd;
+		innerNetBaseSet.signalpath = curNetBaseSet.signalpath;
+		innerNetBaseSet.hidden = curNetBaseSet.hidden;
+		innerNetBaseSet.guestMode = curNetBaseSet.guestMode;	
+		innerNetBaseSet.txptimingenable = curNetBaseSet.txptimingenable;
+		if (curNetBaseSet.txptimingenable=="true") {
+			innerNetBaseSet.txpfullmode = curNetBaseSet.txpfullmode;
+			innerNetBaseSet.txptimemode = curNetBaseSet.txptimemode;
+			innerNetBaseSet.txptime = curNetBaseSet.txptime;
+		}else{
+			innerNetBaseSet.strengthmode = curNetBaseSet.strengthmode;
+		}
+		
+		if (has5G) {
+			innerNetBaseSet_5G.status = curNetBaseSet_5G.status;
+			innerNetBaseSet_5G.name = curNetBaseSet_5G.name;
+			innerNetBaseSet_5G.pwd = curNetBaseSet_5G.pwd;
+			innerNetBaseSet_5G.signalpath = curNetBaseSet_5G.signalpath;
+			innerNetBaseSet_5G.hidden = curNetBaseSet_5G.hidden;
+		}
+		
+		$('.btn_baocun').show();
+		$('.sheng_xiao').hide();	
+	}
+ 
+	function checksubmitenable(){
+		//信道
+		if($(".wifi24").find(".sel-val").html()=="自动"){
+			curNetBaseSet.signalpath = "0";
+		}else{
+		    curNetBaseSet.signalpath = $(".wifi24").find(".sel-val").html();
+		}
+		if($(".wifi5").find(".sel-val").html()=="自动"){
+			curNetBaseSet_5G.signalpath = "0";
+		}else{
+		    curNetBaseSet_5G.signalpath = $(".wifi5").find(".sel-val").html();
+		}
+	    
+		//用户名、密码
+	    curNetBaseSet.name = $("#routerName1").val();
+		curNetBaseSet.pwd = $("#routerPassword1").val();
+	    curNetBaseSet_5G.name = $("#routerName5g1").val();
+		curNetBaseSet_5G.pwd = $("#routerPassword5g1").val();
+	 
+		//是否隐藏网络
+		if($(".wifi24").find(".checkbox2").hasClass("checked")){
+		    curNetBaseSet.hidden = "true";
+		}else{
+		    curNetBaseSet.hidden = "false";
+		}
+		if($(".wifi5").find(".checkbox2").hasClass("checked")){
+		    curNetBaseSet_5G.hidden = "true";
+		}else{
+		    curNetBaseSet_5G.hidden = "false";
+		}
+		
+		//访客模式
+		curNetBaseSet.guestMode = $("#guestpanal").find(".close_bn").hasClass("guanbi")?"false":"true";
+		
+		//分时开关
+		curNetBaseSet.txptimingenable = $("#otswitch").find(".checkBox1").hasClass("boxChecked")?"true":"false";
+		if (curNetBaseSet.txptimingenable=="true") {
+			//全天的信号强度
+			curNetBaseSet.txpfullmode = $("#radiolist").find(".hRadio_Checked").attr("data-value");
+			//时间段的信号强度
+			curNetBaseSet.txptimemode = $("#timeslot_model").find(".current").attr("date-value");
+			//时间段
+			var bt_h = $("#begintime_h").find(".sel-val").text();
+			var bt_m = $("#begintime_m").find(".sel-val").text();
+			var et_h = $("#endtime_h").find(".sel-val").text();
+			var et_m = $("#endtime_m").find(".sel-val").text();
+			var _timesolit =  bt_h+":"+bt_m+"-"+et_h+":"+et_m;
+			curNetBaseSet.txptime = _timesolit;
+		}
+		
+		//5G信号设置。有更改为true。
+		var _curr5G;
+		if (has5G) {
+			if (innerNetBaseSet_5G.status != curNetBaseSet_5G.status ||
+				innerNetBaseSet_5G.name != curNetBaseSet_5G.name ||
+				innerNetBaseSet_5G.pwd != curNetBaseSet_5G.pwd ||
+				innerNetBaseSet_5G.signalpath != curNetBaseSet_5G.signalpath ||
+				innerNetBaseSet_5G.hidden != curNetBaseSet_5G.hidden) {
+				_curr5G = true;
+			}else{
+				_curr5G = false;
+			}
+		}
+		
+		
+		//分时模式是否有更改，有更改的时候值为true。
+		var _txpenable;
+		if (curNetBaseSet.txptimingenable=="true") {//当前状态为开
+			//信号强度
+			curNetBaseSet.txpfullmode = $("#radiolist").find(".hRadio_Checked").attr("data-value");
+			
+			if (innerNetBaseSet.txptimingenable) {//接口中返回状态为开
+				if (innerNetBaseSet.txpfullmode != curNetBaseSet.txpfullmode ||
+			  	innerNetBaseSet.txptimemode != curNetBaseSet.txptimemode ||
+			  	innerNetBaseSet.txptime != curNetBaseSet.txptime) {
+					_txpenable = true;
+				}else{
+					_txpenable = false;
+				}
+			}else{//接口中返回状态为关 
+				_txpenable = true;
+			}
+			
+		}else{//当前状态为关
+			curNetBaseSet.strengthmode = $("#radiolist").find(".hRadio_Checked").attr("data-value");//信号强度
+			
+			if (innerNetBaseSet.txptimingenable=="false" || typeof(innerNetBaseSet.txptimingenable)=="undefined") {//接口中返回状态为关
+				_txpenable = false;
+			}else{//接口中返回状态为关
+				_txpenable = true;
+			}
+		}
+		
+		if(innerNetBaseSet.status != curNetBaseSet.status ||
+			innerNetBaseSet.name != curNetBaseSet.name ||
+		  	innerNetBaseSet.pwd != curNetBaseSet.pwd ||
+		  	innerNetBaseSet.signalpath != curNetBaseSet.signalpath ||
+		  	innerNetBaseSet.hidden != curNetBaseSet.hidden ||
+		  	innerNetBaseSet.strengthmode != curNetBaseSet.strengthmode ||			  
+		  	innerNetBaseSet.guestMode != curNetBaseSet.guestMode ||
+		  	_curr5G || _txpenable){
+		    return true;
+		}
+	    return false;
+	}
+
+	$("#radiolist>div").on("click",function(){
+		$("#radiolist>div").find(".activ").removeClass("hRadio_Checked").addClass("hRadio");
+		var activeitem = $(this).find(".activ");
+		activeitem.removeClass("hRadio").addClass("hRadio_Checked");
+		if (curNetBaseSet.txptimingenable=="true") {
+			curNetBaseSet.txpfullmode = activeitem.attr("data-value");
+		}else{
+			curNetBaseSet.strengthmode = activeitem.attr("data-value");
+		}
+	});
+
+	popup.showOpaLay();	
+	$.getJSON(baseUrl,
+		{op:"get",context:createContext("network"),key:$.cookie("key")},
+		function(data){
+			checkresult(data);
+		   	if(data.result==0){
+		   		var w_model;
+		   		if (data.data.have5G=="1") {
+		   			has5G = true;
+				}else{
+					has5G = false;
+				}
+		   		/**5G信号数据处理**/
+				if (data.data && data.data.wifi_5G) {
+					
+					$(".wifi5").show();
+					w_model = $(".wifi5");
+					if(data.data.wifi_5G.status=="true"){
+						setWifistatus("wifi5",true);
+					}else{
+					 	setWifistatus("wifi5",false);
+					}
+					$("#routerName5g1").val(data.data.wifi_5G.name);
+					$("#routerPassword5g1").val(data.data.wifi_5G.pwd);
+					
+					if(data.data.wifi_5G.signalpath=="0"){
+						w_model.find(".sel-val").html("自动");
+					}else{
+						w_model.find(".sel-val").html(data.data.wifi_5G.signalpath);
+					}
+					
+					if(data.data.wifi_5G.hidden=="true"){
+					    w_model.find('.yincang').find(".checkbox2").removeClass("checkbox").addClass("checked");
+					}else{
+						w_model.find('.yincang').find(".checkbox2").removeClass("checked").addClass("checkbox");
+					}
+					
+					curNetBaseSet_5G.status = innerNetBaseSet_5G.status = data.data.wifi_5G.status;
+					curNetBaseSet_5G.name = innerNetBaseSet_5G.name = data.data.wifi_5G.name;
+					curNetBaseSet_5G.pwd = innerNetBaseSet_5G.pwd = data.data.wifi_5G.pwd;
+					curNetBaseSet_5G.signalpath = innerNetBaseSet_5G.signalpath = data.data.wifi_5G.signalpath;
+					curNetBaseSet_5G.hidden = innerNetBaseSet_5G.hidden = data.data.wifi_5G.hidden;
+				}else{
+					$(".wifi5").hide();
+				}
+			  	if(data.data && data.data.wifi){
+			  		w_model = $(".wifi24");
+					if(data.data.wifi.status=="true"){
+						setWifistatus("wifi24",true);
+					}else{
+					 	setWifistatus("wifi24",false);
+					}	
+				  
+					$("#routerName1").val(data.data.wifi.name);
+					$("#routerPassword1").val(data.data.wifi.pwd);
+					
+					var guestname = data.data.wifi.name + "_Guest";
+					if(guestname.length > 20)
+					{
+						guestname = guestname.substr(0,18) + "...";			    
+					}
+					$("#wifiguestref").html(guestname);
+					
+					if(data.data.wifi.signalpath=="0"){
+						w_model.find(".sel-val").html("自动");
+					}else{
+						w_model.find(".sel-val").html(data.data.wifi.signalpath);
+					}
+				  
+					if(data.data.wifi.hidden=="true"){
+					    w_model.find('.yincang').find(".checkbox2").removeClass("checkbox").addClass("checked");
+					}else{
+						w_model.find('.yincang').find(".checkbox2").removeClass("checked").addClass("checkbox");
+					}
+				  
+					if(data.data.wifi.guestMode=="true"){
+					    $('.close_bn').removeClass("guanbi");
+					}else{
+					    $('.close_bn').addClass("guanbi");
+					}
+					
+				  	var strengthMode = data.data.wifi.txptimingenable=="true"?data.data.wifi.txpfullmode:data.data.wifi.strengthmode;
+					$(".activ").removeClass("hRadio_Checked").addClass("hRadio");
+					switch (Number(strengthMode)) {
+					case 0:
+						 $("#radiogreen").removeClass("hRadio").addClass("hRadio_Checked");
+						break;
+					case 1:
+						$("#radiobase").removeClass("hRadio").addClass("hRadio_Checked"); 
+						break;
+					case 2:
+						$("#radiowall").removeClass("hRadio").addClass("hRadio_Checked");
+						break;
+					default:
+						$("#radiobase").removeClass("hRadio").addClass("hRadio_Checked"); 
+						break;
+					}
+// 					if(strengthMode=="0"){
+// 					   $("#radiogreen").removeClass("hRadio").addClass("hRadio_Checked");
+// 					}else if(data.data.wifi.strengthmode=="1"){
+// 					   $("#radiobase").removeClass("hRadio").addClass("hRadio_Checked"); 
+// 					}else if(data.data.wifi.strengthmode=="2"){
+// 					   $("#radiowall").removeClass("hRadio").addClass("hRadio_Checked");
+// 					}
+					
+					if(data.data.wifi.txptimingenable=="true"){
+						$("#othertime").find(".checkBox1").addClass("boxChecked");
+						//处理时间段信号强度
+						var _ttm = data.data.wifi.txptimemode;
+						//判断是否有时间段信号强度设置
+						if (_ttm==0||_ttm==1||_ttm==2) {
+							$(".timeslot_set,#timeslot_model").show();
+							$("#timeslot_model").find(".dropList").find(".current").removeClass("current");
+							switch (Number(_ttm)) {
+							case 0:
+								$("#timeslot_model").find(".sel-val").html("绿色");
+								break;
+							case 1:
+								$("#timeslot_model").find(".sel-val").html("标准");
+								break;
+							case 2:
+								$("#timeslot_model").find(".sel-val").html("穿墙");
+								break;
+							default:
+								break;
+							}
+							$("#timeslot_model").find(".dropList").find("li").eq(_ttm).addClass("current");
+						}else{
+							$(".timeslot_set,#timeslot_model").hide();
+						}
+						var currStr = data.data.wifi.txptime.replace("-",":");
+						var _txpArr = currStr.split(":");
+						for (var i = 0,n=_txpArr.length; i < n; i++) {
+							$("#othertime").find(".sel-val").eq(i).html(_txpArr[i]);
+						}
+						
+					}else{
+						$("#othertime").find(".checkBox1").removeClass("boxChecked");
+					}
+					
+					curNetBaseSet.status = innerNetBaseSet.status = data.data.wifi.status;
+					curNetBaseSet.name = innerNetBaseSet.name = data.data.wifi.name;
+					curNetBaseSet.pwd = innerNetBaseSet.pwd = data.data.wifi.pwd;
+					curNetBaseSet.signalpath = innerNetBaseSet.signalpath = data.data.wifi.signalpath;
+					curNetBaseSet.hidden = innerNetBaseSet.hidden = data.data.wifi.hidden;
+					curNetBaseSet.strengthmode = innerNetBaseSet.strengthmode = data.data.wifi.strengthmode;				  
+					curNetBaseSet.guestMode = innerNetBaseSet.guestMode = data.data.wifi.guestMode;
+					curNetBaseSet.txptimingenable = innerNetBaseSet.txptimingenable = data.data.wifi.txptimingenable;
+					curNetBaseSet.txpfullmode = innerNetBaseSet.txpfullmode = data.data.wifi.txpfullmode;
+					curNetBaseSet.txptimemode = innerNetBaseSet.txptimemode = data.data.wifi.txptimemode;
+					curNetBaseSet.txptime = innerNetBaseSet.txptime = data.data.wifi.txptime;
+				}  
+				$("#youkuversion").html(data.data.curver);
+				$("#wanmac").html(data.data.MacAddr);
+				$("#wanIP").html(data.data.wanIP);
+			}
+			popup.hideOpaLay();	
+	});
+	
+	function setWifistatus(wifiModel,flag){
+		var divModel = $("."+wifiModel);
+	    if(flag){
+	    	divModel.find('.active_btn').removeClass("guanbi").addClass("closed");
+	    	divModel.removeClass("select_Gray");
+	    	if (wifiModel=="wifi24") {
+	    		$('#guestpanal').show();//访客
+				$('#guestpanal2').hide();
+			}
+	    	
+	    	if ($('.closed').length>=1) {
+	    		$('#radiolist').show();//信号强度
+				$('#othertime').show();//其他时段
+				$('#radiolist2').hide();
+			}
+			divModel.find(".comn-input").show();
+			divModel.find(".dislabel").hide();
+			divModel.find(".dropList").addClass("options");//信道
+			
+		}else{
+			divModel.find('.active_btn').removeClass("closed").addClass("guanbi");
+			divModel.addClass("select_Gray");
+			if (wifiModel=="wifi24") {
+				$('#guestpanal').hide();
+				$('#guestpanal2').show();
+			}
+			
+			if ($(".wifi24,.wifi5").find('.guanbi').length>=2) {
+				$('#radiolist').hide();
+				$('#othertime').hide();
+				$('#radiolist2').show();
+			}
+			
+			divModel.find(".comn-input").hide();
+			divModel.find(".dislabel").show();
+			divModel.find(".dropList").removeClass("options");//信道
+		}
+	};
+
+	$("#logoutbtn").on("click",function(){ weblogout();});
+	
+	//让指定的DIV始终显示在屏幕正中间
+	function letDivCenter(divName){ 
+		var top = ($(window).height() - $("#"+divName).height())/2; 
+		var left = ($(window).width() - $("#"+divName).width())/2; 
+		var scrollTop = $(document).scrollTop(); 
+		var scrollLeft = $(document).scrollLeft();
+		$("#"+divName).css('top', top + scrollTop+"px"); 
+		$("#"+divName).css('left', left + scrollLeft+"px");
+		$("#"+divName).show();
+	}
+});
+</script>  
+</body>
+</html>

@@ -1,0 +1,6 @@
+
+config 'core' 'common'
+        option lightmode '0'
+        option lighttime '22:00-08:00'
+		option accountversion '3'
+        option accmode '2'

@@ -1,0 +1,93 @@
+@charset "utf-8";
+/* CSS Document */
+.setModel{width: 890px;margin:25px auto;background:#F8F8F8;padding:35px 0px;}
+.setModel .model{float:left;margin-right:24px;position:relative;}
+.switch{font-size: 14px;color: #999;width:60px;}
+.wifiStandard{margin-top: 5px;margin-left: 20px;font-size:14px;width:63px;}
+.switch .switchStyle{width: 60px;height: 30px;background: url(../images/kaiqi.png) 0 0 no-repeat;cursor: pointer;border:none;display:block;}
+.switch .guanbi{background: url(../images/close.png) 0 0 no-repeat;}
+.switch .closed{background: url(../images/kaiqi.png) 0 0 no-repeat;}
+.wife{height: 32px;min-width:175px;}
+.wife label{width:35px;height: 32px;line-height: 32px;font-size: 12px;color: #777777; text-align: left;float:left;}
+.wife input{width:122px;height: 30px;line-height: 30px;border: 1px #bbbbbb solid;padding:0 8px;}
+.wife .dislabel{width:137px;height: 30px;line-height: 30px;border: 1px #bbbbbb solid;color: #bbbbbb;}
+.mr0{margin-right:0!important;}
+.xindao{}
+.xindao label{float: left;height: 32px;line-height: 32px;font-size: 12px;color: #777777; text-align:right;margin-right: 5px}
+.yincang{font-size: 12px;color: #333333;margin-top: 8px}
+.yincang .checkbox{background: url(../images/chang.png) 0 0 no-repeat;}
+.yincang .checkbox:hover{background: url(../images/xuan.png) 0 0 no-repeat;}
+.yincang .checked{background: url(../images/xuazhong.png) 0 0 no-repeat;}
+.yincang .checked,.yincang .checked:hover{background: url(../images/xuazhong.png) 0 0 no-repeat;}
+.select{ position: relative; width: 90px;float: left}
+.select .show{width:80px;height:30px;padding-left: 8px; border: 1px #ddd solid;font-size: 12px;line-height: 30px; cursor: pointer;background: url(../images/xiala.png) 74px center no-repeat; display: block;background-color: #fff;}
+.activ_wife .guanbi{background: url(../images/close.png) 0 0 no-repeat;}
+.activ_wife .closed{background: url(../images/kaiqi.png) 0 0 no-repeat;}
+.moshi{float:left;margin-left:24px;margin-top:4px;}
+.tongguo{width: 285px;margin-right:0!important;}
+.tongguo .activ_co{float: left;width: 16px;height: 16px;cursor: pointer;margin-top:8px;margin-right: 6px; }
+.tongguo .hRadio_Checked {background:url(../images/ra.png) 0 0 no-repeat}
+.close_bn{float: left;width: 60px;height: 30px;background: url(../images/kaiqi.png) 0 0 no-repeat;cursor: pointer}
+.close_ba{float: left;width: 236px;height: 30px;margin-left: 10px; line-height: 30px}
+.close_wifioff{height: 30px;line-height: 30px;color:#999;}
+.activ{float: left;width: 16px;height: 16px;cursor: pointer;margin-top:8px;margin-right: 6px; }
+.hRadio{background:url(../images/rb.png) 0 0 no-repeat}
+.hRadio:hover{background:url(../images/t_8.png) 0 0 no-repeat}
+.activd{float:left;width: 52px;height: 26px;line-height: 30px; background: url(../images/img_1.png) center right no-repeat}
+.lvse{float:left;width:75px;height: 26px;margin-right: 18px}
+.zhun_p{float:left;width:75px;height: 26px;margin-right: 18px}
+.zhun_p .activd{float:left;width: 52px;height: 26px;line-height: 30px; background: url(../images/img_2.png) center right no-repeat}
+.qiang{float: left;width: 75px;height: 26px;margin-right: 18px;}
+.qiang .activd{float:left;width: 52px;height: 26px;line-height: 30px; background: url(../images/img_3.png) center right no-repeat}
+.btn_baocun{width:200px;height: 40px;line-height: 40px;text-align: center; font-size:14px;background: #19b2d5;display: block;margin:40px auto;color: #fff;}
+.btn_baocun:hover{background: #00a4cd}
+.sheng_xiao{line-height: 40px;width:159px;height: 40px;padding-left: 41px; line-height: 40px;background: url(../images/loading_big.gif) 0 0 no-repeat;margin:40px auto 0;font-size: 12px;color: #bbbbbb;display: none;margin-bottom:10px;}
+.sheng_xiao span{color:#ff6666}
+.xiugai{position: absolute;top:276px;left: 386px; width:196px;height: 46px;border: 2px #d2f0b8 solid;line-height: 46px;text-align: center;background: #f5fbef;color: #60be06;font-size: 12px}
+.shenhjiwan_bn .wozhidao{margin:28px auto 0}
+.shenhjiwan_bn p{line-height: 30px}
+.xunwen_btm{width:480px;height: 153px}
+.xunwen_btm p{width:420px}
+.xunwen_btnm{width:504px;height: 180px}
+.xunwen_btnm p{width:467px}
+.checkbox2{float: left;width:16px;height: 16px;cursor: pointer}
+.chbox-val{float:left;margin-left: 5px}
+.box .select_Gray{display:block}
+.select_Gray .wife label{color: #bbbbbb}
+.select_Gray .xindao label{color: #bbbbbb}
+.select_Gray input{background: #ffffff;border:1px #eeeeee solid}
+.select_Gray .select span{border:1px #eeeeee solid;color: #bbbbbb;background: url(../images/san.png) 74px center no-repeat;cursor: default;}
+.select_Gray .yincang .checkbox{width:12px;height: 12px;border: 2px #eeeeee solid;background: none;cursor: default;}
+.select_Gray .yincang .chbox-val{color: #bbbbbb}
+.timeslot{margin-top: 6px;margin-left: 24px;height: 24px;}
+.timeslot_set{float:left;margin-left:10px;margin-top:-4px;display:none;}
+.timeslot_set .t_s_time{width:28px;height:22px;border:1px solid #DDD;text-align: center;font-size:12px;}
+.timeslot_set .t_s_label{width: 8px;height: 22px;display: inline-block;margin: 4px 5px 0px 8px;}
+#timeslot_model{margin-top:-5px;margin-left:15px;display:none;}
+#timeslot_model .show{width:60px;height: 24px;padding-left: 8px;border: 1px #ddd solid;font-size: 12px;line-height: 24px;cursor: pointer;background: url(../images/xiala.png) 90% center no-repeat;display: block;background-color: #fff;}
+#timeslot_model .dropList {width: 68px;overflow-x: hidden;height:99px;top:25px;}
+.activ_wife{width:306px;overflow: hidden}
+.timeslot_set .show{width:30px;height: 24px;padding-left: 8px;border: 1px #ddd solid;font-size: 12px;line-height: 24px;cursor: pointer;background: url(../images/xiala.png) 90% center no-repeat;display: block;background-color: #fff;}
+.timeslot_set .dropList{width: 48px;overflow-x: hidden;height: 231px;top: 21px;}
+.timeslot_set .select{width:40px;}
+
+.checkBox1{width:16px;height: 16px;background: url(../images/chang.png) 0 0 no-repeat;cursor: pointer;}
+.checkBox1:hover{background: url(../images/xuan.png) 0 0 no-repeat;}
+.boxChecked,.boxChecked:hover{background: url(../images/xuazhong.png) 0 0 no-repeat;}
+
+/**公用提示浮层**/
+.publiclayer{background: #fff;position: absolute;padding: 40px 30px 25px 30px;display:none;z-index:1;}
+.publiclayer .p_close{background: #fff;position: absolute;width: 33px;height: 33px;background: url(../images/de_close.png) 0 0 no-repeat;top:0px;right:0px;}
+.publiclayer .p_close:hover{background: url(../images/hover.png) 0 0 no-repeat;}
+.publiclayer .p_ok_icon{display: block;width: 32px;height: 32px;background: url(../images/tu.png) 0 0 no-repeat;margin: 0 auto 0;display:none;}
+.publiclayer .p_content{text-align: center;margin:20px 0px;font-size: 14px;color: #777777;}
+.publiclayer .p_title{font-size: 14px;color: #333333;}
+.publiclayer .p_operation{width:100%;min-width:355px;text-align: center;}
+.publiclayer .p_operation .op_but{width:120px;height: 40px;line-height: 40px;font-size: 14px;text-align: center;background: #19b2d5;color: #fff;display: inline-block;}
+.publiclayer .p_operation .op_ok{background: #19b2d5;margin-right:25px;}
+.publiclayer .p_operation .op_ok:hover{background: #00a4cd;}
+.publiclayer .p_operation .op_cancel{background: #8cd8ea;}
+.publiclayer .p_operation .op_cancel:hover{background: #66c8e1;}
+
+ 
+ 

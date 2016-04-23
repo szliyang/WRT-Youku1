@@ -1,0 +1,788 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>优酷土豆路由宝</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="css/configure.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="extend/css/h5common.css?ver=20151111">
+<script type="text/javascript" charset="utf-8" src="js/jquery2.min.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/popup_noie.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20151111"></script>
+<script type="text/javascript" charset="utf-8"  src="extend/js/H5setup_common.js?ver=20151111"></script>
+<style>
+.wifi_icon{text-align: center;margin:10px auto 0px;}
+.wifi_icon img{width:100%;margin-bottom:15px;}
+.wifi_icon .icon_wifi_2{width:130px;position:relative;text-align: center;display: inline-block;}
+.wifi_icon .wifi_name{width:100%;text-align: center;color:#60be06;font-size:14px;overflow: hidden;position:absolute;left:0;bottom:0;}
+.wifi_icon .icon_wifi_5{width:130px;position:relative;text-align: center;display: inline-block;}
+/* .Rour_ted{display:none;} */
+/* .peiwan{display:block;} */
+</style>
+</head>
+<body>
+    <div class="Route_header">
+        <div class="Route_log"></div>
+    </div>
+    <div class="guide-scroll">
+    <!--第一步-->
+    <div class="Rour_ted">
+        <div class="Set_up">第1步：设置接入互联网的方式</div>
+        <!--第一种情况开始已连网-->
+		<form id="GuestModeForm">
+        <div class="lianwang clearfix">
+            <div class="idc" id="pppoeStateNotice">已连网</div>
+            <div id="divselect" class="divselect" style="z-index:1500;">
+                <style type="text/css">.devselectopen .list {display: block;}</style>
+                <span class="label_span">宽带拨号<b class="ico_bt"></b></span>
+                <ul class="list">
+                    <li><a href="javascript:;" selectid="1" data-panel="kuandai"><span class="show_sapn show_min"></span>宽带拨号</a>
+                    </li>
+                    <li><a href="javascript:;" selectid="2" data-panel=""><span class="show_sapn"></span>动态IP</a>
+                    </li>
+                    <li><a href="javascript:;" selectid="3" data-panel="jingdai"><span class="show_sapn"></span>静态IP</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="kuandai c" id="kuandai">
+			    <div>
+                <input type="text" placeholder="请输入宽带账号" id="netUser" class="comn-input g" data-rules="required" data-required-error="宽带账号不能为空">
+				<div class="error-tip" style="top:15px;display:none;"></div>
+				</div>
+				<div>
+                <input type="password" placeholder="请输入宽带密码" id="netPass" class="comn-input g" data-rules="required" data-required-error="宽带密码不能为空">
+				<div class="error-tip" style="top:70px;display:none;"></div>
+				</div>
+            </div>
+            <div class="jingdai c" id="jingdai">
+			    <div>
+                <input type="text" placeholder="请输入IP地址" id="ipaddr" class="comn-input g" data-rules="required|ip"  data-required-error="IP地址不能为空" data-ip-error="IP地址格式不正确">
+				<div class="error-tip" style="top:150px;display:none;"></div>
+				</div>
+				<div>
+                <input type="text" placeholder="请输入子网掩码" id="netCKMask" class="comn-input g" data-rules="required|mask"  data-required-error="子网掩码不能为空" data-mask-error="子网掩码格式不正确">
+				<div class="error-tip" style="top:205px;display:none;"></div>
+				</div>
+				<div>
+                <input type="text" placeholder="请输入默认网关" id="netGateWay" class="comn-input g" data-rules="required|ip"  data-required-error="网关地址不能为空" data-ip-error="网关地址格式不正确">
+				<div class="error-tip" style="top:260px;display:none;"></div>
+				</div>
+            </div>
+            <div class="gaoji">
+                高级设置<b class="ico_btH" id="radio1"></b>
+            </div>
+            <div class="min_hide">
+                <div class="kelong">
+                    <div id="divselect2" class="divselect2" style="z-index:1400;">
+					    <style type="text/css">.devselectopen .list_btn{display: block;}</style>
+                        <span class="label_span_btn"><span class="closd">MAC地址克隆:</span><span class="closd_now">不克隆</span><b class="ico_bt"></b></span>
+                        <ul class="list_btn">
+                            <li><a href="javascript:;" selectid="1" data-panel="当前路由MAC地址:" data-value=""><span class="show_sapn show_min"></span>不克隆</a></li>
+							<li><a href="javascript:;" selectid="2" data-panel="当前设备MAC地址:" data-value=""><span class="show_sapn"></span>克隆当前设备的MAC地址</a></li>
+                            <li><a href="javascript:;" selectid="3" data-panel="路由出厂MAC地址:" data-value=""><span class="show_sapn"></span>使用出厂MAC地址</a></li>
+                            <li><a href="javascript:;" selectid="4" data-panel="手动输入MAC地址:" data-value=""><span class="show_sapn"></span>手动输入MAC地址</a></li>
+                        </ul>
+                    </div>
+                    <div class="dangqian">
+					    <span class="dizhi" id="WancurMacLabel">当前路由MAC地址:</span>
+						<input type="text" value="" class="comn-input now_dis" id="WaninputMacVal" data-rules="required|mac" data-required-error="MAC地址不能为空" data-mac-error="MAC地址格式不正确">
+                    </div>
+                </div>
+                <div class="dns">
+                    自定义DNS<b class="ico_bth" id="radio2"></b>
+                </div>
+                <div class="tian">
+                    <div class="mp">
+                        <input type="text" placeholder="首选DNS" class="comn-input" id="firstDNS" data-ip-error="DNS地址格式不正确" data-required-error="首选DNS地址不能为空" data-rules="required|ip">
+                        <span class="bitian">必填</span>
+						<div class="error-tip" style="top:385px;display:none;"></div>
+                    </div>
+                    <div class="mp">
+                        <input type="text" placeholder="备用DNS" class="comn-input" id="spareDNS" data-rules="ip" data-ip-error="DNS地址格式不正确">
+                        <span class="bitian">选填</span>
+						<div class="error-tip" style="top:440px;display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="xiayibu save-btn" id="saveSetConnMode">下一步</div>
+            <div class="tiaoguo">跳过</div>
+        </div>
+        </form>
+        <!--第二种情况开始-->
+        <div class="weilianjie" id="GuestModeForm2">
+            <div class="wei_lian">未连网，WAN口未插入网线。</div>
+            <span class="label_span">连网类型<b class="ico_bt"></b></span>
+            <div class="zhanghao">请输入宽带账号</div>
+            <div class="zhanghao">请输入宽带密码</div>
+            <div class="xi_bu">下一步</div><div class="tiaoguo">跳过</div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="foter foter_te clearfix"></div>
+    </div>
+    <!--第二步配置-->
+    <div class="dierbu">
+	    <form id="setWifiAccount">
+        <div class="Set_up">第2步：设置Wi-Fi名称和密码</div>
+        <div class="lianwang clearfix">
+            <div class="idc_shouji">您的手机、笔记本等无线设备可通过本Wi-Fi连接互联网</div>
+			<div class="dangqian">
+			    <span class="dizhi">WiFi名称：</span>
+                <input type="text" class="name_zi comn-input" placeholder="请输入WiFi名称" id="wifiName" data-rules="required|nocc|ssid=30"  data-required-error="WiFi名称不能为空" data-nocc-error="WiFi名称不能包含中文"  data-ssid-error="WiFi名称最多30个字节" maxlength="30" >
+                <div class="error-tip" style="top:43px;display:none;"></div>
+			</div>
+			<div class="dangqian">
+			    <span class="dizhi">WiFi密码：</span>
+			    <input type="text" class="pass_ma comn-input" placeholder="请输入WiFi密码" id="wifiPassword" data-rules="required|pwd|length=8,32" data-required-error="WiFi密码不能为空" data-pwd-error="只能输入字母数字及!@#$%^&*+-_=" data-length-error="密码最少8个字符，最多32个字符" maxlength="32">
+                <div class="error-tip" style="top:97px;display:none;"></div>
+			</div>
+			<div class="gaoji">
+                路由宝管理密码和Wi-Fi密码相同<b class="ico_btH_p" id="radio3"></b>
+            </div>
+			<div class="mid dangqian">
+			    <span class="dizhi">管理密码：</span>
+                <input type="text" placeholder="请输入管理密码" class="mid comn-input" id="adminPassword" data-rules="required|pwd|length=8,32" data-required-error="管理密码不能为空" data-pwd-error="只能输入字母数字及!@#$%^&*+-_=" data-length-error="密码最少8个字符，最多32个字符" maxlength="32">
+                <div class="error-tip" style="top:222px;display:none;"></div>
+			</div>
+		</div>
+        <div class="cunchu save-btn" id="guideSetNowSave">保 存</div>
+        <div class="bubu">上一步</div>
+              <div style="clear:both"></div>
+        <div class="foter foter_te clearfix foterext"></div>
+	</form>
+    </div>
+    <!---配置完成模块-->
+    <div class="peiwan" id="guideSuccessCon">
+        <div class="akb"></div>
+        <div class="hongxi">恭喜！您已完成路由宝配置！</div>
+        <div class="wifi_icon clearfix">
+        	<div class="icon_wifi_2"><img alt="" src="images/set_succ_wifi2.png"><p class="wifi_name" id="w_n_2"></p></div>
+        	<div class="icon_wifi_5"><img alt="" src="images/set_succ_wifi5.png"><p class="wifi_name" id="w_n_5"></p></div>
+        </div>
+        <div class="ban_1">本设备已和路由宝断开连接</div>
+        <div class="ban_2">请重新连接到Wi-Fi：<span href="##" id="TheWifiName"></span></div>
+        <div class="ban_3" id="lijitiyan">立即体验</div>
+    </div>
+    </div>
+    
+    <!---浮层连网成功-->
+    <div class="cheng_ok" id="connected">
+        <div class="bg_p"></div>
+        <div class="lian_t ok">连网成功</div>
+    </div>
+    <!--浮层正在连网-->
+    <div class="now_wang" id="connecting">
+        <div class="loding"></div>
+        <div class="now_beai" id="lianwangzhong">正在连网</div>
+    </div>
+    
+	<!--浮层正在连网-->
+    <div class="now_wang" id="restartnetwork">
+        <div class="loding"></div>
+        <div class="now_beai">已重启网络服务，请重新连接WiFi...</div>
+        <div class="quxiao ok">确定</div>
+    </div>
+	
+    <!--浮层已生效正在重启-->
+    <div class="now_wan" id="beg2">
+        <div class="lodind"></div>
+        <div class="now_beai" id="savewifiseconde">已生效，正在重启（10秒）...</div>
+    </div>
+
+<script type="text/javascript">
+var divselect=$("#divselect");
+var divselect2=$("#divselect2");
+var wanprotovalue="1";
+var wanmacvalue="1";
+
+divselect.on("click", ".label_span", function () {
+	if (divselect.hasClass("devselectopen")) {
+		divselect.removeClass("devselectopen");
+	} else {
+		divselect.addClass("devselectopen");
+	}
+}).on("click", "a", function (e) {
+	divselect.removeClass("devselectopen");
+	divselect.find(".show_sapn").removeClass("show_min");
+	var _this = $(this);
+	_this.find(".show_sapn").addClass("show_min");
+	divselect.find(".label_span").html(_this.text() + '<b class="ico_bt"></b>');
+	$(".c").hide();
+	$("#" + _this.attr("data-panel")).show();
+	wanprotovalue = _this.attr("selectid");
+	if (wanprotovalue=="3"){
+	    $("#radio1").removeClass("ico_btH_p").addClass("ico_btH");
+		$("#radio2").removeClass("ico_btH_p").addClass("ico_btH");
+		$("#radio1").hide();
+		$("#radio2").hide();
+	    $('.min_hide').show();
+		$('.tian').show();
+	}else{
+	    $("#radio1").show();
+		$("#radio2").show();
+	}
+	e.preventDefault();
+});
+
+function setDivselect(index){
+    var selecteditem = divselect.find("a[selectid="+index+"]");
+	wanprotovalue = selecteditem.attr("selectid");
+	divselect.removeClass("devselectopen");
+	divselect.find(".show_sapn").removeClass("show_min");
+	selecteditem.find(".show_sapn").addClass("show_min");
+	divselect.find(".label_span").html(selecteditem.text() + '<b class="ico_bt"></b>');
+	$(".c").hide();
+	$("#" + selecteditem.attr("data-panel")).show();
+	if (wanprotovalue=="3"){
+	    $("#radio1").removeClass("ico_btH_p").addClass("ico_btH");
+		$("#radio2").removeClass("ico_btH_p").addClass("ico_btH");
+		$("#radio1").hide();
+		$("#radio2").hide();
+	    $('.min_hide').show();
+		$('.tian').show();
+	}else{
+	    $("#radio1").show();
+		$("#radio2").show();
+	}
+};
+
+divselect2.on("click", ".label_span_btn", function () {
+	if (divselect2.hasClass("devselectopen")) {
+		divselect2.removeClass("devselectopen");
+	} else {
+		divselect2.addClass("devselectopen");
+	}
+}).on("click", "a", function (e) {
+	divselect2.removeClass("devselectopen");
+	divselect2.find(".show_sapn").removeClass("show_min");
+	var _this = $(this);
+	_this.find(".show_sapn").addClass("show_min");
+	divselect2.find(".closd_now").html(_this.text());
+	$("#WancurMacLabel").text(_this.attr("data-panel"));
+	$("#WaninputMacVal").val(_this.attr("data-value"));
+	wanmacvalue = $(this).attr("selectid");
+	e.preventDefault();
+});
+		
+$.fn.radio = function (options) {
+	var o = options;
+	var _this = $(this);
+	_this.on("click", function () {
+		if (_this.hasClass("ico_btH")) {
+			_this.removeClass("ico_btH").addClass("ico_btH_p");
+			o.openFn && o.openFn();　
+		} else {
+			_this.addClass("ico_btH").removeClass("ico_btH_p");
+			o.closeFn && o.closeFn();
+		}
+	});
+};
+
+$.fn.radio_net = function (options) {
+	var o = options;
+	var _this = $(this);
+	_this.on("click", function () {
+		if (wanprotovalue!="3"){
+			if (_this.hasClass("ico_btH")) {
+				_this.removeClass("ico_btH").addClass("ico_btH_p");
+				o.openFn && o.openFn();　
+			} else {
+				_this.addClass("ico_btH").removeClass("ico_btH_p");
+				o.closeFn && o.closeFn();
+			}
+		}
+	});
+};
+
+$("#radio1").radio_net({
+	openFn: function () { 
+		$('.min_hide').hide();
+		$("#radio2").removeClass("ico_btH").addClass("ico_btH_p");
+		$('.tian').hide();
+	},closeFn: function () { $('.min_hide').show()}});
+$("#radio2").radio_net({openFn: function () {$('.tian').hide()},closeFn: function () {$('.tian').show()}});
+$("#radio3").radio({openFn: function () { $('.mid').show()},closeFn: function () { $('.mid').hide()}});
+		
+$(".tiaoguo").on("click",function(e){
+	$(".dierbu").show().animate({"left":"0"},300,'',function(){
+		$(".Rour_ted").hide();
+	});
+});
+$(".bubu").on("click",function(e){
+    $(".Rour_ted").show().animate({"left":"0"},300,'',function(){
+        $(".dierbu").hide();
+    });
+});
+
+$("#lijitiyan").on("click",function(e){
+    window.location.href="login.html";
+});
+
+$("#spareDNS").addRule('sparedns',function(){
+    var _this=$(this),val=_this.val();
+    if(!val) return true;
+  　var reg=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+    return val && reg.test(val);　
+});
+
+var pppoeStateNotice=$("#pppoeStateNotice");
+var saveSetConnMode=$("#saveSetConnMode");
+var pppoeConnStatus=["正在连接互联网…","已连网","未连网，WAN口已插入网线。"];
+var pppoeTimer=null;
+var pppoeRequestAjax=null;
+var pppoeConnDelay=1000;
+var currentPPPOEState=null;
+var pppoetimeoutflag=0;
+var contipflag=false;		
+var innerNetBaseSet={};	
+var user_waiting = false;
+var connectiontype = "line";
+var has5G;
+
+function checkwanconnect(){
+$.getJSON(baseUrl,{op:"get",context:createContext("network")},
+    function(data){
+	    if(data.result==0 && data.data.initflag == 1){
+			  window.location.href="login.html";  
+		}
+		
+		if (data.data.have5G == "1") {
+			has5G = true;
+		}else{
+			has5G = false;
+			$(".icon_wifi_5").hide();
+			$(".wifi_5g_remind").hide();
+			$(".yiwancheng_bt").text("已完成配置！为您创建了无线网络");
+		}
+		if(data.result==0){
+			$("#radio3").addClass("ico_btH").removeClass("ico_btH_p");
+			$('.mid').hide();
+		    if(data.data && data.data.wanstate){
+			    var wanstate = data.data.wanstate;
+			    if(wanstate=="0"){
+				    $("#GuestModeForm").hide();
+					$("#GuestModeForm2").show();
+					if (data.data.wifi) {
+						var _wifiName = $("#wifiName").val();
+						_wifiName==""?$("#wifiName").val(data.data.wifi.name):"";
+	 					$("#wifiName").val(data.data.wifi.name);
+					}
+					$("#youkuversion").html(data.data.curver);
+					$("#youkuversion2").html(data.data.curver);
+					window.setTimeout(function(){checkwanconnect();},2000);
+				}else{
+				    $("#GuestModeForm2").hide();
+					$("#GuestModeForm").show();
+					getwandata(data);
+				}
+			}
+		}
+    });
+}
+
+function getwandata(data){
+	if(data.data && data.data.wan){
+		if(data.data.wan.proto=='pppoe'){
+			setDivselect(1);
+			pppoetimeoutflag=0;
+		}else if(data.data.wan.proto=='static'){
+			setDivselect(3);
+			pppoeStateNotice.removeClass("idcnoico").addClass("idc");
+			pppoeStateNotice.html("已连网");
+		}else{
+			setDivselect(2);
+			pppoeStateNotice.removeClass("idcnoico").addClass("idc");
+			pppoeStateNotice.html("已连网");
+		}
+			
+		if(data.data.wan.username && data.data.wan.username != ""){
+			$('#netUser').attr('value', data.data.wan.username);
+			$('#netPass').attr('value', data.data.wan.password);
+		}
+		$('#ipaddr').attr('value', data.data.wan.ipaddr);
+		$('#netCKMask').attr('value', data.data.wan.netmask);
+		$('#netGateWay').attr('value', data.data.wan.gateway);
+			
+		var wanstate = data.data.wanstate;
+		if(wanstate == "1"){
+			pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+			pppoeStateNotice.html(pppoeConnStatus[2]);
+		}
+		divselect2.find("a[selectid=1]").attr('data-value', data.data.wan.localmac);
+		divselect2.find("a[selectid=2]").attr('data-value', data.data.wan.remotemac);
+		divselect2.find("a[selectid=3]").attr('data-value', data.data.wan.initmac);
+		$("#WaninputMacVal").val(data.data.wan.localmac);
+			
+		if(data.data.wan.switch && data.data.wan.switch == "1"){
+			$("#radio1").removeClass("ico_btH_p").addClass("ico_btH");
+			$("#radio2").removeClass("ico_btH_p").addClass("ico_btH");
+			$('.min_hide').show();
+			$('.tian').show();
+			$("#firstDNS").val(data.data.wan.dns1);
+			$("#spareDNS").val(data.data.wan.dns2);
+		}else{
+			$("#radio1").removeClass("ico_btH").addClass("ico_btH_p");
+			$("#radio2").removeClass("ico_btH").addClass("ico_btH_p");
+			$('.min_hide').hide();
+			$('.tian').hide();
+		}	
+			
+		if(data.data.wan.proto=='static'){
+			setDivselect(3);
+		}	
+	}
+	connectiontype = data.data.connectiontype;
+	if (data.data.wifi) {
+		var _wifiName = $("#wifiName").val();
+		_wifiName==""?$("#wifiName").val(data.data.wifi.name):"";
+		$("#wifiName").val(data.data.wifi.name);
+	}
+	$("#youkuversion").html(data.data.curver);
+	$("#youkuversion2").html(data.data.curver);
+}
+
+checkwanconnect();
+
+//开始不断获取pppoe的状态和结束拨号
+function startWatchPPPOE(){
+  	clearInterval(pppoeTimer);
+  	pppoeTimer=setInterval(function(){watchWideBandState();},pppoeConnDelay);
+}
+function stopWatchPPPOE(){
+  	clearInterval(pppoeTimer);
+  	pppoeTimer=null;
+  	pppoeRequestAjax && pppoeRequestAjax.abort(); 　
+}
+
+//联网方式表单验证
+validate($("#GuestModeForm"),{
+   	ignore:":hidden .comn-input",
+   	autoReset:true,
+   	valiBreak:true,
+   	submitHandler:function(){
+		submitConnType();
+   	}
+});
+	
+//监视宽带连接状态
+function watchWideBandState(){
+	pppoeRequestAjax=$.getJSON(baseUrl,{op:"get",context:createContext("pppoestate")},
+	function(data){
+    	if(!data.data || !data.data.pppoestate) {
+		    popup.close($("#connecting"),popup.getoverLay(),"hide");
+		    return false;
+		}
+        if(data.data.pppoestate=="0"){
+		   	pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+           	pppoeStateNotice.html(pppoeConnStatus[2]);
+		   	stopWatchPPPOE();
+		   	popup.close($("#connecting"),popup.getoverLay(),"hide");
+        }else if(data.data.pppoestate=="1"){
+		 	pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+         	pppoeStateNotice.html(pppoeConnStatus[0]);
+		 	pppoetimeoutflag++;
+			if(pppoetimeoutflag >15){
+				stopWatchPPPOE();
+				pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+				pppoeStateNotice.html("拨号超时，请重新连接");
+				popup.close($("#connecting"),popup.getoverLay(),"hide");
+			}
+       	}else if(data.data.pppoestate=="2"){
+		   	pppoeStateNotice.removeClass("idcnoico").addClass("idc");
+           	pppoeStateNotice.html(pppoeConnStatus[1]);
+           	currentPPPOEState=2;
+		   	pppoetimeoutflag=0;
+		   	stopWatchPPPOE();
+		   	popup.hide($("#connecting"),popup.getoverLay(),"hide");
+		   	popup.showId("connected",{layerCss:{position:"fixed",
+				left:"50%", top:"50%", width:"320px", height:"136px", marginLeft:"-160px", marginTop:"-68px"},
+				closeBtn:".tipd",okBnt:".ok"});
+			 
+		   	window.setTimeout(function(){
+		       	popup.close($("#connected"),popup.getoverLay(),"hide");
+			   	$(".dierbu").show().animate({"left":"0"},300,'',function(){
+			   		$(".Rour_ted").hide();
+			 	});
+		   	},1000);
+		 
+       	}else if(data.data.pppoestate=="3"){
+	 		pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+         	pppoeStateNotice.html("返回码:"+data.data.pppoeerrcode+"&nbsp;&nbsp;&nbsp;描述:"+data.data.pppoeerrmsg);
+		 	popup.close($("#connecting"),popup.getoverLay(),"hide");
+		 	stopWatchPPPOE();
+        }else if(data.data.pppoestate=="4"){
+	        if( user_waiting == false ){
+				pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+			 	pppoeStateNotice.html(pppoeConnStatus[2]);
+			 	stopWatchPPPOE();
+               	popup.close($("#connecting"),popup.getoverLay(),"hide");	 
+	      	}else{//用户等待中
+			    pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+		      	pppoeStateNotice.html(pppoeConnStatus[0]);
+				pppoetimeoutflag++;
+			 	if(pppoetimeoutflag >15){
+					stopWatchPPPOE();
+					pppoeStateNotice.removeClass("idc").addClass("idcnoico");
+					pppoeStateNotice.html("拨号超时，请重新连接");
+					popup.close($("#connecting"),popup.getoverLay(),"hide");
+			 	}
+	      	}
+		}
+	});  
+}
+	
+function restart_net_service(conType, requestObj) {
+	var setParam = {};
+	setParam.wan = requestObj;
+	popup.showId("connecting",{layerCss:{position:"fixed",
+		left:"50%", top:"50%", width:"320px", height:"165px", marginLeft:"-160px", marginTop:"-68px"},
+		closeBtn:".tipd"
+	});
+		 
+	$.getJSON(baseUrl,{op:"set",context:createSetContext(setParam)},
+    	function (retdata) {
+	        var checkfinish = function () {
+	            $.getJSON(baseUrl,{op:"get",context:createContext("actionstate")},
+	                function (data) {
+	                    if (data.data.actionstate == 'finish') {
+                            user_waiting = true;
+							contipflag=true;
+                            startWatchPPPOE();
+ 							pppoetimeoutflag=0;
+	                    } else {
+	                        window.setTimeout(checkfinish, 1000);
+	                    }
+	                }
+				);
+	        };
+                 
+			var networkrestart = function(callback){
+				var timer=null,delay=10000;
+		      	$("#lianwangzhong").html("已生效正在重启网络..."+Math.ceil(delay/1000)+"秒");
+		      	if(timer) clearInterval(timer);
+		      	timer=setInterval(function(){
+					if(delay<=0){
+						clearInterval(timer);
+						timer=null;
+						$("#lianwangzhong").html("正在连网");
+						if(connectiontype!="line"){
+					    	popup.hide($("#connecting"),popup.getoverLay(),"hide");
+				            popup.showId("restartnetwork",{layerCss:{position:"fixed",
+								left:"50%", top:"50%", width:"320px", height:"165px", marginLeft:"-160px", marginTop:"-68px"},
+								closeBtn:".tipd",okBnt:".ok",
+								okBtnClick:function(a,b){
+									popup.hide(a,b,"hide");
+									callback();
+								}                                     
+					 		});
+						}else{
+						    callback();
+						}
+					}else{
+						delay-=1000;
+						$("#lianwangzhong").html("已生效正在重启网络..."+Math.ceil(delay/1000)+"秒");	
+					} 
+				},1000);	
+			}
+				 
+		 	if(conType == "pppoe"){
+		     	if(retdata.data && retdata.data.mode!=0){
+		        	networkrestart(checkfinish);
+			 	}else{
+			    	checkfinish();
+			 	}
+		 	}else{
+		     	if(retdata.data && retdata.data.mode!=0){
+			    	networkrestart(function(){
+					    pppoeStateNotice.removeClass("idcnoico").addClass("idc");
+					    pppoeStateNotice.html("已连网");
+					 	popup.hide($("#connecting"),popup.getoverLay(),"hide");
+					 	popup.showId("connected",{layerCss:{position:"fixed",
+							left:"50%", top:"50%", width:"320px", height:"136px", marginLeft:"-160px", marginTop:"-68px"},
+							closeBtn:".tipd",okBnt:".ok"});
+					 	window.setTimeout(function(){
+						   	popup.close($("#connected"),popup.getoverLay(),"hide");
+						   	$(".dierbu").show().animate({"left":"0"},300,'',function(){
+						   		$(".Rour_ted").hide();
+					 		});
+					   	},1000);
+					});
+			 	}else{
+			    	pppoeStateNotice.removeClass("idcnoico").addClass("idc");
+				    pppoeStateNotice.html("已连网");
+				 	popup.hide($("#connecting"),popup.getoverLay(),"hide");
+				 	popup.showId("connected",{layerCss:{position:"fixed",
+						left:"50%", top:"50%", width:"320px", height:"136px", marginLeft:"-160px", marginTop:"-68px"},
+						closeBtn:".tipd",okBnt:".ok"});
+				 	window.setTimeout(function(){
+				   		popup.close($("#connected"),popup.getoverLay(),"hide");
+				   		$(".dierbu").show().animate({"left":"0"},300,'',function(){
+						   $(".Rour_ted").hide();
+					 	});
+				   	},1000);
+			 	}
+ 			} 
+		}
+	);
+}
+	 
+//提交联网方式设置
+function submitConnType(){
+	var requestObj = {};
+    if(wanprotovalue=="1"){
+    	requestObj.proto = "pppoe";
+       	requestObj.wan_username = $("#netUser").val();
+       	requestObj.wan_password = $("#netPass").val();
+    }else if(wanprotovalue=="2"){
+        requestObj.proto = 'dhcp';
+    }else if(wanprotovalue=="3"){
+        requestObj.proto = 'static';
+        requestObj.wan_ipaddr = $("#ipaddr").val();
+        requestObj.wan_netmask = $("#netCKMask").val();
+        requestObj.wan_gateway = $("#netGateWay").val();
+    }
+	 
+	if($('#radio1').hasClass("ico_btH")){
+	    if(wanmacvalue=="2"){
+			requestObj.wan_mac=$("#WaninputMacVal").val();
+		}else if(wanmacvalue=="4"){
+			requestObj.wan_mac=$("#WaninputMacVal").val();
+		}else if(wanmacvalue=="1"){
+			requestObj.wan_mac="notclone";
+		}else {
+			requestObj.wan_mac="default";
+		}
+	 
+	    if($('#radio2').hasClass("ico_btH") || wanprotovalue=="3"){
+		    requestObj.dns_switch = "1";
+		    requestObj.dns1 = $("#firstDNS").val();		
+			requestObj.dns2 = $("#spareDNS").val();
+		}else{
+		    requestObj.dns_switch = "0";
+		}
+	}
+	if(requestObj.proto != null)
+        restart_net_service(requestObj.proto, requestObj);
+}
+
+//WIFI设置表单验证
+validate($("#setWifiAccount"),{
+    submitBtn:".save-btn",
+    autoReset:true,
+ 	valiBreak:true,
+    ignore:":hidden .comn-input",
+    submitHandler:function(){
+      //引导流程结束
+		popup.showId("beg2",{layerCss:{position:"fixed",
+      		left:"50%", top:"50%", width:"320px", height:"136px", marginLeft:"-160px", marginTop:"-68px"},
+			closeBtn:".tipd",okBnt:".ok",
+   			okBtnClick:function(a,b){
+				popup.close(a,b,"hide");
+			}                                     
+		});
+      	guideSuccess();
+	}
+});
+	
+//循环检测联网状态
+function cycleCheckWifi(delay){
+    var timer=null;
+    if(timer) clearInterval(timer);
+    var url="images/logo.png?rd=";
+    timer=setInterval(function(){
+		loadImg();
+    },delay);
+    function loadImg(){
+     	var img = new Image();
+     	img.onload=function(){
+	        clearInterval(timer);
+	        timer=null;
+	        img=null; 
+			window.location.href="login.html";
+   		};
+     	img.onerror=function(){};
+     	img.src=url+new Date().getTime();
+    }
+}
+	
+//引导流程结束成功提交
+function guideSuccess(){
+    var submitBtn=$("#guideSetNowSave");
+    $("#TheWifiName").html($("#wifiName").val());
+    var flag = 0;
+    if($("#radio3").hasClass("ico_btH")) flag=1;
+    if (has5G) {
+    	$("#w_n_5").text(_wifiName+"_5G");
+	}
+	
+	var successfunc = function(){
+	    var timer=null,delay=10000;
+        $("#savewifiseconde").html("已生效，正在重启（"+Math.ceil(delay/1000)+"）秒"); 
+        if(timer) clearInterval(timer); 
+        timer=setInterval(function(){
+           	if(delay<=0){
+				clearInterval(timer);
+			  	timer=null;
+             	//弹窗设置成功提示弹窗
+			  	popup.close($("#beg2"),popup.getoverLay(),"hide");
+              
+				if (!has5G) {
+					$(".icon_wifi_5").hide();
+					$(".wifi_5g_remind").hide();
+					$(".yiwancheng_bt").text("已完成配置！为您创建了无线网络");
+				}
+              
+		  		//引导流程结束
+			  	$(".dierbu").hide();
+			  	$("#guideSuccessCon").show();
+			  	cycleCheckWifi(1000);
+       		}else{
+             	delay-=1000;
+			  	var currentSecond=Math.ceil(delay/1000);
+              	$("#savewifiseconde").html("已生效，正在重启（"+Math.ceil(delay/1000)+"）秒"); 
+          	}
+        },1000);
+	}
+	
+	var requestObj = {};
+	var wifiObj = {};
+	var wifi5gObj = {};
+	wifiObj.wifi_ssid = $("#wifiName").val();
+	wifiObj.wifi_pwd = $("#wifiPassword").val();
+	if (has5G) {
+		wifi5gObj.wifi_ssid = $("#wifiName").val()+"_5G";
+		wifi5gObj.wifi_enable = 1;
+		wifi5gObj.wifi_pwd = $("#wifiPassword").val();
+		requestObj.wifi_5G = wifi5gObj;
+	}
+	
+	requestObj.wifi = wifiObj;
+	var admObj = {};
+	if (flag==1) {
+		admObj.admin_newpwd = $("#wifiPassword").val();
+	}else{
+		admObj.admin_newpwd = $("#adminPassword").val();
+	}
+	requestObj.admin = admObj;	   
+	$.getJSON(baseUrl,{op:"set",context:createSetContext(requestObj)},function (data) {
+		successfunc(); 
+  	});
+}
+    
+$("[data-panel]").on("touchstart",function(){
+   	$(this).css({"background":"#19b2d5","color":"#fff"});
+}).on("touchmove touchend touchcancel",function(){
+   	$(this).css({"background":"#fff","color":"#555"});
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>优酷土豆路由宝</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="css/configure.css?ver=20151111">
+<link rel="stylesheet" type="text/css" href="extend/css/h5common.css?ver=20151111">
+<script type="text/javascript" charset="utf-8"  src="js/jquery2.min.js?ver=20151111"></script>
+ <script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
+ <script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
+ <script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20151111"></script>
+ <script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20151111"></script>
+  <script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
+ <script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
+ <script type="text/javascript" charset="utf-8"  src="extend/js/H5setup_common.js?ver=20151111"></script>
+ <script type="text/javascript">
+    $(function(){
+	    $.getJSON(baseUrl,
+        {op:"get",
+            context:createContext("network")},
+            function(data){
+	        if(data.result==0 && data.data.initflag == 1){
+		          window.location.href="login.html";  
+	        }
+			if(data.data && data.data.wifi && data.data.wifi.name){
+			    $(".xieyi").html(data.data.wifi.name);
+			}
+			$("#youkuversion").html(data.data.curver);
+        });
+	});
+ </script>
+</head>
+<body>
+    <div class="header_i">
+        <div class="conter_configu"></div>
+    </div>
+    <div class="bt_top"></div>
+    <p class="xieyi"></p>
+    <p class="peizhi">这是个新路由宝，配置后才能使用。</p>
+    <div class="kuasu">快速配置</div>
+    <div class="yonghu clearfix">
+        <span class="active_box"></span>
+        <a target="extend/H5protocol.html" style="cursor:pointer;">我同意优酷土豆路由宝用户协议</a>
+    </div>
+    <div class="foter clearfix"></div>
+    <script>
+        $(".active_box").on("click",function(e){
+              var _this=$(this);
+              if(_this.hasClass("box_check")){
+                _this.removeClass("box_check");
+                $(".kuasu_hui").removeClass().addClass("kuasu");
+              }else{
+                _this.addClass("box_check");
+                $(".kuasu").removeClass().addClass("kuasu_hui");
+              }
+            });
+			
+		$(".kuasu").on("click",function(e){
+		    if(!$(this).hasClass("kuasu_hui")){
+			    window.location.href="H5wizard.html";   
+			} 
+        });
+		
+		$(".yonghu>a").on("click",function(e){
+            window.location.href=$(this).attr("target")+"?ver="+$("#youkuversion").html();
+        });
+    </script>
+</body>
+</html>

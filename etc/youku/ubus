@@ -1,0 +1,25 @@
+config ubus ubus_idinfo
+	option command /usr/sbin/ubus_idinfo
+	
+#config ubus ubus_acc
+#	option command /usr/sbin/ubus_acc
+
+#config ubus ubus_conf
+#	option command /usr/sbin/ubus_conf
+
+config ubus ubus_log
+	option command /usr/sbin/ubus_log
+
+#config ubus ubus_update
+#	option command /usr/sbin/ubus_update
+	
+#config ubus ubus_yktacc
+#	option command /usr/sbin/ubus_yktacc
+
+
+
+	
+	
+	
+	
+	

@@ -1,0 +1,67 @@
+﻿@charset "utf-8";
+/* CSS Document */
+.header_body{width: 100%;height: 50px;background: #19b2d5;position: relative}
+.logo{width:174px;height: 50px;float:left;margin-left:28px;display: inline}
+.logo img{width:31px;height: 27px;float: left;margin-top: 10px}
+.logo span{float: left;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 18px;height: 50px;line-height: 50px;margin-left: 13px;color: #FFF;cursor: pointer}
+.nav{width: 970px;height: 50px;margin: 0 auto 0}
+.nav_top{width:500px;height: 50px;margin:0 auto;}
+.nav_top a{width: 100px;height:50px;float:left;line-height:50px;text-align: center;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 16px;color: #fff;cursor: pointer}
+.nav_top a:hover{background:#47c1dd}
+.nav_top li{width: 100px;height:50px;float: left}
+.nav_top .current a{background:#e8f7fb;color:#33b7d8}
+.nav_right{float: right;width:235px;height:50px;position: absolute;top:0px;right:13px}
+.nav_right a{width: 50px;height:46px;float:right;line-height:46px;text-align: center;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;color: #abe1ee; }
+.nav_right a:hover{color:#fff}
+.footer{width:970px; height:50px; margin:0 auto 0;  line-height: 50px;text-align: center; color: #7dd3e7;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;overflow: hidden}
+.footer p{width:952px;margin: 0 auto;overflow: hidden}
+.footer p span{float: left;margin-right: 0px}
+.footer_loin .fotter_P{width:618px}
+
+.qrcodebox{width:360px;height:360px;background:#fff;_position:absolute;left:50%;top:50%;margin-Left:-180px;margin-Top:-180px;position:absolute;display: none}
+.box_close{width:33px;height: 33px;background:url(../../images/de_close.png) 0 0 no-repeat;position: absolute;top: 0;right: 0}
+.box_close:hover{background:url(../../images/hover.png) 0 0 no-repeat;}
+.qrcodebox h2{float: left;width: 320px;margin-left: 38px;color: #999999;font-size: 14px;margin-top: 33px;margin-bottom: 20px}  
+.qrcodebox p{float: left;width: 310px;margin-left: 38px;color: #555555;line-height: 24px;font-size: 14px} 
+.qrimage{width:258px;height: 258px;background:url(../../images/qrcode258.png) 0 0 no-repeat;position: absolute;top:92px;left:50px;display: block;}
+
+/*-------------------------------------------------------------------------------------------------------*/
+
+.fu_btn{width: 480px;height: 190px;padding-top: 10px; background:url(../../images/cc.png) 0 0 no-repeat;margin: 0 auto;position: relative;margin-top: 66px}
+.fu_bhd{width: 142px;height: 17px;background: url(../../images/mid.png) 0 0 no-repeat;position: absolute;top:-17px;left:175px}
+.router-manage2{margin-top: 80px}
+.fu_btn h2{width: 422px;height: 26px;line-height: 26px; border-bottom: 1px #62cae2 solid;margin: 0 auto;text-align: center;font-size: 14px;color:#bae8f2;}
+.tong_pe{width: 208px;float: left;margin-left: 38px;display: inline;margin-top: 18px}
+.tong_pe p{margin-bottom: 18px;width: 208px;float: left;}
+.tong_pe p .text_a{width: 68px;text-align: right;margin-right: 3px; font-size: 12px;color:#bae8f2;float: left}
+.tong_pe p .text_b{font-size: 12px;color:#ebf7fa;float: left}
+.fu_btn .tong_pee{margin-left: 15px}
+.router_min{font-size: 12px;color: #81d4e7}
+.router_min2{padding-left: 20px}
+
+.logo_bg{width: 102px;height: 72px;background: url(../img/logo_p.png) 0 0 no-repeat;margin:6px auto 0}
+/**合作显示和非合作显示样式不同**/
+.conter_bg .conter_logo{width:150px;height:130px;margin:44px auto 0px auto;background:url(../img/login_quick_logo.png) center center no-repeat;}
+.conter_configur .conter_logo{width:150px;height:130px;margin:80px auto;background:url(../img/login_quick_logo.png) center center no-repeat;}
+
+.bg_color{background:#e8f7fb}
+.min_btp{width: 100%;text-align: center}
+.min_btp img{width:61px;height: 120px;margin-top: 90px}
+.bai{width: 100%;text-align: center;color: #333333;font-size: 18px;padding-top: 27px}
+.close_bn_shield{display: block;width: 200px;height: 40px;line-height: 40px;text-align: center;color: #fff;font-size: 14px;background: #19b2d5;margin: 50px auto 0}
+.close_bn_shield:hover{background: #00a4cd;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
