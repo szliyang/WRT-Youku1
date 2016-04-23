@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>优酷土豆路由宝</title>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20160121"></link>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.3.min.js?ver=20160121"></script>
+<script>
+</script>
+</head>
+<body class="body_bg" style="min-width: 1250px;">
+<div class="min_hj" style="position: static; width: auto;">
+<style>
+.body_bg {background: #19b2d5;font-size:12px;}
+.coins{width:970px;height: 378px;margin: 0px auto 0;position: relative;overflow:hidden;}
+.coins_bg{width: 603px; height: 378px;background: url(https://yun.youku.com/public/yjbpage/images/jinbi.png) 0 0 no-repeat;margin-top:-3px;margin-left:233px;position: relative;overflow:hidden;}
+.coins_bg .accmode{width:34px;height: 16px;line-height: 16px;text-align: center;font-size: 12px;color: #999;position: absolute;top:182px;right: 27px}
+.coins_bg .accset{width:15px;height: 15px;position:absolute;top:182px;right: 10px}
+.filterModel{width:457px;height: 132px;position: absolute;top:111px;left: 187px}
+.filterModel .translucent{width:298px;height: 80px;background: url(https://yun.youku.com/public/yjbpage/images/mohu.png) 0 0 no-repeat;position: absolute;top:55px;left: 162px;z-index: 5}
+.filterModel .close_bi{width: 10px;height: 10px;background: url(https://yun.youku.com/public/yjbpage/images/bi2.png) 0 0 no-repeat;position: absolute;top:26px;left: 204px;}
+.filterModel .close_bi:hover{background: url(https://yun.youku.com/public/yjbpage/images/b3.png) 0 0 no-repeat;}
+.filterModel .tipsModel{width: 292px;height:121px;background: url(https://yun.youku.com/public/yjbpage/images/yun.png) 0 0 no-repeat;position: absolute;top:0;left: 0;z-index: 50}
+.filterModel .tipsModel .m_text1{font-size: 12px;color: #ff4400;margin: 35px 0 0 68px}
+.filterModel .tipsModel .m_text2{font-size: 12px;color: #b8b8b8;margin: 4px 0 0 56px}
+.filterModel .tipsModel .m_text3{font-size: 12px;color: #b8b8b8;margin: 4px 0 0 18px}
+.coinsContent{display: block;overflow:hidden;margin:180px 0px 0px 61px;width:390px;}
+.coinsContent .coinsData{width:340px;margin:0px auto;}
+.coinsContent .coinsData .yesterday{float: left;width:89px;border-right: 1px #d8d8d8 solid;}
+.coinsContent .coinsData .yesterday .y_count{width:89px;height: 23px;line-height: 33px;font-size: 18px;color: #333333;text-align: center}
+.coinsContent .coinsData .yesterday .y_text{width:89px;height: 18px;line-height: 23px;font-size: 12px;color: #a09f9f;text-align: center;margin-bottom: 3px;}
+.coinsContent .coinsData .today{width:160px;float: left;}
+.coinsContent .coinsData .today strong{display: block;width:163px;text-align: center;font-size: 34px;line-height: 36px; color: #ff4400;font-weight: normal}
+.coinsContent .coinsData .today p{width:163px;height: 18px;line-height: 21px;text-align: center;font-size: 12px;color: #777777;margin-bottom: 3px;}
+.coinsContent .coinsData .total{float: left;width:89px;border-left: 1px #d8d8d8 solid;}
+.coinsContent .coinsData .total .t_text{width:89px;height: 18px;line-height: 23px;font-size: 12px;color: #a09f9f;text-align: center;margin-bottom: 3px;}
+.coinsContent .coinsData .total .t_count{width:89px;height: 23px;line-height:33px;font-size: 18px;color: #333333;text-align: center}
+.coinsContent .coinsTop{width:340px;height:35px;line-height:35px;border-bottom:1px solid #d8d8d8;padding-bottom:10px;margin:0px auto 15px auto;font-size:12px;text-align:center;}
+.coinsContent .coinsTop .ct_title{color:#777777;}
+.coinsContent .coinsTop .ct_status{color:#ff6600;margin-left:5px;}
+.coinsContent .coinsTop .ct_status img{vertical-align: middle;margin-bottom:3px;margin-left:3px;}
+.coinsContent .coinsTop .ct_title img{vertical-align: middle;margin-bottom:3px;}
+.coinsContent .coinsTop .ct_but{color:#fff;background:#ff6600;padding:8px 16px;margin-left:10px;cursor:pointer;}
+.coinsContent .coinsTop .ct_but:hover{}
+.coinsContent .coinsBind{line-height: 30px;margin-top: 13px;text-align:center;}
+.coinsContent .coinsBind .cb_status{color:#777777;}
+.coinsContent .coinsBind .cb_but{color:#fff;background:#19b2d5;padding:8px 16px;margin-left:5px;cursor:pointer;}
+.coinsContent .coinsBind .cb_but:hover{background:#00a4cd;}
+.coinsContent .coinsBind .cb_link{color:#3399cc;margin-left:5px;}
+.coinsContent .coinsBind .cb_name{color:#3399cc;margin-left:3px;}
+
+
+</style>
+<input type="hidden" id="is-bind" value="">
+<div class="coins">
+    <div class="coins_bg">
+        <div class="coinsContent">
+        	<div class="coinsTop">
+        		<!-- 已达标开始 -->
+	        		<span class="ct_title">北京联通定制版</span>
+	        		<span class="ct_status">激活后宽带免费翻倍提速<img src="https://yun.youku.com/public/yjbpage/images/tip.png" alt="" /></span>
+	        		<!-- 未激活开始 -->
+	        		<a class="ct_but">立即激活</a>
+	        		<!-- 未激活结束 -->
+	        	<!-- 已达标结束 -->
+        		<!-- 未达标开始 -->
+	        		<span class="ct_title"><span>11</span>月在线时长未达标，带宽暂未翻倍。 <img src="https://yun.youku.com/public/yjbpage/images/tip.png" alt="" /></span>
+	        	<!-- 未达标结束 -->
+        	</div>
+			<div class="coinsData clearfix">
+	           	<div class="yesterday">
+	                <p class="y_text">昨天</p>
+	                <p class="y_count" id="credits_lastday">0</p> 
+	           	</div>
+	           	<div class="today">
+	                <p>今天</p>
+	               <strong id="credits_today">0</strong>
+	           	</div>
+	            <div class="total">
+	               <p class="t_text">总计</p>
+	               <p class="t_count" id="total_credits">629</p>
+	           	</div>
+        	</div>
+            <div class="coinsBind">
+            	<!-- 未绑定开始 -->
+            	<span class="cb_status">未绑定优酷账号，以上优金币还没领取</span>
+            	<a class="cb_but">立即绑定</a>
+            	<a class="cb_link" href="">了解优金币</a>
+            	<!-- 未绑定结束 -->
+            	<!-- 已绑定开始 -->
+            	<span class="cb_status">您已绑定优酷账户</span>
+            	<a class="cb_name">username</a>
+            	<a class="cb_but" href="#">管理优金币</a>
+            	<!-- 已绑定结束 -->
+            </div>
+        </div>
+        <span class="accmode" id="accmode">平衡</span>
+        <a href="##" class="accset"></a>
+    </div>
+	<div class="filterModel" style="display: none;">
+	    <div class="tipsModel">
+            <a href="##" class="close_bi"></a>
+            <p class="m_text1">路由宝正在缓冲内容，</p>
+            <p class="m_text2">请主人先上上网休息一下，</p>
+            <p class="m_text3">24小时后再来查看新鲜出炉的优金币吧～</p>
+        </div>
+        <div class="translucent"></div>
+    </div>
+</div>
+
+</div>
+</body>
+<script>
+
+$(function() {
+    
+});
+</script>
+</html>

@@ -41,7 +41,8 @@ ERROR_LIST={
 	["10060"]={["code"]=10060,["desc"]="网址过滤列表不能为空！"},
 	["10061"]={["code"]=10061,["desc"]="网址过滤列表超过最大限制条数！"},
 	["10070"]={["code"]=10070,["desc"]="QOS相关参数错误！"},
-	["10071"]={["code"]=10071,["desc"]="设置QOS前请先测速！"}
+	["10071"]={["code"]=10071,["desc"]="设置QOS前请先测速！"},
+	["10080"]={["code"]=10080,["desc"]="网络无法联通，无法进行此项操作！"}
 }
 
 function login(pwd,paramto)
@@ -146,7 +147,7 @@ function getRouterInfo(paramcon,havekey,fromtype)
 			end
 			
 			result.data.accmode = commonFunc.getaccmode()
-		    result.data.accpause, result.data.accpausedelay = commonFunc.getaccpause()
+		    --result.data.accpause, result.data.accpausedelay = commonFunc.getaccpause()
 		    result.data.acctimingenable,result.data.accfullmode,result.data.acctimemode,result.data.acctime = commonFunc.getacctimemode()
             result.data.uptime = commonFunc.getruntime()
 		    result.data.devicecount,result.data.down_rate,result.data.up_rate,result.data.toweb,result.data.acc_down_rate,result.data.acc_up_rate = commonFunc.getDeviceSumInfo()
@@ -169,6 +170,14 @@ function getRouterInfo(paramcon,havekey,fromtype)
 			if keyflag then
 			    if result.data.lan ~= nil then
 				    result.data.lan.upnpdevlist = commonFunc.getUPnPList()  --upnp的设备列表
+				end
+				
+				local wifiInfo = wifisetting.getWifiBasicInfo(1)
+				result.data.wifi = wifiInfo
+				result.data.wifi.txptimingenable,result.data.wifi.txpfullmode,result.data.wifi.txptimemode,result.data.wifi.txptime = commonFunc.gettxptimemode()
+				if wifisetting.wifi_5G_exist() then
+					local wifi5GInfo = wifisetting.getWifiBasicInfo(3)
+					result.data.wifi_5G = wifi5GInfo
 				end
 				
 				if result.data.wan ~= nil then
@@ -298,7 +307,7 @@ function _getRouterInfo(paramcon,havekey,fromtype)
 	--dynamic 数据
 	if keyflag and (paramcon == "dynamic" or paramcon == "all" or paramcon == "network")then
 	    data.accmode = commonFunc.getaccmode()
-		data.accpause, data.accpausedelay = commonFunc.getaccpause()
+		--data.accpause, data.accpausedelay = commonFunc.getaccpause()
 		data.acctimingenable,data.accfullmode,data.acctimemode,data.acctime = commonFunc.getacctimemode()
         data.uptime = commonFunc.getruntime()
 		data.devicecount,data.down_rate,data.up_rate,data.toweb,data.acc_down_rate,data.acc_up_rate = commonFunc.getDeviceSumInfo()
@@ -310,12 +319,10 @@ function _getRouterInfo(paramcon,havekey,fromtype)
 	    data.sysinfo = commonFunc.getSYSinfo()
 	    data.custominfo = commonFunc.getCustomInfo()
         data.devid,data.softid = commonFunc.getRouterDevAndSoftID()
-	    local wifiInfo = wifisetting.getWifiBasicInfo(1)
-		data.wifi = wifiInfo
+		data.wifi = wifisetting.getWifiBasicInfo(1)
 		data.wifi.txptimingenable,data.wifi.txpfullmode,data.wifi.txptimemode,data.wifi.txptime = commonFunc.gettxptimemode()
-		if wifisetting.wifi_5G_exist() then
-		    local wifi5GInfo = wifisetting.getWifiBasicInfo(3)
-		    data.wifi_5G = wifi5GInfo
+		if data.have5G == "1" then
+		    data.wifi_5G = wifisetting.getWifiBasicInfo(3)
 		end
 	end
 	
@@ -354,6 +361,7 @@ function _getRouterInfo(paramcon,havekey,fromtype)
 			waninfo["localmac"] = data.MacAddr
 			waninfo["remotemac"] = remotemac
 			waninfo["initmac"] = commonFunc.getRouterInitMac()
+			waninfo['wanclone'] = commonFunc.getWanclone()
 			
 			if (data.initflag==0 and data.wanstate=="1") then
 				waninfo["proto"] = commonFunc.checkconenv()
@@ -403,10 +411,10 @@ function _getRouterInfo(paramcon,havekey,fromtype)
 			data.urlfilterenable,data.urlfilterlist = commonFunc.geturlfilterinfo()
 			
 			--上下行最大网速，以前的测速结果
-			data.maxdownspeed, data.maxupspeed = commonFunc.getspeedinfo()
+			data.maxdownspeed, data.maxupspeed = 0,0
 			
 			--qos相关信息
-			data.qosenable, data.qostype, data.qosdevlist = commonFunc.getqosinfo()
+			data.qosenable, data.qostype, data.qosdevlist = "0","1",{}
 		end
 	end
 	
@@ -431,11 +439,12 @@ end
 function setRouterInfo(paramcon,havekey,loginkey)
     local result={result=0,data=nil,error=nil}
 	local retdata={mode=0}
+	local retcmdstr=""
 		
 	local setdatas = paramcon
 	if setdatas==nil or type(setdatas) ~= "table" then
 		result=seterrordata(result,ERROR_LIST["4032"])
-		return result
+		return result,""
 	end
 	
 	local initflag=1
@@ -449,20 +458,20 @@ function setRouterInfo(paramcon,havekey,loginkey)
 	local restartdnsmaq=false
 	local reboot=false
 	local relogin=false
-	local guestcmdstr=""
+	
 	
 	if setdatas.admin ~= nil and type(setdatas.admin) == "table" then
 		if initflag == 1 then
 		    local ret = commonFunc.checkAdminPwd(setdatas.admin.admin_oldpwd) or commonFunc.checkSNPwd(setdatas.admin.admin_oldpwd)
 			if commonFunc.isStrNil(setdatas.admin.admin_oldpwd) or (not ret) then
 				result=seterrordata(result,ERROR_LIST["10002"])
-				return result
+				return result,""
 			end
 		end
 		
 		if commonFunc.isStrNil(setdatas.admin.admin_newpwd) then
 			result=seterrordata(result,ERROR_LIST["10003"])
-			return result
+			return result,""
 		end
 		commonFunc.setAdminPwd(setdatas.admin.admin_newpwd)
 		commonFunc.setrouterinit("true")
@@ -487,7 +496,7 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			commonFunc.setacctimemode(false)
 		else
 		    result=seterrordata(result,ERROR_LIST["10023"])
-			return result 
+			return result,""
 		end
 	end
 	
@@ -496,15 +505,15 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			if (setdatas.acctimingenable=="true" or setdatas.acctimingenable==true)
 			   and (commonFunc.isStrNil(setdatas.accfullmode) or commonFunc.isStrNil(setdatas.acctimemode) or commonFunc.isStrNil(setdatas.acctime)) then
 			   result=seterrordata(result,ERROR_LIST["10022"])
-			   return result 
+			   return result,""
 			end
 			if not commonFunc.setacctimemode(setdatas.acctimingenable,setdatas.accfullmode,setdatas.acctimemode,setdatas.acctime) then
 			   result=seterrordata(result,ERROR_LIST["10022"])
-			   return result 
+			   return result,""
 			end
 		else
 		    result=seterrordata(result,ERROR_LIST["10023"])
-			return result 
+			return result,""
 		end
 	end
 	
@@ -519,7 +528,7 @@ function setRouterInfo(paramcon,havekey,loginkey)
 	if setdatas.devices ~= nil and type(setdatas.devices) == "table" and havekey then
 		if table.getn(setdatas.devices) < 1 or type(setdatas.devices[1]) ~= "table" then
 			result=seterrordata(result,ERROR_LIST["10010"])
-			return result
+			return result,""
 		end
 		
 		for i, curdevice in ipairs(setdatas.devices) do
@@ -537,7 +546,7 @@ function setRouterInfo(paramcon,havekey,loginkey)
 					else
 					    if not commonFunc.checkmac(commonFunc.macFormat(curdevice.device_mac)) then
 						    result=seterrordata(result,ERROR_LIST["10012"])
-			                return result
+			                return result,""
 						end
 						local config_name = string.lower(string.gsub(curdevice.device_mac,"[:-]",""))
 						LuciUci:delete("dhcp", config_name)
@@ -548,12 +557,12 @@ function setRouterInfo(paramcon,havekey,loginkey)
 				elseif curdevice.device_op=="2" then
 				    if not commonFunc.checkmac(commonFunc.macFormat(curdevice.device_mac)) then
 						result=seterrordata(result,ERROR_LIST["10012"])
-						return result
+						return result,""
 					end
 					
 					if curdevice.device_ip == nil or (not commonFunc.checkdhcpip(curdevice.device_ip,curdevice.device_mac)) then
 						result=seterrordata(result,ERROR_LIST["10013"])
-						return result
+						return result,""
 					end
 					
 					if commonFunc.isStrNil(curdevice.device_name) then
@@ -581,7 +590,7 @@ function setRouterInfo(paramcon,havekey,loginkey)
 					else
 					    if not commonFunc.checkmac(commonFunc.macFormat(curdevice.device_mac)) then
 						    result=seterrordata(result,ERROR_LIST["10012"])
-			                return result
+			                return result,""
 						end
 						local config_name = string.lower(string.gsub(curdevice.device_mac,"[:-]",""))
 						LuciUci:delete("macfilter", config_name)
@@ -592,7 +601,7 @@ function setRouterInfo(paramcon,havekey,loginkey)
 				elseif curdevice.device_op=="4" then
 				    if not commonFunc.checkmac(commonFunc.macFormat(curdevice.device_mac)) then
 						result=seterrordata(result,ERROR_LIST["10012"])
-						return result
+						return result,""
 					end
 					if commonFunc.isStrNil(curdevice.device_name) then
 						curdevice.device_name = curdevice.device_mac
@@ -607,11 +616,11 @@ function setRouterInfo(paramcon,havekey,loginkey)
 				elseif curdevice.device_op=="5" then
 					if curdevice.device_name == nil or curdevice.device_mac == nil then
 						result=seterrordata(result,ERROR_LIST["10011"])
-						return result
+						return result,""
 					end
 					if not commonFunc.checkmac(commonFunc.macFormat(curdevice.device_mac)) then
 						result=seterrordata(result,ERROR_LIST["10012"])
-						return result
+						return result,""
 					end
 					local config_name = string.lower(string.gsub(curdevice.device_mac,"[:-]",""))
 					local options = {["name"] = curdevice.device_name,["mac"] = curdevice.device_mac}
@@ -629,11 +638,11 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			local ret = commonFunc.setblackwhitetable(setdatas.blackwhitemode,setdatas.blackdevlist,setdatas.whitedevlist)
 			if ret ~= "0" then
 				result=seterrordata(result,ERROR_LIST[ret])
-			    return result
+			    return result,""
 			end
         else
 		    result=seterrordata(result,ERROR_LIST["10040"])
-			return result
+			return result,""
 		end
 	end
 	
@@ -642,7 +651,7 @@ function setRouterInfo(paramcon,havekey,loginkey)
 		local ret = commonFunc.setredirectinfo(setdatas.redirecttype, setdatas.redirectlist, setdatas.dmzip)
 		if ret ~= "0" then
 			result=seterrordata(result,ERROR_LIST[ret])
-			return result
+			return result,""
 		end
 	end
 	
@@ -652,29 +661,30 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			local ret = commonFunc.seturlfilterinfo(setdatas.urlfilterenable, setdatas.urlfilterlist)
 			if ret ~= "0" then
 				result=seterrordata(result,ERROR_LIST[ret])
-				return result
+				return result,""
 			end
 		else
 		    local ret = commonFunc.updateurlfilterinfo(setdatas.urlfilterenable, setdatas.urlfilteroptype, setdatas.urlfilterlist)
 			if ret ~= "0" then
 				result=seterrordata(result,ERROR_LIST[ret])
-				return result
+				return result,""
 			end
 		end
 	end
 	
-	if setdatas.maxdownspeed ~= nil and setdatas.maxupspeed ~= nil then
-	    commonFunc.setspeedinfo(setdatas.maxdownspeed,setdatas.maxupspeed)
-	end
+	--if setdatas.maxdownspeed ~= nil and setdatas.maxupspeed ~= nil then
+	--    commonFunc.setspeedinfo(setdatas.maxdownspeed,setdatas.maxupspeed)
+	--end
 	
-	if setdatas.qosenable ~= nil and setdatas.qostype ~= nil and setdatas.qosdevlist ~= nil then
-	    local ret = commonFunc.setqosinfo(setdatas.qosenable, setdatas.qostype, setdatas.qosdevlist)
-		if ret ~= "0" then
-			result=seterrordata(result,ERROR_LIST[ret])
-			return result
-		end
-	end
+	--if setdatas.qosenable ~= nil and setdatas.qostype ~= nil and setdatas.qosdevlist ~= nil then
+	    --local ret = commonFunc.setqosinfo(setdatas.qosenable, setdatas.qostype, setdatas.qosdevlist)
+		--if ret ~= "0" then
+		--	result=seterrordata(result,ERROR_LIST[ret])
+		--	return result,""
+		--end
+	--end
 	
+	local have5Gflag = wifisetting.wifi_5G_exist()
 	if setdatas.wifi ~= nil and type(setdatas.wifi) == "table" then
 		local wfenable,wfssid,wfpwd,wfchannal,wfhiddenflag,wfencryption,wftxpwr,wfguest = nil,nil,nil,nil,nil,nil,nil,nil
 		if havekey or initflag==0 then
@@ -690,24 +700,26 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			wfguest = setdatas.wifi.wifi_guest
 		end
 		
+		local onlychannal = true
 		if (not commonFunc.isStrNil(wfenable)) or (not commonFunc.isStrNil(wfssid))
 		   or (not commonFunc.isStrNil(wfpwd)) or (not commonFunc.isStrNil(wfhiddenflag)) then
 			restartnetwork=2
+			onlychannal = false
 		end
 		
 		if (not commonFunc.isStrNil(wfssid)) or (not commonFunc.isStrNil(wfpwd)) or (not commonFunc.isStrNil(wfencryption)) 
 		    or (not commonFunc.isStrNil(wfchannal)) or (not commonFunc.isStrNil(wfhiddenflag)) or (not commonFunc.isStrNil(wfenable)) then
-			if wifisetting.setWifiBasicInfo(1, wfssid, wfpwd, wfencryption, wfchannal, nil, wfhiddenflag, wfenable)=="false" then
+			if wifisetting.setWifiBasicInfo(1, wfssid, wfpwd, wfencryption, wfchannal, onlychannal, wfhiddenflag, wfenable)=="false" then
 				result=seterrordata(result,ERROR_LIST["10020"])
-				return result
+				return result,""
 			end
 		end
-		
+
 		if not commonFunc.isStrNil(wftxpwr) then
 		    wifisetting.setTxpwrMode(1,wftxpwr)
 			commonFunc.settxptimemode(false)
 			
-			if wifisetting.wifi_5G_exist() then
+			if have5Gflag then
 			    wifisetting.setTxpwrMode(3,wftxpwr)
 			    commonFunc.settxptimemode_5G(false)
 			end
@@ -727,17 +739,17 @@ function setRouterInfo(paramcon,havekey,loginkey)
 		    if (setdatas.wifi.txptimingenable=="true" or setdatas.wifi.txptimingenable==true)
 			   and (commonFunc.isStrNil(setdatas.wifi.txpfullmode) or commonFunc.isStrNil(setdatas.wifi.txptimemode) or commonFunc.isStrNil(setdatas.wifi.txptime)) then
 		       result=seterrordata(result,ERROR_LIST["10021"])
-			   return result 
+			   return result ,""
 		    end
 			if not commonFunc.settxptimemode(setdatas.wifi.txptimingenable,setdatas.wifi.txpfullmode,setdatas.wifi.txptimemode,setdatas.wifi.txptime) then
 			   result=seterrordata(result,ERROR_LIST["10021"])
-			   return result 
+			   return result ,""
 			end
 			
-			if wifisetting.wifi_5G_exist() then
+			if have5Gflag then
 			    if not commonFunc.settxptimemode_5G(setdatas.wifi.txptimingenable,setdatas.wifi.txpfullmode,setdatas.wifi.txptimemode,setdatas.wifi.txptime) then
 				    result=seterrordata(result,ERROR_LIST["10021"])
-				    return result 
+				    return result ,""
 			    end
 			end
 		end
@@ -746,18 +758,20 @@ function setRouterInfo(paramcon,havekey,loginkey)
 		    local oldguestmode=wifisetting.getGuestMode()
 			if oldguestmode == "true" then
 			    wifisetting.setGuestModeOff()
+				retcmdstr = " stop wifi_guest"
 			    restartnetwork=2
 			end
 		elseif (not commonFunc.isStrNil(wfguest)) and (wfguest=="1" or wfguest=="true") then
 			local oldguestmode=wifisetting.getGuestMode()
 			if oldguestmode == "false" then
 			    wifisetting.setGuestModeOn()
+				retcmdstr = " start wifi_guest"
 			    restartnetwork=2
 			end
 		end
 	end
 	
-	if setdatas.wifi_5G ~= nil and type(setdatas.wifi_5G) == "table" and wifisetting.wifi_5G_exist() then
+	if have5Gflag and setdatas.wifi_5G ~= nil and type(setdatas.wifi_5G) == "table" then
 		local wfenable,wfssid,wfpwd,wfchannal,wfhiddenflag,wfencryption,wftxpwr = nil,nil,nil,nil,nil,nil,nil
 		if havekey or initflag==0 then
 			wfenable = setdatas.wifi_5G.wifi_enable
@@ -770,16 +784,18 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			wfhiddenflag = setdatas.wifi_5G.wifi_hidden
 		end
 		
+		local onlychannal = true
 		if (not commonFunc.isStrNil(wfenable)) or (not commonFunc.isStrNil(wfssid))
 		   or (not commonFunc.isStrNil(wfpwd)) or (not commonFunc.isStrNil(wfhiddenflag)) then
 			restartnetwork=2
+			onlychannal = false
 		end
 		
 		if (not commonFunc.isStrNil(wfssid)) or (not commonFunc.isStrNil(wfpwd)) or (not commonFunc.isStrNil(wfencryption)) 
 		    or (not commonFunc.isStrNil(wfchannal)) or (not commonFunc.isStrNil(wfhiddenflag)) or (not commonFunc.isStrNil(wfenable)) then
-			if wifisetting.setWifiBasicInfo(3, wfssid, wfpwd, wfencryption, wfchannal, nil, wfhiddenflag, wfenable)=="false" then
+			if wifisetting.setWifiBasicInfo(3, wfssid, wfpwd, wfencryption, wfchannal, onlychannal, wfhiddenflag, wfenable)=="false" then
 				result=seterrordata(result,ERROR_LIST["10020"])
-				return result
+				return result,""
 			end
 		end
 	end
@@ -814,9 +830,9 @@ function setRouterInfo(paramcon,havekey,loginkey)
 			LuciUci:commit("upnpd")
 			LuciUci:save("upnpd")
 			if setdatas.lan.upnp == '1' then
-				LuciOS.execute("/etc/init.d/miniupnpd enable >/dev/null 2>/dev/null && /etc/init.d/miniupnpd start >/dev/null 2>/dev/null &")
+				retcmdstr = " start upnp"
 			else
-				LuciOS.execute("/etc/init.d/miniupnpd stop >/dev/null 2>/dev/null && /etc/init.d/miniupnpd disable >/dev/null 2>/dev/null &")
+				retcmdstr = " stop upnp"
 			end
 		end
 	end
@@ -825,12 +841,18 @@ function setRouterInfo(paramcon,havekey,loginkey)
 		local macchanged = false
 		if not commonFunc.isStrNil(setdatas.wan.wan_mac) and setdatas.wan.wan_mac ~= "notclone" then 
 			if setdatas.wan.wan_mac == "default" then
-				LuciUci:delete("network","wan","macaddr") 
+			    local initmac = commonFunc.getRouterInitMac()
+				if initmac ~= "00:00:00:00:00:00" then
+				    setUCI("network","wan","macaddr",initmac)
+				else
+				    LuciUci:delete("network","wan","macaddr")
+				end
 			else
 				setUCI("network","wan","macaddr",setdatas.wan.wan_mac) 
 			end
 			macchanged = true
 		end
+		commonFunc.setWanclone(setdatas.wan.wanclone)
 		
 		if setdatas.wan.advance_switch then
 		    commonFunc.setAdvanceSwitch(setdatas.wan.advance_switch)
@@ -906,36 +928,29 @@ function setRouterInfo(paramcon,havekey,loginkey)
 	
 	if reboot then
 		retdata.mode=2
-		LuciOS.execute("nohup "..commonConf.FORK_RESTART_ROUTER.." >/dev/null 2>/dev/null")
+		retcmdstr = " reboot"
 	elseif relogin then
 		retdata.mode=3
 	elseif restartnetwork ~= 0 then
-		local executestr="sleep 2;"
 		if restartnetwork==1 then
 		   retdata.mode=0
-		   executestr = "ifup wan;sleep 1;ifup wan >/dev/null 2>/dev/null "
+		   retcmdstr = " restart wan"
 		elseif restartnetwork==2 then
-		   if guestcmdstr ~= "" then
-			   executestr = executestr..guestcmdstr
-		   end
-		   executestr = executestr.."/etc/init.d/network restart >/dev/null 2>/dev/null "
-		   retdata.mode=1
+		    if retcmdstr == "" then
+			    retcmdstr = " restart wifi"
+			end
+		    retdata.mode=1
 		elseif restartnetwork==3 then
-		   executestr = executestr.."/etc/init.d/network restart >/dev/null 2>/dev/null "
+		   retcmdstr = " restart network"
 		   retdata.mode=1
 		end
-		
-		if restartdnsmaq then
-			 executestr = executestr.."&& /etc/init.d/dnsmasq restart >/dev/null 2>/dev/null "
-		end
-		LuciOS.execute("nohup "..executestr.."& >/dev/null 2>/dev/null")
 	elseif restartdnsmaq then
 	    retdata.mode=0
-		LuciOS.execute("nohup /etc/init.d/dnsmasq restart >/dev/null 2>/dev/null & >/dev/null 2>/dev/null")
+		retcmdstr = " restart dnsmasq"
 	end
 	result.data=retdata
 	
-    return result
+    return result,retcmdstr
 end
 
 function setUCI(filename, option, key, value)
@@ -961,8 +976,14 @@ function upgrade(paramcon)
 			local updatereference = string.gsub(updateinfo["list"]["firmware"]["notify_message"],"\"","")
 			chkdata["desc"] = updatereference
             chkdata["descforweb"] = commonFunc.parseEnter2br(updatereference)
+			
+			chkdata["popup"] = "info"
+			if updateinfo["list"]["firmware"]["popup"] ~= nil and updateinfo["list"]["firmware"]["popup"] == "force" then
+			    chkdata["popup"] = "force"
+			end
         end
 		chkdata["curver"] = commonFunc.getyoukuvertion()
+		chkdata["checkupdatetime"]=commonFunc.checkUpdatetime()
 		result.data = chkdata
 	elseif paramcon=="start" then
 	    local LuciFs = require("luci.fs")
@@ -1075,14 +1096,124 @@ function testspeed(paramcon)
 	end
 	
 	if paramcon=="start" then
-        commonFunc.startspeedtest()
+        result.result = commonFunc.startspeedtest()
 	elseif paramcon=="check" then
-	    local ret,chkdata = commonFunc.checkspeedinfo()
-		result.data = chkdata
+	    result.result,result.data = commonFunc.checkspeedinfo()
 	else
 		result=seterrordata(result,ERROR_LIST["4032"])
 	end
 	return result
+end
+
+function getchecklist(paramcon)
+    local result={result=0,data=nil,error=nil}
+	
+	if commonFunc.isStrNil(paramcon) then
+	    result=seterrordata(result,ERROR_LIST["4032"])
+		return result
+	end
+	
+	-- "1":不能上网  "2":上网卡   "3":收益低
+	if paramcon ~= "1" and paramcon ~= "2" and paramcon ~= "3" then
+	    result=seterrordata(result,ERROR_LIST["4032"])
+		return result
+	end
+	
+	-- 无法上网时，不能检测上网卡和收益低
+	--local wanstate = commonFunc.getwanstate()
+	--if paramcon ~= "1" and tonumber(wanstate) < 1 then
+	--    result=seterrordata(result,ERROR_LIST["10080"])
+	--	return result
+	--end
+	
+	result.result,result.data = commonFunc.getchecklist(paramcon)
+	return result
+
+end
+
+function checkrouter(paramcon)
+    local result={result=0,data=nil,error=nil}
+	
+	if commonFunc.isStrNil(paramcon) then
+	    result=seterrordata(result,ERROR_LIST["4032"])
+		return result
+	end
+	
+	-- "1":不能上网  "2":上网卡   "3":收益低
+	if paramcon ~= "1" and paramcon ~= "2" and paramcon ~= "3" then
+	    result=seterrordata(result,ERROR_LIST["4032"])
+		return result
+	end
+	
+	-- 无法上网时，不能检测上网卡和收益低
+	--local wanstate = commonFunc.getwanstate()
+	--if paramcon ~= "1" and tonumber(wanstate) < 1 then
+	--    result=seterrordata(result,ERROR_LIST["10080"])
+	--	return result
+	--end
+
+    result.result,result.data = commonFunc.routercheck(paramcon)
+	return result
+end
+
+function checkoptimize(paramcon)
+    local result={result=0,data=nil,error=nil}
+	local setdatas = paramcon
+	if setdatas==nil or type(setdatas) ~= "table" then
+		result=seterrordata(result,ERROR_LIST["4032"])
+		return result,""
+	end
+	
+	if not commonFunc.isStrNil(setdatas.changechannal) and setdatas.changechannal == "1" then
+	    wifisetting.setWifiBasicInfo(1, nil, nil, nil, 0, true, nil, nil)
+	end
+	
+	if not commonFunc.isStrNil(setdatas.changechannal5g) and setdatas.changechannal5g == "1" then
+	    wifisetting.setWifiBasicInfo(3, nil, nil, nil, 0, true, nil, nil)
+	end
+	
+	if not commonFunc.isStrNil(setdatas.settxpower) and setdatas.settxpower == "1" then
+        wifisetting.setTxpwrMode(1,"2")
+		commonFunc.settxptimemode(false)
+			
+		if have5Gflag then
+			wifisetting.setTxpwrMode(3,"2")
+			commonFunc.settxptimemode_5G(false)
+		end
+    end
+	
+	local setbandwidth = false
+	if not commonFunc.isStrNil(setdatas.setbandwidth) and setdatas.setbandwidth == "1" then
+        setbandwidth = true
+    end
+	
+	local setaccmode = false
+	if not commonFunc.isStrNil(setdatas.setaccmode) and setdatas.setaccmode == "1" then
+        setaccmode = true
+    end
+	
+	if setbandwidth or setaccmode then
+	    local wanstate = commonFunc.getwanstate()
+	    if tonumber(wanstate) < 2 then
+		    result=seterrordata(result,ERROR_LIST["10080"])
+		    return result,""
+	    end
+	    local ret = commonFunc.setbandwidth(setbandwidth,setaccmode)
+		if ret == -1 then
+		    result=seterrordata(result,ERROR_LIST["10080"])
+		    return result,""
+		end
+	end
+	
+	local retcmd = ""
+	local retdata={mode=0}
+	if not commonFunc.isStrNil(setdatas.routerrestart) and setdatas.routerrestart == "1" then
+	    retcmd = " reboot"
+		retdata.mode = 1
+	end
+	
+	result.data = retdata
+	return result,retcmd
 end
 
 function doextend(params)
@@ -1147,14 +1278,14 @@ function manage(paramcon)
 end
 
 function reboot()
-    local result={result=0,data=nil,error=nil}
-    commonFunc.forkReboot()
+    local result={result=0}
+    LuciOS.execute("nohup "..commonConf.FORK_RESTART_ROUTER)
 	return result
 end
 
 function reset()
-    local result={result=0,data=nil,error=nil}
-    commonFunc.forkResetAll()
+    local result={result=0}
+    LuciOS.execute("nohup "..commonConf.FORK_RESET_ALL)
 	return result
 end
 

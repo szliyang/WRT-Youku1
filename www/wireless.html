@@ -3,22 +3,23 @@
 <head>
 <meta charset="utf-8">
 <title>优酷土豆路由宝</title>
-<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/tab.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/wireless.css?ver=20151111">
-<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20151111"></script>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/tab.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/wireless.css?ver=20160121">
+<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/upgrade.js?ver=20160121"></script>
 
 </head>
 <body>
@@ -104,6 +105,12 @@
 		         	<span class='show sel-val'>自动</span>
 		         	<ul class="dropList bd options">
 						<li class='selected' date-value = '0'>自动</li>
+						<li date-value ='149'>149</li>
+						<li date-value ='153'>153</li>
+						<li date-value ='157'>157</li>
+						<li date-value ='161'>161</li>
+						<li date-value ='165'>165</li>
+						<p class="exceptLi" style="color:#777;height: 35px;line-height: 35px;padding-left:8px;">以下信道部分老机型可能无法连接</p>
 						<li date-value ='36'>36</li>
 						<li date-value ='40'>40</li>
 						<li date-value ='44'>44</li>
@@ -112,11 +119,6 @@
 						<li date-value ='56'>56</li>
 						<li date-value ='60'>60</li>
 						<li date-value ='64'>64</li>
-						<li date-value ='149'>149</li>
-						<li date-value ='153'>153</li>
-						<li date-value ='157'>157</li>
-						<li date-value ='161'>161</li>
-						<li date-value ='165'>165</li>
 		         	</ul>
 		      	</div>
 		    </div>
@@ -124,6 +126,8 @@
 		        <span type="checkbox" value='1' class="checkbox2 checkbox"></span>
 		        <span class="chbox-val">隐藏本网络不被发现</span>
 		    </div>
+		    <div class="clearfix"></div>
+		    <div id="fiveRemind" style="margin-top: 15px;text-indent: 109px;color: #777777;margin-bottom: -15px;">若无法连接5G，请尝试切换信道。</div>
 		</div>
 		<div class="setModel clearfix">
 			<label class="wifiStandard model">信号强度</label>
@@ -143,9 +147,12 @@
 			</div>
 			<div class="timeslot model" id="othertime">
 				<div class="clearfix fll" id="otswitch">
-					<span type="checkbox" value='1' class="checkBox1 fll"></span>
-			    	<span class="chbox-val">其他时段设置</span>
+<!-- 					<span type="checkbox" value='1' class="checkBox1 fll"></span> -->
+			    	<span class="chbox-val" style="margin-left:0;">其他时段设置 :</span>
 		    	</div>
+		    	<div class="switch model " style="margin-top: -7px;margin-left: 10px;margin-right:15px;">
+		     		<span class="otSwitchBut guanbi switchStyle"></span>
+				</div>
 		    	<div class="timeslot_set clearfix">
 					<div class="select" id="begintime_h">
 			         	<span class='show sel-val'>00</span>
@@ -260,7 +267,7 @@
 			<label class="wifiStandard model">访客模式</label>
 			 <div class="activ_wife" id="guestpanal">
 		        <span class="close_bn"></span>
-		        <span class="close_ba">访客可以通过专属的Wi-Fi上网，无需密码。</span>
+		        <span class="close_ba">开启后，客人可通过访客网络上网，无需密码。</span>
 			 </div>
 			<div class="activ_wife" id="guestpanal2" style="display:none">
 			     <span class="close_wifioff">开启2.4G网络才能设置访客模式</span>
@@ -358,34 +365,41 @@ $(function(){
 		$(this).toggleClass("checkbox");
 	});
 	
-	$("#othertime").find(".checkBox1").on("click",function(){
-		$(this).toggleClass("boxChecked");
-		if ($(this).hasClass("boxChecked")) {
-			$(".timeslot_set,#timeslot_model").show();
-		}else{
-			$(".timeslot_set,#timeslot_model").hide();
-		}
+	$(".exceptLi").on("click",function(e){
+		return false;
+		e.stopPropagation();
 	});
+	
+// 	$("#othertime").find(".checkBox1").on("click",function(){
+// 		$(this).toggleClass("boxChecked");
+// 		if ($(this).hasClass("boxChecked")) {
+// 			$(".timeslot_set,#timeslot_model").show();
+// 		}else{
+// 			$(".timeslot_set,#timeslot_model").hide();
+// 		}
+// 	});
  
 	$('.active_btn').on("click",function(){
 	    var _this=$(this);
 	    if (_this.parents(".setModel").hasClass("wifi24")) {
 	    	//2.4G网络：closed：开启状态；guanbi：关闭状态
 	    	if(_this.hasClass("guanbi")){
-	 		   setWifistatus("wifi24",true);
-	 		   curNetBaseSet.status="true";
+	 		   	setWifistatus("wifi24",true);
+	 		   	curNetBaseSet.status="true";
 	 		}else{
-	 		   setWifistatus("wifi24",false);
-	 		   curNetBaseSet.status="false";
+	 		   	setWifistatus("wifi24",false);
+	 		   	curNetBaseSet.status="false";
 	 		}
 		}else if(_this.parents(".setModel").hasClass("wifi5")){
 			//5G网络
 			if(_this.hasClass("guanbi")){
-	 		   setWifistatus("wifi5",true);
-	 		   curNetBaseSet_5G.status="true";
+				$("#fiveRemind").show();
+	 		   	setWifistatus("wifi5",true);
+	 		   	curNetBaseSet_5G.status="true";
 	 		}else{
-	 		   setWifistatus("wifi5",false);
-	 		   curNetBaseSet_5G.status="false";
+	 			$("#fiveRemind").hide();
+	 		   	setWifistatus("wifi5",false);
+	 		   	curNetBaseSet_5G.status="false";
 	 		}
 		}else{
 			return false;
@@ -398,15 +412,47 @@ $(function(){
 		if(_this.hasClass("guanbi")){
 			_this.removeClass("guanbi");
 			curNetBaseSet.guestMode = "true";
+			var guestname = curNetBaseSet.name + "_Guest";
+			if(guestname.length > 20)
+			{
+				guestname = guestname.substr(0,18) + "...";			    
+			}
+			$('.close_ba').html("客人可连接访客网络"+guestname+"上网，无需密码。");
 		}else{
 			_this.addClass("guanbi");
 			curNetBaseSet.guestMode = "false";
+			$('.close_ba').html("开启后，客人可通过访客网络上网，无需密码。");
+		}
+	});
+	
+	/**分时段开关**/
+	$('.otSwitchBut').on("click",function(){
+		var _this = $(this);
+		if(_this.hasClass("guanbi")){
+			_this.removeClass("guanbi");
+			$(".timeslot_set,#timeslot_model").show();
+		}else{
+			_this.addClass("guanbi");
+			$(".timeslot_set,#timeslot_model").hide();
 		}
 	});
 	
 	validate($("#wifiModeSetForm"),{ignore:":hidden .comn-input",autoReset:true, valiBreak:true,
 		submitHandler:function(){
 			if(checksubmitenable()){
+				if(curNetBaseSet.txptimingenable == "true"){
+					var t_t_arr = curNetBaseSet.txptime.replace("-",":").split(":");
+			 		if (t_t_arr[0] == t_t_arr[2] && t_t_arr[1] == t_t_arr[3]) {
+						popup.tip("开始和结束时间不能相同。","","fail");
+						return false;
+					}
+			 		
+			 		if (curNetBaseSet.txptimemode == curNetBaseSet.txpfullmode) {
+			 			popup.tip("全天和时段信号强度不能相同。","","fail");
+						return false;
+					}
+				}
+				
 				if(curNetBaseSet.status=="true"){
 					popup.showId("setwifibox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},
 						closeBtn:".close",okBnt:".ok",okBtnClick:function(a,b){
@@ -465,17 +511,6 @@ $(function(){
 			wifi.txptimemode = curNetBaseSet.txptimemode;
 			wifi.txptime = curNetBaseSet.txptime;
 			wifi.txpfullmode = curNetBaseSet.txpfullmode;
-			
-			var t_t_arr = curNetBaseSet.txptime.replace("-",":").split(":");
-	 		if (t_t_arr[0] == t_t_arr[2] && t_t_arr[1] == t_t_arr[3]) {
-				popup.tip("请设置正确的结束时间！","","fail");
-				return false;
-			}
-	 		
-	 		if (curNetBaseSet.txptimemode == curNetBaseSet.txpfullmode) {
-	 			popup.tip("时段信号强度不正确！","","fail");
-				return false;
-			}
 		}else{
 			wifi.wifi_txpwr = curNetBaseSet.strengthmode;
 			wifi.txptimingenable = "false";
@@ -500,7 +535,6 @@ $(function(){
 			setParam.wifi_5G = wifi_5G;
 		}
 		setParam.wifi = wifi;
-		
 		$('.btn_baocun').hide();
 		$('.sheng_xiao').show();
 		$("#shengxiaosecond").hide();
@@ -547,6 +581,15 @@ $(function(){
 			innerNetBaseSet.txptime = curNetBaseSet.txptime;
 		}else{
 			innerNetBaseSet.strengthmode = curNetBaseSet.strengthmode;
+		}
+		
+		if(curNetBaseSet.guestMode=="true"){
+			var guestname = curNetBaseSet.name + "_Guest";
+			if(guestname.length > 20)
+			{
+				guestname = guestname.substr(0,18) + "...";			    
+			}
+			$('.close_ba').html("客人可连接访客网络"+guestname+"上网，无需密码。");
 		}
 		
 		if (has5G) {
@@ -596,7 +639,7 @@ $(function(){
 		curNetBaseSet.guestMode = $("#guestpanal").find(".close_bn").hasClass("guanbi")?"false":"true";
 		
 		//分时开关
-		curNetBaseSet.txptimingenable = $("#otswitch").find(".checkBox1").hasClass("boxChecked")?"true":"false";
+		curNetBaseSet.txptimingenable = $(".otSwitchBut").hasClass("guanbi")?"false":"true";
 		if (curNetBaseSet.txptimingenable=="true") {
 			//全天的信号强度
 			curNetBaseSet.txpfullmode = $("#radiolist").find(".hRadio_Checked").attr("data-value");
@@ -666,11 +709,28 @@ $(function(){
 		}
 	    return false;
 	}
+	
+	function changetxpselect(hidenum){
+	    $("#timeslot_model").find(".dropList").find("li").show();
+		var curitem = $("#timeslot_model").find(".dropList").find("li").eq(Number(hidenum));
+	    curitem.hide();
+		if(curitem.hasClass("current")){
+		    curitem.removeClass("current");
+			if(curitem.attr("date-value")=="0"){
+			    $("#timeslot_model").find(".dropList").find("li").eq(1).addClass("current");
+				$("#timeslot_model").find(".sel-val").html("标准");
+			}else{
+			    $("#timeslot_model").find(".dropList").find("li").eq(0).addClass("current");
+				$("#timeslot_model").find(".sel-val").html("绿色");
+			}
+		}
+	}
 
 	$("#radiolist>div").on("click",function(){
 		$("#radiolist>div").find(".activ").removeClass("hRadio_Checked").addClass("hRadio");
 		var activeitem = $(this).find(".activ");
 		activeitem.removeClass("hRadio").addClass("hRadio_Checked");
+		changetxpselect(activeitem.attr("data-value"));
 		if (curNetBaseSet.txptimingenable=="true") {
 			curNetBaseSet.txpfullmode = activeitem.attr("data-value");
 		}else{
@@ -679,8 +739,7 @@ $(function(){
 	});
 
 	popup.showOpaLay();	
-	$.getJSON(baseUrl,
-		{op:"get",context:createContext("network"),key:$.cookie("key")},
+	$.getJSON(baseUrl,{op:"get",context:createContext("network"),key:$.cookie("key")},
 		function(data){
 			checkresult(data);
 		   	if(data.result==0){
@@ -734,13 +793,6 @@ $(function(){
 					$("#routerName1").val(data.data.wifi.name);
 					$("#routerPassword1").val(data.data.wifi.pwd);
 					
-					var guestname = data.data.wifi.name + "_Guest";
-					if(guestname.length > 20)
-					{
-						guestname = guestname.substr(0,18) + "...";			    
-					}
-					$("#wifiguestref").html(guestname);
-					
 					if(data.data.wifi.signalpath=="0"){
 						w_model.find(".sel-val").html("自动");
 					}else{
@@ -755,8 +807,15 @@ $(function(){
 				  
 					if(data.data.wifi.guestMode=="true"){
 					    $('.close_bn').removeClass("guanbi");
+						var guestname = data.data.wifi.name + "_Guest";
+						if(guestname.length > 20)
+						{
+							guestname = guestname.substr(0,18) + "...";			    
+						}
+						$('.close_ba').html("客人可连接访客网络"+guestname+"上网，无需密码。");
 					}else{
 					    $('.close_bn').addClass("guanbi");
+						$('.close_ba').html("开启后，客人可通过访客网络上网，无需密码。");
 					}
 					
 				  	var strengthMode = data.data.wifi.txptimingenable=="true"?data.data.wifi.txpfullmode:data.data.wifi.strengthmode;
@@ -775,16 +834,10 @@ $(function(){
 						$("#radiobase").removeClass("hRadio").addClass("hRadio_Checked"); 
 						break;
 					}
-// 					if(strengthMode=="0"){
-// 					   $("#radiogreen").removeClass("hRadio").addClass("hRadio_Checked");
-// 					}else if(data.data.wifi.strengthmode=="1"){
-// 					   $("#radiobase").removeClass("hRadio").addClass("hRadio_Checked"); 
-// 					}else if(data.data.wifi.strengthmode=="2"){
-// 					   $("#radiowall").removeClass("hRadio").addClass("hRadio_Checked");
-// 					}
-					
+					changetxpselect(strengthMode);
+
 					if(data.data.wifi.txptimingenable=="true"){
-						$("#othertime").find(".checkBox1").addClass("boxChecked");
+						$(".otSwitchBut").removeClass("guanbi");
 						//处理时间段信号强度
 						var _ttm = data.data.wifi.txptimemode;
 						//判断是否有时间段信号强度设置
@@ -815,7 +868,7 @@ $(function(){
 						}
 						
 					}else{
-						$("#othertime").find(".checkBox1").removeClass("boxChecked");
+						$(".otSwitchBut").addClass("guanbi");
 					}
 					
 					curNetBaseSet.status = innerNetBaseSet.status = data.data.wifi.status;
@@ -841,6 +894,7 @@ $(function(){
 		var divModel = $("."+wifiModel);
 	    if(flag){
 	    	divModel.find('.active_btn').removeClass("guanbi").addClass("closed");
+	    	divModel.find("#fiveRemind").show();
 	    	divModel.removeClass("select_Gray");
 	    	if (wifiModel=="wifi24") {
 	    		$('#guestpanal').show();//访客
@@ -858,6 +912,7 @@ $(function(){
 			
 		}else{
 			divModel.find('.active_btn').removeClass("closed").addClass("guanbi");
+			divModel.find("#fiveRemind").hide();
 			divModel.addClass("select_Gray");
 			if (wifiModel=="wifi24") {
 				$('#guestpanal').hide();

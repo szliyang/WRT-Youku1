@@ -150,58 +150,12 @@ function trimLinebreak(str)
     return str
 end
 
-function forkExec(command)
-    local Nixio = require("nixio")
-    local pid = Nixio.fork()
-    if pid > 0 then
-        return
-    elseif pid == 0 then
-        Nixio.chdir("/")
-        local null = Nixio.open("/dev/null", "w+")
-        if null then
-            Nixio.dup(null, Nixio.stderr)
-            Nixio.dup(null, Nixio.stdout)
-            Nixio.dup(null, Nixio.stdin)
-            if null:fileno() > 2 then
-                null:close()
-            end
-        end
-        Nixio.exec("/bin/sh", "-c", command)
-    end
-end
-
-function doPrint(content)
-    if type(content) == "table" then
-        for k,v in pairs(content) do
-            if type(v) == "table" then
-                print("<"..k..": ")
-                doPrint(v)
-                print(">")
-            else
-                print("["..k.." : "..tostring(v).."]")
-            end
-        end
-    else
-        print(content)
-    end
-end
-
 function forkRestartWifi()
     LuciOS.execute("nohup "..Configs.FORK_RESTART_WIFI)
 end
-
-function forkReboot()
-    LuciOS.execute("nohup "..Configs.FORK_RESTART_ROUTER)
-end
-
-function forkResetAll()
-    LuciOS.execute("nohup "..Configs.FORK_RESET_ALL)
-end
-
 function forkRestartDnsmasq()
     LuciOS.execute("nohup "..Configs.FORK_RESTART_DNSMASQ)
 end
-
 function getpppoelogpath()
     return trimLinebreak(LuciUtil.exec("grep logfile /etc/ppp/options | cut -d ' ' -f 2"))
 end
@@ -275,20 +229,6 @@ function getruntime(type)
   return retdata
 end
 
-function getyoukurouteinfo()
-    local result = {code="0",pid=nil,sn=nil,uid=nil,username=nil}
-    result["uid"] = getUConfig("userid", nil, "account")
-    result["username"] = getUConfig("username", nil, "account")
-    
-    if result["uid"]==nil or result["username"]==nil then
-        result["code"] = "1"
-    end
-	
-	  result["pid"] = getrouterpid()
-	  result["sn"] = getroutersn()
-    return result
-end
-
 function getrouterpid()	
 	  return LuciUtil.exec(Configs.SN_YOUKU_EXEC)
 end
@@ -301,132 +241,17 @@ function getroutersn()
     return string.sub(LuciUtil.exec(Configs.SN_YOUKU_EXEC),-16) or nil
 end
 
-function setyoukurouteinfo(uid,username)
-	setUConfig("userid", uid, "account")
-	setUConfig("username", username, "account")
-	return true 
-end
-
-function delyoukurouteinfo()
-	setUConfig("userid", "", "account")
-	setUConfig("username", "", "account")
-	return true
-end
-
-function checkbind()
-  local result = {}
-	local pid = getrouterpid() or ""
-	local code, datainfo = req_get(Configs.DESKTOP_CHECKBIND_URL..pid)
-	
-	if datainfo then
-      if tonumber(datainfo["code"]) == 0 then 
-          local setyoukuinfo = setyoukurouteinfo(datainfo["data"]["id"],datainfo["data"]["name"])
-          if not setyoukuinfo then
-              result["code"] = "-3"
-              return result  -- 设置绑定信息出错
-          end
-		  result["code"] = "0"
-		  result["uid"] = datainfo["data"]["id"]
-		  result["userid"] = datainfo["data"]["id"]
-		  result["username"] = datainfo["data"]["name"]
-		  return result  --已绑定
-      else
-		 if tonumber(datainfo["code"]) == 25 then
-		    result["code"] = "1"
-			local oldinfo = getyoukurouteinfo()
-            if tonumber(oldinfo["code"]) ~= 1 then	
-			  delyoukurouteinfo()
-			end
-		    return result  --未绑定
-		 else
-		    --外网检查失败的时候，询问framework
-		    result = getyoukurouteinfo()
-			result["userid"] = result["uid"]
-		    return result
-	     end
-      end
-    else
-	  --外网服务器请求失败的时候，询问framework
-	  result = getyoukurouteinfo()
-	  result["userid"] = result["uid"]
-      return result
-    end
-end
-
 function getaccmode()
-    local accmode = tonumber(LuciUci:get("account","common","accmode")) or 4
-
-    if accmode >= 4 then
-        return "3"
-    elseif accmode >= 2 then
-        return "2"
-    else
-        return "1"
-    end
+    return "1"
 end
 
 function setaccmode(accmode)
-    accmode = tonumber(accmode)
-    if accmode == 1 then
-        accmode = "1"
-    elseif accmode == 2 then
-        accmode = "2"
-    else
-        accmode = "4"
-    end
-	
-    logger.flog(3, "set acc mode: " .. accmode)
-    LuciUci:set("account","common","accmode", accmode)
-    LuciUci:save("account")
-    LuciUci:commit("account")
-
-    LuciUtil.exec(Configs.ACC_CHECK_CONF)
-
     return 0
 end
 
 function getWanGatewayenable()
     local devcnt,dspeed,uspeed,online=getDeviceSumInfo()
     return online==1
-end
-
-function getcreditsinfo(pid, uid)
-    local result = {code="-1",next_credit_dur="0",credits_today="0",credits_lastday="0",total_credits="0",credits_est="0"}
-    local param = ""
-	
-	 if isStrNil(pid) then
-	      result["code"] = "-2"
-        return result
-	 end 
-	
-    if not isStrNil(uid) then
-        param = "?pid="..LuciProtocol.urlencode(pid).."&uid="..LuciProtocol.urlencode(uid)
-    else
-        param = "?pid="..LuciProtocol.urlencode(pid)
-    end
-	
-    local code, datainfo = req_get(Configs.DESKTOP_GETCREDIT_SUMMARY_URL..param)
-    
-    if code ~= 200 or not datainfo then
-        result["code"] = "-3"
-        return result
-    end
-    
-    if tonumber(datainfo["code"]) == 0 then
-        result["code"] = "0"
-        result["next_credit_dur"] = tostring(math.floor(tonumber(datainfo["data"]["next_credit_dur"])/60))
-        result["credits_today"] = datainfo["data"]["credits_today"]
-        result["credits_lastday"] = datainfo["data"]["credits_lastday"]
-        result["total_credits"] = datainfo["data"]["total_credits"]
-        if tonumber(datainfo["data"]["credits_est"]) > tonumber(datainfo["data"]["credits_today"]) then
-            result["credits_est"] = tostring(tonumber(datainfo["data"]["credits_est"])-tonumber(datainfo["data"]["credits_today"]))
-        else 
-            result["credits_est"] = "0"
-        end		
-    elseif tonumber(datainfo["code"]) == 11 then
-        result["code"] = "0"
-    end
-    return result 
 end
 
 function createPCDNURLparam()
@@ -490,7 +315,6 @@ function getWifiInfo()
 	        end
 	        line_number = line_number + 1
 	end
-	LuciUtil.exec("echo '"..LuciJson.encode(info).."' > /tmp/testtt ")
 	return info
 end
 
@@ -670,11 +494,11 @@ function getIgnore(lines)
 end
 
 function getDevSampleCount()
-    return strtrim(LuciUtil.exec("cat /proc/net/arp | grep br-lan | grep 0x2 | wc -l")) or "0"
+    return strtrim(LuciUtil.exec("cat /proc/net/arp | grep br- | grep 0x2 | wc -l")) or "0"
 end
 
 function getAllDeviceInfo()
-    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br-lan | grep 0x2")
+    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br- | grep 0x2")
     local str_lines = string.split(arp_info,"\n")
 
     local ip_addr, hw_type, flags, hw_addr, mask, device
@@ -705,7 +529,7 @@ function getAllDeviceInfo()
             hw_addr = words[4] or nil
             device = words[6] or nil
 
-            if device == 'br-lan' and ignore_map[ip_addr] == nil then
+            if ignore_map[ip_addr] == nil then
                 name = "none"
                 connect_type = "lan"
                 is_binded = "none"
@@ -741,6 +565,10 @@ function getAllDeviceInfo()
 					wifimode = wifi_map[hw_addr]
                 end
 				
+				if wifimode == "2.4G" and string.len(ip_addr) >= 11 and string.sub(ip_addr,1,11)== "192.168.215" then
+				    wifimode = "访客"
+				end
+				
 				devicetype = getDeviceTypefromMac(hw_addr,name)
 				deviceicon = getDeviceIconfromMac(hw_addr,name)
 
@@ -765,7 +593,7 @@ function getAllDeviceInfo()
 end
 
 function getAllDeviceInfoNoRate()
-    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br-lan | grep 0x2")
+    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br- | grep 0x2")
     local str_lines = string.split(arp_info,"\n")
 
     local ip_addr, hw_type, flags, hw_addr, mask, device
@@ -796,7 +624,7 @@ function getAllDeviceInfoNoRate()
             hw_addr = words[4] or nil
             device = words[6] or nil
 
-            if device == 'br-lan' and ignore_map[ip_addr] == nil then
+            if ignore_map[ip_addr] == nil then
                 name = "none"
                 connect_type = "lan"
                 is_binded = "none"
@@ -827,6 +655,10 @@ function getAllDeviceInfoNoRate()
                     connect_type = "wifi"
 					wifimode = wifi_map[hw_addr]
                 end
+				
+				if wifimode == "2.4G" and string.len(ip_addr) >= 11 and string.sub(ip_addr,1,11)== "192.168.215" then
+				    wifimode = "访客"
+				end
 				
 				devicetype = getDeviceTypefromMac(hw_addr,name)
 				deviceicon = getDeviceIconfromMac(hw_addr,name)
@@ -971,7 +803,7 @@ function webArrived()
 end
 
 function getDeviceCount()
-    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br-lan | grep 0x2")
+    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br- | grep 0x2")
     local str_lines = string.split(arp_info,"\n")
 
     local ignore_map = getIgnore(str_lines)
@@ -984,7 +816,7 @@ function getDeviceCount()
         ip_addr = words[1] or nil
         device = words[6] or nil
 
-        if device == 'br-lan' and ignore_map[ip_addr] == nil then
+        if ignore_map[ip_addr] == nil then
             n_device_count = n_device_count + 1
         end
     end
@@ -1127,41 +959,6 @@ function actionstatusforIF()
 	return "finish"
 end
 
-function action_restart(proto, args)
-	local nixio = require "nixio"
-	local uci = require "luci.model.uci".cursor()
-	if args then
-		local service
-		local services = { }
-
-		for service in args:gmatch("[%w_-]+") do
-			services[#services+1] = service
-		end
-
-		local command = uci:apply(services, true)
-		if nixio.fork() == 0 then
-			local i = nixio.open("/dev/null", "r")
-			local o = nixio.open("/dev/null", "w")
-
-			nixio.dup(i, nixio.stdin)
-			nixio.dup(o, nixio.stdout)
-
-			i:close()
-			o:close()
-			if proto == "pppoe" then
-				nixio.exec("/bin/sh", unpack(command))
-			else
-			    LuciUtil.exec("/etc/init.d/network restart")
-			end
-			LuciUtil.exec("/etc/init.d/dnsmasq restart")
-		else
-			luci.http.write(proto)
-			luci.http.write("OK")
-			os.exit(0)
-		end
-	end
-end
-
 function ubusWanStatus()
 	local ubus = require("ubus").connect()
 	local wan = ubus:call("network.interface.wan", "status", {})
@@ -1248,15 +1045,6 @@ function getPPPoEStatus()
 	return result
 end
 
-function setAutoUpgradeMode(mode)
-    setUConfig("upgrademode", mode, "upgrademode")
-    return "0"
-end
-
-function getAutoUpgradeMode()
-    return getUConfig("upgrademode", "", "upgrademode")
-end
-
 function setrouterinit(status)
     setUConfig("init", status, "account")
     return "0"
@@ -1311,11 +1099,12 @@ function checkdhcpip(ip,mac)
 	end
 	
 	local gatewanip = LuciUci:get("network","lan","ipaddr")
-	if string.sub(ip,1,10) ~= string.sub(gatewanip,1,10) then
+	local gateguestip = "192.168.215.1"
+	if string.sub(ip,1,10) ~= string.sub(gatewanip,1,10) and string.sub(ip,1,11) ~= string.sub(gateguestip,1,11) then
 	    return false
 	end
 	
-	if ip == gatewanip then
+	if ip == gatewanip or ip == gateguestip then
 	    return false
 	end
 	
@@ -1357,27 +1146,6 @@ function checkdhcplease()
 		end
 	end
 	return mac_name_map
-end
-
-function checkUpgrade()
-    local updatedata = LuciUtil.exec(Configs.CHECK_UPGRADE)
-    local result = {}
-    
-    result["hasupdate"] = "0" 
-    result["upgrademode"] = getAutoUpgradeMode()
-    if updatedata ~= nil then  
-        local updateinfo = LuciJson.decode(updatedata)     
-        if updateinfo ~= nil and updateinfo["list"]["firmware"] ~= nil and updateinfo["list"]["firmware"]["level"] ~= "force" then
-            result["hasupdate"] = "1" 
-            result["version"] = string.gsub(updateinfo["list"]["firmware"]["online_version"],"\"","")
-            result["size"] = byteFormat(tonumber(updateinfo["list"]["firmware"]["size"]))
-			local updatereference = string.gsub(updateinfo["list"]["firmware"]["notify_message"],"\"","")
-			updatereference = string.gsub(updatereference,"\r\n","</li><li>")
-			updatereference = string.gsub(updatereference,"\r","</li><li>")
-            result["updateref"] = string.gsub(updatereference,"\n","</li><li>")
-        end
-    end
-	return result
 end
 
 function readUpgrade()
@@ -1480,40 +1248,6 @@ function getFooterInfo()
     return result
 end
 
-function getUserInfo()
-    local result = {}
-
-	local urlparam = ""
-	local urlparamwithwifi = ""
-	if getWanGatewayenable() then
-	    checkbind()
-	end
-    urlparam,urlparamwithwifi = createPCDNURLparam()
-    local userinfo = getyoukurouteinfo()
-    if userinfo['code'] == "0" then
-        result["bindflag"] = "1"
-        result["binduser"] = userinfo['username']
-		result["youkuuserurl"] = Configs.YOUKU_ROUTE_CREDITS_URL..urlparam
-    else
-        result["bindflag"] = "0"
-        result["binduser"] = "绑定优酷账号"
-		result["youkuuserurl"] = Configs.YOUKU_ROUTE_BIND_URL..urlparamwithwifi
-    end
-	result["youkurebinduserurl"] = Configs.YOUKU_ROUTE_REBIND_URL..urlparamwithwifi
-	result["genurl"] = Configs.YOUKU_ROUTE_OFFICIAL_URL..urlparam
-    result["appurl"] = Configs.YOUKU_APP_DOWNLOAD_URL..urlparam
-    result["bbsurl"] = Configs.YOUKU_ROUTE_BBS_URL..urlparam
-
-    return result
-end
-
-function getcreditsinfomation()
-    local routerinfo = getyoukurouteinfo()
-	  local pid = routerinfo["pid"] or nil
-	  local uid = routerinfo["uid"] or nil
-    return getcreditsinfo(pid,uid)
-end
-
 function isExistNetworkPublic()
     local public = LuciUci:get("network","public","ifname") or ""
 	if isStrNil(public) then
@@ -1579,8 +1313,7 @@ function getRouterInitMac()
 end
 
 function sleep(n)
-    local t0 = os.clock()
-    while os.clock() - t0 <= n do end
+    LuciUtil.exec("sleep "..tostring(n))
 end
 
 function checkconenv()
@@ -2123,7 +1856,7 @@ function setredirectinfo(modetype,list,dmzip)
 			setdmzconfig(dmzip,true)
 		end
 	end
-	LuciOS.execute("nohup /etc/init.d/firewall restart >/dev/null 2>/dev/null & ")
+	LuciOS.execute("/usr/sbin/check_svc.sh restart firewall >/dev/null 2>/dev/null & ")
 	return "0"
 end
 
@@ -2579,8 +2312,12 @@ function getRouterDevAndSoftID()
 end
 
 function startspeedtest()
-    LuciUtil.exec("rm -rf "..Configs.SPEEDINFO_FILE)
-    LuciUtil.exec(Configs.SPEEDTEST_START)
+    local ret = LuciUtil.exec(Configs.SPEEDTEST_START)
+	if not isStrNil(ret) then
+	    ret = LuciJson.decode(ret)
+		return ret.code
+	end
+	return -1
 end
 
 function checkspeedinfo()
@@ -2589,8 +2326,13 @@ function checkspeedinfo()
 	if not isStrNil(checkret) then
 	    local str_lines = string.split(checkret,"\n")
 	    for _i, a_line in ipairs(str_lines) do
-			local words = string.split(a_line, " ")                       
-			if table.getn(words) == 4 then                                   
+			local words = string.split(a_line, " ") 
+			
+            if table.getn(words) >= 4 and ( words[3] == "-1" or words[4] == "-1" ) then
+               return -1,data
+            end
+			
+			if table.getn(words) == 4 then
 				data.progress = tonumber(words[2])
 				data.downspeed = tonumber(words[4])*8192
 				data.upspeed = tonumber(words[3])*8192
@@ -2603,232 +2345,6 @@ function checkspeedinfo()
 		end
 	end
 	return 0,data
-end
-
-function getspeedinfo()
-    local downspeed = getUConfig("downspeed", 0, "account")
-	local upspeed = getUConfig("upspeed", 0, "account")
-    return downspeed,upspeed
-end
-
---return Mbps value string
-function formatSpeed(bits)
-    if isStrNil(bits) then
-        return "0"
-    end
-    
-    if bits:match("Gbit") then
-        return tostring(tonumber(bits:match("(%S+)Gbit"))*1000)
-    elseif bits:match("Mbit") then
-        return bits:match("(%S+)Mbit")
-    elseif bits:match("Kbit") then
-        return string.format("%0.2f",tonumber(bits:match("(%S+)Kbit"))/1000)
-    elseif bits:match("bit") then
-        return string.format("%0.2f",tonumber(bits:match("(%S+)bit"))/1000000)
-    else
-        return "0"
-    end
-end
-
---Mbps value to liststring
-function formatSpeedFromPage(Mbits)
-    if isStrNil(Mbits) then
-        return "0"
-    end
-    
-	local bits = tonumber(Mbits)*1000000
-	local suff = {"bit", "Kbit", "Mbit", "Gbit"}
-    for i=1, 4 do
-        if bits > 1000 and i < 4 then
-            bits = bits / 1000
-        else
-            return string.format("%.2f%s", bits, suff[i])
-        end
-    end 
-end
-
---default Mbps
-function setspeedinfo(downspeed,upspeed)
-    setUConfig("downspeed", downspeed, "account")
-	setUConfig("upspeed", upspeed, "account")
-	return 0
-end
-
-function getqosinfo()
-    local qosinfo = LuciUtil.exec("cat "..Configs.QOS_CONFIGFILE.." 2>/dev/null | tr -d '\n'")
-	local enable = "0"
-	local qostype = "1"
-	local qoslist = {}
-	if not isStrNil(qosinfo) then
-	    qosinfo = LuciJson.decode(qosinfo) or {}
-		if qosinfo.state and qosinfo.state == "on" then
-		    enable = "1"
-		end
-		
-		if qosinfo.mode then
-		    local qostypevalue = {DRR="1",PRIO="2",HTB="3"}
-		    qostype = qostypevalue[qosinfo.mode] or "1"
-		end
-		
-		if qosinfo.config and type(qosinfo.config) == "table" then
-		    qoslist = getAllDeviceqoslist(qostype, qosinfo.config)
-		else
-		    qoslist = getAllDeviceqoslist(qostype,nil)
-		end
-	else
-	    qoslist = getAllDeviceqoslist(qostype,nil)
-	end
-	return enable,qostype,qoslist
-end
-
-function getAllDeviceqoslist(qostype,qoslist)
-    local arp_info = LuciUtil.exec("cat /proc/net/arp | grep br-lan | grep 0x2")
-    local str_lines = string.split(arp_info,"\n")
-
-    local ip_addr, hw_type, flags, hw_addr, device
-    local name, connect_type, down_rate, up_rate, devicetype, deviceicon, prio, quantum
-
-    local dhcp_map = dhcp_table()
-    local wifi_map = getWifiInfo()
-    local ignore_map = getIgnore(str_lines)
-	local namelist = getNamelistInfo()
-
-    local devices = {}
-    for _i, a_line in ipairs(str_lines) do
-            local words = string.rsplit(a_line,"%s")
-            if table.getn(words) < 6 then
-                break
-            end
-            ip_addr = words[1] or nil
-            hw_type = words[2] or nil
-            flags = words[3] or nil
-            hw_addr = words[4] or nil
-            device = words[6] or nil
-
-            if device == 'br-lan' and ignore_map[ip_addr] == nil then
-                name = "none"
-                connect_type = "lan"
-                down_rate = "0"
-                up_rate = "0"
-				devicetype = "unknown"
-				deviceicon = "unknow.png"
-				prio = "2"
-				quantum = "1600"
-				wifimode = "2.4G"
-
-                if dhcp_map[hw_addr] ~= nil then
-                    name = strtrim(dhcp_map[hw_addr])
-                end
-				
-				if namelist[hw_addr] ~= nil then
-				    name = strtrim(namelist[hw_addr])
-				end
-				
-                if wifi_map[hw_addr] ~= nil then
-                    connect_type = "wifi"
-					wifimode = wifi_map[hw_addr]
-                end
-				
-				devicetype = getDeviceTypefromMac(hw_addr,name)
-				deviceicon = getDeviceIconfromMac(hw_addr,name)
-				
-				if qoslist and type(qoslist) == "table" and table.getn(qoslist) > 0 then
-					for _i, item in ipairs(qoslist) do
-						if item.mac == hw_addr then
-							if qostype == "1" then
-								quantum = item.quantum
-							elseif qostype == "2" then
-								prio = item.prio
-							elseif qostype == "3" then
-								if item.down_rate then
-									down_rate = formatSpeed(item.down_rate)
-								end
-								
-								if item.up_rate then
-									up_rate = formatSpeed(item.up_rate)
-								end
-							end
-						end
-					end
-				end
-
-                table.insert( devices, { ip = ip_addr, devicetype = devicetype, deviceicon=deviceicon,
-                mac = hw_addr,
-                name = name,
-                contype = connect_type,
-				wifimode = wifimode,
-                down_rate = down_rate,
-                up_rate = up_rate,
-				prio = prio,
-				quantum = quantum})
-            end
-    end
-    return devices
-end
-
-function setqosinfo(enable,qostype,qoslist)
-    if isStrNil(enable) or isStrNil(qostype) or isStrNil(qoslist) then
-	    return "10070"
-	end
-    
-    local configinfo = {}
-	local maxdspeed,maxuspeed = getspeedinfo()
-	if maxdspeed == "0" or maxuspeed == "0" then
-	    return "10071"
-	end
-	
-	configinfo.interface = "eth0.2"
-	configinfo.state = "off"
-	if enable == "1" then
-	    configinfo.state = "on"
-	end
-	
-	if qostype == "2" then
-	    configinfo.mode = "PRIO"
-		configinfo.defprio = "2"
-	elseif qostype == "3" then
-	    configinfo.mode = "HTB"
-		configinfo.total_down_rate = maxdspeed.."Mbit"
-		configinfo.total_up_rate = maxuspeed.."Mbit"
-	else
-	    configinfo.mode = "DRR"
-		configinfo.defquantum = "1600"
-		qostype = "1"
-	end
-	
-	local currentlist = {}
-	if qoslist and type(qoslist) == "table" and table.getn(qoslist) > 0 then
-		for _i, item in ipairs(qoslist) do
-            if qostype == "1" and item.quantum ~= "1600" then
-			    table.insert(currentlist, {ip=item.ip, mac=item.mac, quantum=item.quantum})
-			elseif qostype == "2" and item.prio ~= "2" then
-			    table.insert(currentlist, {ip=item.ip, mac=item.mac, prio=item.prio})
-			elseif qostype == "3" then
-			    if item.down_rate ~= "0" or item.up_rate ~= "0" then
-				    if item.down_rate == "0" then
-					    table.insert(currentlist, {ip=item.ip, mac=item.mac, up_rate=formatSpeedFromPage(item.up_rate)}) 
-					elseif item.up_rate == "0" then
-					    table.insert(currentlist, {ip=item.ip, mac=item.mac, down_rate=formatSpeedFromPage(item.down_rate)}) 
-					else
-					    table.insert(currentlist, {ip=item.ip, mac=item.mac, 
-						    down_rate=formatSpeedFromPage(item.down_rate), up_rate=formatSpeedFromPage(item.up_rate)}) 
-					end
-				end
-			end
-		end
-	end
-	
-	configinfo.config = currentlist
-	
-	LuciUtil.exec("rm -rf "..Configs.QOS_CONFIGFILE)
-    LuciUtil.exec("echo '"..LuciJson.encode(configinfo).."' > "..Configs.QOS_CONFIGFILE)
-    startqos()
-	return "0"
-end
-
-function startqos()
-    --LuciUtil.exec(Configs.QOS_STARTCMD)
-	return 0
 end
 
 function checkdhcpAndLanGateway()
@@ -2904,4 +2420,617 @@ function setaccpause(enable,delay)
 		setUConfig("accpauseendtime", "", "account")
 	end
 	LuciUtil.exec(Configs.ACC_CHECK_CONF)
+end
+
+function getWanclone()
+    return getUConfig("wanclone", "1", "account")
+end
+-- "1":使用当前mac地址   "2": 使用出厂MAC  "3": 使用设备MAC  "4":"使用自定义MAC" 
+function setWanclone(wanclone)
+    if not isStrNil(wanclone) and (tonumber(wanclone) >= 1 and tonumber(wanclone) <= 4) then
+	    setUConfig("wanclone", tostring(tonumber(wanclone)), "account")
+	end
+end
+
+function getchecklist(opttype)
+    local data = {}
+	local chkconf = require("luci.youkucloud.chkrouterconf")
+	if opttype == "1" then
+	    table.insert(data, chkconf.checklist1_item1)
+		table.insert(data, chkconf.checklist1_item2)
+		table.insert(data, chkconf.checklist1_item3)
+		table.insert(data, chkconf.checklist1_item4)
+	elseif opttype == "2" then
+	    local wifisetting = require("luci.youkucloud.wifiSetting")
+	    if wifisetting.wifi_5G_exist() then
+		    table.insert(data, chkconf.checklist2_item1_2g)
+			table.insert(data, chkconf.checklist2_item1_5g)
+		else
+		    table.insert(data, chkconf.checklist2_item1)
+		end
+		table.insert(data, chkconf.checklist2_item2)
+		table.insert(data, chkconf.checklist2_item3)
+		table.insert(data, chkconf.checklist2_item4)
+		table.insert(data, chkconf.checklist2_item5)
+	else
+	    table.insert(data, chkconf.checklist3_item1)
+		table.insert(data, chkconf.checklist3_item2)
+		table.insert(data, chkconf.checklist3_item3)
+		table.insert(data, chkconf.checklist3_item4)
+		table.insert(data, chkconf.checklist3_item5)
+		table.insert(data, chkconf.checklist3_item6)
+	end
+    return 0,data
+end
+
+-- "1":不能上网  "2":上网卡   "3":收益低
+function routercheck(opttype)
+    local data = {} 
+	local chkconf = require("luci.youkucloud.chkrouterconf")
+	if opttype == "1" then
+		chkconf.checklist1_item1.chkret = "0"
+		chkconf.checklist1_item1.retstring = ""
+		chkconf.checklist1_item1.retref = getroutersn()
+		table.insert(data, chkconf.checklist1_item1)
+
+		chkconf.checklist1_item2.chkret = "0"
+		chkconf.checklist1_item2.retstring = ""
+		chkconf.checklist1_item2.retref = getyoukuvertion()
+		table.insert(data, chkconf.checklist1_item2)
+		
+		local wanstate = getwanstate()
+		if tonumber(wanstate) > 1 then
+		    chkconf.checklist1_item3.chkret = "0"
+			chkconf.checklist1_item3.retstring = chkconf.WANSTATE_REF.success
+			chkconf.checklist1_item3.retref = ""
+
+			local domaincon = checkDomaincon()
+			if not domaincon then
+			    local ipcon = checkIPcon()
+				if ipcon then
+			        chkconf.checklist1_item4.chkret = "-1"
+			        chkconf.checklist1_item4.retstring = chkconf.CONSTATE_REF.failed
+			        chkconf.checklist1_item4.retref = chkconf.CONSTATE_REF.failedref2
+			    else
+			        chkconf.checklist1_item4.chkret = "-1"
+			        chkconf.checklist1_item4.retstring = chkconf.CONSTATE_REF.failed
+			        chkconf.checklist1_item4.retref = chkconf.CONSTATE_REF.failedref1
+				end
+			else
+			    chkconf.checklist1_item4.chkret = "0"
+			    chkconf.checklist1_item4.retstring = chkconf.CONSTATE_REF.success
+			    chkconf.checklist1_item4.retref = ""
+			end
+		elseif tonumber(wanstate) == 0 then
+		    chkconf.checklist1_item3.chkret = "-1"
+			chkconf.checklist1_item3.retstring = chkconf.WANSTATE_REF.failed
+			chkconf.checklist1_item3.retref = chkconf.WANSTATE_REF.failedref
+			
+			chkconf.checklist1_item4.chkret = "-1"
+			chkconf.checklist1_item4.retstring = chkconf.CONSTATE_REF.failed
+			chkconf.checklist1_item4.retref = chkconf.WANSTATE_REF.failedref
+			chkconf.checklist1_item4.jumpto = nil
+		else
+            chkconf.checklist1_item3.chkret = "0"
+			chkconf.checklist1_item3.retstring = chkconf.WANSTATE_REF.success
+			chkconf.checklist1_item3.retref = ""
+            
+			local constate = checkIPcon()
+			if constate then
+			    chkconf.checklist1_item4.chkret = "-1"
+			    chkconf.checklist1_item4.retstring = chkconf.CONSTATE_REF.failed
+			    chkconf.checklist1_item4.retref = chkconf.CONSTATE_REF.failedref2
+			else
+			    chkconf.checklist1_item4.chkret = "-1"
+			    chkconf.checklist1_item4.retstring = chkconf.CONSTATE_REF.failed
+			    chkconf.checklist1_item4.retref = chkconf.CONSTATE_REF.failedref1
+			end 			
+		end	
+		
+		table.insert(data, chkconf.checklist1_item3)
+		table.insert(data, chkconf.checklist1_item4)
+		
+	elseif opttype == "2" then
+	    local wifisetting = require("luci.youkucloud.wifiSetting")
+	    local have5G = wifisetting.wifi_5G_exist()
+		
+		local wifi_enable = wifisetting.getWifiStatus(1)
+		local wifi_enable_5g = "false"
+		if have5G then
+		    wifi_enable_5g = wifisetting.getWifiStatus(3)
+		end
+
+		local ccainfo = checkFalseCCA(have5G)
+		if have5G then
+			if wifi_enable == "true" then
+				if ccainfo.ccacheck then
+					chkconf.checklist2_item1_2g.chkret = "0"
+					chkconf.checklist2_item1_2g.retstring = chkconf.CHANNAL_REF.trificsuccess
+					chkconf.checklist2_item1_2g.retref = ""
+				else
+					local retstring = chkconf.CHANNAL_REF.trificfailed
+					if ccainfo.signrssi == "3" then
+						retstring = retstring .. " " .. chkconf.CHANNAL_REF.failed
+					end
+					chkconf.checklist2_item1_2g.chkret = "-1"
+					chkconf.checklist2_item1_2g.retstring = retstring
+					chkconf.checklist2_item1_2g.retref = chkconf.CHANNAL_REF.failedref
+				end
+			else
+				chkconf.checklist2_item1_2g.chkret = "0"
+				chkconf.checklist2_item1_2g.retstring = chkconf.CHANNAL_REF.nowifi
+				chkconf.checklist2_item1_2g.retref = ""
+			end
+			
+			if wifi_enable_5g == "true" then
+				if ccainfo.ccacheck_5G then
+					chkconf.checklist2_item1_5g.chkret = "0"
+					chkconf.checklist2_item1_5g.retstring = chkconf.CHANNAL_REF.trificsuccess
+					chkconf.checklist2_item1_5g.retref = ""
+				else
+					local retstring = chkconf.CHANNAL_REF.trificfailed
+					if ccainfo.signrssi_5G == "3" then
+						retstring = retstring .. " " .. chkconf.CHANNAL_REF.failed
+					end
+					chkconf.checklist2_item1_5g.chkret = "-1"
+					chkconf.checklist2_item1_5g.retstring = retstring
+					chkconf.checklist2_item1_5g.retref = chkconf.CHANNAL_REF.failedref
+				end
+			else
+				chkconf.checklist2_item1_5g.chkret = "0"
+				chkconf.checklist2_item1_5g.retstring = chkconf.CHANNAL_REF.nowifi
+				chkconf.checklist2_item1_5g.retref = ""
+			end
+			
+			table.insert(data, chkconf.checklist2_item1_2g)
+			table.insert(data, chkconf.checklist2_item1_5g)
+		
+		else
+			if wifi_enable == "true" then
+				if ccainfo.ccacheck then
+					chkconf.checklist2_item1.chkret = "0"
+					chkconf.checklist2_item1.retstring = chkconf.CHANNAL_REF.trificsuccess
+					chkconf.checklist2_item1.retref = ""
+				else
+					local retstring = chkconf.CHANNAL_REF.trificfailed
+					if ccainfo.signrssi == "3" then
+						retstring = retstring .. " " .. chkconf.CHANNAL_REF.failed
+					end
+					chkconf.checklist2_item1.chkret = "-1"
+					chkconf.checklist2_item1.retstring = retstring
+					chkconf.checklist2_item1.retref = chkconf.CHANNAL_REF.failedref
+				end	
+			else
+				chkconf.checklist2_item1.chkret = "0"
+				chkconf.checklist2_item1.retstring = chkconf.CHANNAL_REF.nowifi
+				chkconf.checklist2_item1.retref = ""
+			end			
+			table.insert(data, chkconf.checklist2_item1)
+		end
+		
+		if wifi_enable == "true" or wifi_enable_5g == "true" then
+			if ccainfo.rssidiff == 0 then
+				chkconf.checklist2_item4.chkret = "0"
+				chkconf.checklist2_item4.retstring = chkconf.RSSI_REF.success
+				chkconf.checklist2_item4.retref = ""
+			else
+				chkconf.checklist2_item4.chkret = "-1"
+				chkconf.checklist2_item4.retstring = chkconf.RSSI_REF.failed
+				chkconf.checklist2_item4.retref = chkconf.RSSI_REF.failedref
+			end
+
+			local txpower = wifisetting.getTxpwrMode(1)
+			
+			if txpower == "2" then
+				chkconf.checklist2_item3.chkret = "0"
+				chkconf.checklist2_item3.retstring = chkconf.TXPOWER_REF.success
+				chkconf.checklist2_item3.retref = ""
+			else
+				chkconf.checklist2_item3.chkret = "-1"
+				if txpower == "1" then
+					chkconf.checklist2_item3.retstring = chkconf.TXPOWER_REF.failed1
+				else
+					chkconf.checklist2_item3.retstring = chkconf.TXPOWER_REF.failed2
+				end
+				chkconf.checklist2_item3.retref = chkconf.TXPOWER_REF.failedref
+			end
+		else
+		    chkconf.checklist2_item4.chkret = "0"
+			chkconf.checklist2_item4.retstring = chkconf.RSSI_REF.nowifi
+			chkconf.checklist2_item4.retref = ""
+				
+			chkconf.checklist2_item3.chkret = "0"
+			chkconf.checklist2_item3.retstring = chkconf.TXPOWER_REF.nowifi
+			chkconf.checklist2_item3.retref = ""
+		end
+		
+		local runtime = string.split(getruntime(),",") 
+		local timestr = ""
+		if tonumber(runtime[1]) > 0 then
+		    timestr = runtime[1]..chkconf.RUNTIME_REF.day
+		end
+		if tonumber(runtime[2]) > 0 then
+		    timestr = timestr..runtime[2]..chkconf.RUNTIME_REF.hour
+		end
+		
+		if tonumber(runtime[3]) > 0 then
+		    timestr = timestr..runtime[3]..chkconf.RUNTIME_REF.munite
+		end
+		
+		if tonumber(runtime[1]) < 30 then
+            chkconf.checklist2_item5.chkret = "0"
+		    chkconf.checklist2_item5.retstring = timestr
+			chkconf.checklist2_item5.retref = ""
+		else
+		    chkconf.checklist2_item5.chkret = "-1"
+		    chkconf.checklist2_item5.retstring = timestr
+			chkconf.checklist2_item5.retref = chkconf.RUNTIME_REF.failedref
+        end		
+		
+		--bandwidth
+		local bandret,testvalue = getbandwidth()
+		if bandret == 0 then
+		    chkconf.checklist2_item2.chkret = "0"
+			if testvalue == -1 then
+		        chkconf.checklist2_item2.retstring = chkconf.BANDWIDTH_REF.success1
+			else
+			    chkconf.checklist2_item2.retstring = chkconf.BANDWIDTH_REF.success1
+			end
+			chkconf.checklist2_item2.retref = ""
+		elseif bandret == -1 then
+		    chkconf.checklist2_item2.chkret = "-1"
+		    chkconf.checklist2_item2.retstring = chkconf.BANDWIDTH_REF.failed2
+			chkconf.checklist2_item2.retref = chkconf.BANDWIDTH_REF.failedref2
+		else
+		    chkconf.checklist2_item2.chkret = "-1"
+		    chkconf.checklist2_item2.retstring = chkconf.BANDWIDTH_REF.failed
+			chkconf.checklist2_item2.retref = chkconf.BANDWIDTH_REF.failedref
+		end
+		
+		table.insert(data, chkconf.checklist2_item2)
+		table.insert(data, chkconf.checklist2_item3)
+		table.insert(data, chkconf.checklist2_item4)
+		table.insert(data, chkconf.checklist2_item5)
+		
+	else
+	    --bandwidth
+		local bandret,testvalue,use_model = getbandwidth()
+		if bandret == 0 then
+		    chkconf.checklist3_item1.chkret = "0"
+			if testvalue == -1 then
+		        chkconf.checklist3_item1.retstring = chkconf.BANDWIDTH_REF.success1
+			else
+			    chkconf.checklist3_item1.retstring = chkconf.BANDWIDTH_REF.success1
+			end
+			chkconf.checklist3_item1.retref = ""
+		elseif bandret == -1 then
+		    chkconf.checklist3_item1.chkret = "-1"
+		    chkconf.checklist3_item1.retstring = chkconf.BANDWIDTH_REF.failed2
+			chkconf.checklist3_item1.retref = chkconf.BANDWIDTH_REF.failedref2
+		else
+		    chkconf.checklist3_item1.chkret = "-1"
+		    chkconf.checklist3_item1.retstring = chkconf.BANDWIDTH_REF.failed
+			chkconf.checklist3_item1.retref = chkconf.BANDWIDTH_REF.failedref
+		end
+        
+		if bandret == -1 then
+		    chkconf.checklist3_item2.chkret = "-1"
+			chkconf.checklist3_item2.retstring = chkconf.ACCMODE_REF.failed4
+			chkconf.checklist3_item2.retref = chkconf.ACCMODE_REF.failedref2
+		else
+			if use_model > 2 then
+				chkconf.checklist3_item2.chkret = "0"
+				if use_model == 3 then
+					chkconf.checklist3_item2.retstring = chkconf.ACCMODE_REF.success2
+				else
+					chkconf.checklist3_item2.retstring = chkconf.ACCMODE_REF.success1
+				end
+				chkconf.checklist3_item2.retref = ""
+			else
+				chkconf.checklist3_item2.chkret = "-1"
+				if use_model == 2 then
+					chkconf.checklist3_item2.retstring = chkconf.ACCMODE_REF.failed1
+				elseif use_model == 1 then
+					chkconf.checklist3_item2.retstring = chkconf.ACCMODE_REF.failed2
+				else
+					chkconf.checklist3_item2.retstring = chkconf.ACCMODE_REF.failed3
+				end
+				chkconf.checklist3_item2.retref = chkconf.ACCMODE_REF.failedref
+			end
+		end
+		
+		table.insert(data, chkconf.checklist3_item1)
+		table.insert(data, chkconf.checklist3_item2)
+		
+		--tf_check
+		local tfinfo = getdetectinfo()
+		if not isStrNil(tfinfo.tfreadwrite) and tfinfo.tfreadwrite == "true" then
+		    chkconf.checklist3_item3.chkret = "0"
+			chkconf.checklist3_item3.retstring = chkconf.TFSTATE_REF.success
+			chkconf.checklist3_item3.retref = ""
+		else
+		    chkconf.checklist3_item3.chkret = "-1"
+			chkconf.checklist3_item3.retstring = chkconf.TFSTATE_REF.failed
+			chkconf.checklist3_item3.retref = chkconf.TFSTATE_REF.failedref
+		end
+		table.insert(data, chkconf.checklist3_item3)
+		
+		--server
+		if not isStrNil(tfinfo.accralaycheck) and tfinfo.accralaycheck == "true" then
+		    chkconf.checklist3_item5.chkret = "0"
+			chkconf.checklist3_item5.retstring = chkconf.SERVERCON_REF.success
+			chkconf.checklist3_item5.retref = ""
+		else
+		    chkconf.checklist3_item5.chkret = "-1"
+			chkconf.checklist3_item5.retstring = chkconf.SERVERCON_REF.failed
+			chkconf.checklist3_item5.retref = chkconf.SERVERCON_REF.failedref
+		end
+		table.insert(data, chkconf.checklist3_item5)
+		
+		--online
+		local onlinetime,showstr = chkonlientime()
+		if tonumber(onlinetime) == 0 then
+		    chkconf.checklist3_item4.chkret = "0"
+			if not isStrNil(showstr) then
+			    chkconf.checklist3_item4.retstring = showstr
+			else
+			    chkconf.checklist3_item4.retstring = chkconf.ONLINETIME_REF.success
+			end
+			chkconf.checklist3_item4.retref = ""
+		elseif tonumber(onlinetime) == -1 then
+		    chkconf.checklist3_item4.chkret = "-1"
+			chkconf.checklist3_item4.retstring = chkconf.ONLINETIME_REF.failed2
+			chkconf.checklist3_item4.retref = chkconf.ONLINETIME_REF.failedref2
+		else
+		    chkconf.checklist3_item4.chkret = "-1"
+			chkconf.checklist3_item4.retstring = chkconf.ONLINETIME_REF.failed
+			chkconf.checklist3_item4.retref = chkconf.ONLINETIME_REF.failedref
+		end
+		table.insert(data, chkconf.checklist3_item4)
+		
+		--level
+		local wanstate = getwanstate()
+		if tonumber(wanstate) == 3 then
+		    chkconf.checklist3_item6.chkret = "0"
+			chkconf.checklist3_item6.retstring = chkconf.ROUTERLEVEL_REF.success
+			chkconf.checklist3_item6.retref = ""
+		else
+		    chkconf.checklist3_item6.chkret = "-1"
+			chkconf.checklist3_item6.retstring = chkconf.ROUTERLEVEL_REF.failed
+			chkconf.checklist3_item6.retref = chkconf.ROUTERLEVEL_REF.failedref
+		end
+		table.insert(data, chkconf.checklist3_item6)
+	end
+	
+    return 0,data
+end
+
+function chkonlientime()
+    local wanstate = getwanstate()
+	local showstr = ""
+	if tonumber(wanstate) < 2 then
+	    ret = -1
+		return ret,showstr
+	end
+	
+    local pid = "&pid="..LuciProtocol.urlencode(getroutercrypid())
+	local version = "&version="..LuciProtocol.urlencode(getyoukuvertion())
+	local httpstr = "https://yun.youku.com/thing/get_status?from=firmware"..pid..version
+	
+	LuciUtil.exec("rm -rf /tmp/creditsinfo")
+	LuciUtil.exec("curl -o /tmp/creditsinfo -k '"..httpstr.."' >/dev/null 2>/dev/null")
+	local str = LuciUtil.exec("cat /tmp/creditsinfo | tr -d '\n'") or ""
+	LuciUtil.exec("rm -rf /tmp/creditsinfo")
+	
+	local ret = 0
+	if not isStrNil(str) then
+		local datainfo = LuciJson.decode(str)
+		if datainfo ~= nil and datainfo.code ~= nil and datainfo.code == 0 then
+		    ret = datainfo.data.warmup
+			showstr = datainfo.data.total_online_str
+		else
+		    ret = -1
+		end
+	else
+	    ret = -1
+	end
+    return ret,showstr
+end
+
+function getbandwidth()
+    local wanstate = getwanstate()
+	if tonumber(wanstate) < 2 then
+		return -1,-1,0,0
+	end
+
+	local pid = "&pid="..LuciProtocol.urlencode(getroutercrypid())
+	local httpstr = "https://yun.youku.com/user/get_network?from=web"..pid
+
+    LuciUtil.exec("rm -rf /tmp/creditsinfo")
+	LuciUtil.exec("curl -o /tmp/creditsinfo -k '"..httpstr.."' >/dev/null 2>/dev/null")
+	local str = LuciUtil.exec("cat /tmp/creditsinfo | tr -d '\n'") or ""
+	LuciUtil.exec("rm -rf /tmp/creditsinfo")
+	
+	local ret = 0
+	local testvalue = -1
+	local setvalue = 0
+	local use_model = 0
+	local current_use_model = 0
+	
+	if not isStrNil(str) then
+		local datainfo = LuciJson.decode(str)
+		if datainfo ~= nil and datainfo.code ~= nil and datainfo.code == 0 then
+		    testvalue = datainfo.data.upload.speedtest_upload
+		    ret = datainfo.data.upload.upload_setting_diagnosis
+			setvalue = datainfo.data.upload.device_upload
+			if datainfo.data.fixed_income_tips.state ~= nil and datainfo.data.fixed_income_tips.state > 2 then
+			    current_use_model = 3
+			else
+			    current_use_model = datainfo.data.upload.current_use_model
+			end
+			
+			use_model = datainfo.data.upload.use_model
+		else
+		    ret = -1
+		end
+	else
+	    ret = -1
+	end
+    return ret,testvalue,current_use_model,setvalue,use_model
+end
+
+function setbandwidth(bandwidth, accmode)
+    local wanstate = getwanstate()
+	if tonumber(wanstate) < 2 then
+		return -1
+	end
+	
+    local ret,testvalue,cur_use_model,devicevalue,use_model = getbandwidth()
+	if bandwidth and testvalue ~= -1 then
+	    devicevalue = testvalue
+	end
+	
+	if accmode then
+	    use_model = 4
+	end
+	
+	local pid = "&pid="..LuciProtocol.urlencode(getroutercrypid())
+	local uploadstring = "&device_upload="..tostring(devicevalue)
+	local modestring = "&use_model="..tostring(use_model)
+	local httpstr = "https://yun.youku.com/user/set_network?from=web"..pid..uploadstring..modestring
+    
+	if accmode then
+		local httpacc = "https://yun.youku.com/user/set_app_netmodel_autoadjust?from=web"..pid
+		LuciUtil.exec("nohup curl -o /tmp/creditsinfo -k '"..httpacc.."' >/dev/null 2>/dev/null &")
+	end
+	
+	LuciUtil.exec("nohup curl -o /tmp/creditsinfo -k '"..httpstr.."' >/dev/null 2>/dev/null &")
+	LuciUtil.exec("rm -rf /tmp/creditsinfo")
+
+	return 0
+
+end
+
+function checkIPcon()
+    --local code = LuciUtil.exec("curl -s -o /dev/null -I http://220.181.112.244 -w '%{http_code}' --connect-timeout 1")
+	local test_command = LuciUtil.exec("ping 114.114.114.114 -w 1")
+    local test_index = string.find(test_command,"ttl=")
+    if test_index ~= nil then
+	--if code == "200" then
+		return true
+	end
+    return false
+end
+
+function checkDomaincon()
+    local code = LuciUtil.exec("curl -s -o /dev/null -I http://www.baidu.com -w '%{http_code}' --connect-timeout 1")
+	if code == "200" then
+		return true
+	end
+    return false
+end
+
+function checkFalseCCA(have5G)
+	local runcount = 15
+	local cca,rssi241,rssi242,rssi501,rssi502 = 0,0,0,0,0
+	local retdata = {}
+	local falsecount24, falsecount50 = 0,0
+	local falsecount246, falsecount506 = 0,0
+	local false24break,false50break = false,true
+	
+    retdata.ccacheck = true
+	if have5G then
+	    retdata.ccacheck_5G = true
+		false50break = false
+	end
+	
+	for i = 1,runcount do
+	    if false24break and false50break then
+		    break
+		end
+		
+	    LuciUtil.exec("iwpriv ra0 set ResetCounter=1 2>/dev/null")
+		if have5G then
+		    LuciUtil.exec("iwpriv rai0 set ResetCounter=1 2>/dev/null")
+		end
+		sleep(1)
+		
+	    local info = LuciUtil.exec("iwpriv ra0 stat 2>/dev/null")
+		cca,rssi241,rssi242 = getCCAinfo(info)
+		
+		if tonumber(cca) > 800 then
+		    falsecount24 = falsecount24 + 1
+		end
+		
+		if tonumber(cca) > 600 then
+		    falsecount246 = falsecount246 + 1
+		end
+		
+		if have5G then
+		    info = LuciUtil.exec("iwpriv rai0 stat 2>/dev/null")
+		    cca,rssi501,rssi502 = getCCAinfo(info)
+		    --if tonumber(cca) > 900 then
+		    --    falsecount50 = falsecount50 + 1
+		    --end	
+			
+			--if tonumber(cca) > 600 then
+			--	falsecount506 = falsecount506 + 1
+			--end
+			
+			--if falsecount50 >= 2 or falsecount506 >= 8 then
+			--    retdata.ccacheck_5G = false
+			    false50break = true
+			--end
+		
+		end	
+		
+		if falsecount24 >= 2 or falsecount246 >= 8 then
+		    retdata.ccacheck = false
+			false24break = true
+		end
+	end
+	
+	if rssi241 < 50 then
+	    retdata.signrssi = 1
+	elseif rssi241 >= 50 and rssi241 <= 80 then
+	    retdata.signrssi = 2
+	else
+	    retdata.signrssi = 3
+	end
+	
+	retdata.rssidiff = 0
+	if rssi241 - rssi242 > 10 or rssi241 - rssi242 < -10 then
+	    retdata.rssidiff = 1
+	end
+	
+	if have5G then
+	
+	    if rssi501 < 50 then
+	        retdata.signrssi_5G = 1
+	    elseif rssi501 >= 50 and rssi501 <= 80 then
+	        retdata.signrssi_5G = 2
+	    else
+	        retdata.signrssi_5G = 3
+	    end
+	
+	    retdata.rssidiff_5G = 0
+	    if rssi501 - rssi502 > 10 or rssi501 - rssi502 < -10 then
+	        retdata.rssidiff_5G = 1
+	    end
+	
+	end
+	
+	return retdata
+end
+
+function getCCAinfo(info)
+    if isStrNil(info) then
+	    return 0,0,0
+	end
+	
+    local cca = info:match('False CCA                       = (%S+)') or "0"
+	local rssi1,rssi2 = info:match('RSSI                            = %-*(%S+) %-*(%S+)')
+	if isStrNil(rssi1) then rssi1 = "0" end
+	if isStrNil(rssi2) then rssi2 = "0" end
+	return tonumber(cca),tonumber(rssi1),tonumber(rssi2)
 end

@@ -287,10 +287,10 @@
      setTimeout(function(){cycleChackState(delay,url);}, 30000);
    };
    
-   popup.reConnectOnly=function(delay,timeout){
+   popup.reConnectOnly=function(delay,timeout,hostloginurl){
 	 var timeout=timeout?timeout:30000;
 	 var url=url?url:"images/logo.png?rd=";
-     setTimeout(function(){cycleChackState(delay,url);}, timeout);
+     setTimeout(function(){cycleChackState(delay,url,hostloginurl);}, timeout);
    };
    
    //关闭弹层
@@ -315,7 +315,7 @@
      //overlay && overlay.fadeOut();
    };
    //循环检测联网状态
-   function cycleChackState(delay,url){
+   function cycleChackState(delay,url,hostloginurl){
     var timer=null;
     if(timer) clearInterval(timer);
     var url=url?url:"images/logo.png?rd=";

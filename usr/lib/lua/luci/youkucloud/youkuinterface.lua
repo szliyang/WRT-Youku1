@@ -18,7 +18,8 @@ function parseparams(url)
   
   if params.context==nil and params.op ~= "logout" 
      and params.op ~= "upload" and params.op ~= "reboot" and params.op ~= "reset" 
-	 and params.op ~= "pppoestop" and params.op ~= "testspeed" and luci.http.context.request then
+	 and params.op ~= "pppoestop" and params.op ~= "testspeed" 
+	 and params.op ~= "getchecklist" and params.op ~= "getcheckinfo" and params.op ~= "optimize" and luci.http.context.request then
       params.context = luci.http.formvalue("context")
   end
   
@@ -43,10 +44,11 @@ function checkAnddoing(params)
 	local result={}
 	local errstr = {}
 	local ifFunc = require "luci.youkucloud.ifFunc"
+	local retcmdstr = ""
 	
 	if params.op == "extendop" then
 	    result=ifFunc.doextend(params)
-	    return result
+	    return result,retcmdstr
 	end
 	
 	if params.key and params.key ~= "" then
@@ -54,26 +56,26 @@ function checkAnddoing(params)
 		    havekey = true
 		else
 		    result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4031"])
-		    return result
+		    return result,retcmdstr
 		end
 	end
 	
 	if luci.http.context.request then
 	    if not CommonFunc.checkRemoteIP() then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4034"])
-		    return result
+		    return result,retcmdstr
 	    end
 	end
 	
 	if params.context ~= nil and type(params.context) ~= "table" then
 	    result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		return result
+		return result,retcmdstr
 	end
 
 	if params.op == "login" then
 	    if params.context == nil or params.context.context == nil then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		    return result
+		    return result,retcmdstr
 	    end
 	    result = ifFunc.login(params.context.context,params.to)
 	elseif params.op == "logout" and havekey then
@@ -81,7 +83,7 @@ function checkAnddoing(params)
 	elseif params.op == "get" then
 	    if params.context == nil or params.context.context == nil then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		    return result
+		    return result,retcmdstr
 	    end
 		local fromtype = "web"
 		if params.from and params.from ~= "" then
@@ -89,7 +91,7 @@ function checkAnddoing(params)
 		end
 	    result = ifFunc.getRouterInfo(params.context.context, havekey, fromtype)
 	elseif params.op == "set" then
-	    result = ifFunc.setRouterInfo(params.context, havekey, params.key)
+	    result,retcmdstr = ifFunc.setRouterInfo(params.context, havekey, params.key)
 	elseif params.op == "reboot" and havekey then
 	    result = ifFunc.reboot()
 	elseif params.op == "reset" and havekey then
@@ -97,27 +99,41 @@ function checkAnddoing(params)
 	elseif params.op == "upgrade" and havekey then
 	    if params.context == nil or params.context.context == nil then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		    return result
+		    return result,retcmdstr
 	    end
 	    result = ifFunc.upgrade(params.context.context)
 	elseif params.op == "upload" and havekey then
 	    if params.context == nil or params.context.context == nil then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		    return result
+		    return result,retcmdstr
 	    end
 	    result = ifFunc.upload(params.context.context)
 	elseif params.op == "manage" and havekey then
 	    if params.context == nil or params.context.context == nil then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		    return result
+		    return result,retcmdstr
 	    end
 	    result = ifFunc.manage(params.context.context)
 	elseif params.op == "testspeed" and havekey then
 	    if params.context == nil or params.context.context == nil then
 	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
-		    return result
+		    return result,retcmdstr
 	    end
 	    result = ifFunc.testspeed(params.context.context)
+	elseif params.op == "getchecklist" and havekey then
+	    if params.context == nil or params.context.context == nil then
+	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
+		    return result,retcmdstr
+	    end
+	    result = ifFunc.getchecklist(params.context.context)
+	elseif params.op == "getcheckinfo" and havekey then
+	    if params.context == nil or params.context.context == nil then
+	        result=ifFunc.seterrordata(result,ifFunc.ERROR_LIST["4032"])
+		    return result,retcmdstr
+	    end
+	    result = ifFunc.checkrouter(params.context.context)
+	elseif params.op == "optimize" and havekey then
+	    result,retcmdstr = ifFunc.checkoptimize(params.context)
 	elseif params.op == "pppoestop" then
 	    result = ifFunc.pppoestop()
 	else
@@ -128,7 +144,7 @@ function checkAnddoing(params)
 		end
 	end
     
-	return result
+	return result,retcmdstr
 end
 
 function getuptime()

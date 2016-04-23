@@ -20,13 +20,17 @@ $(document.body).ready(function(){
 	$(".nav_right").html(youkuHeadMenu);
 	$(".footer").html(youkuFooter);
 	$(".nav_right").delegate("#logoutbtn","click",function(){ weblogout();});
-//	$.getJSON(baseUrl,{op:"get",context:createContext("network"),key:$.cookie("key")},function(data){
-//		checkresult(data);
-//		if(data.result==0){
-//			var hrefUrl = 'http://pcdnapi.youku.com/pcdn/market/index?pid='+encodeURIComponent(data.data.crypid)+'&rkey='+encodeURIComponent(data.data.rkey);
-//			var plugHtml = '<a href="'+hrefUrl+'" id="gotoPlug" target="_blank" style="width:85px;"><img src="extend/img/shandong.gif" style="vertical-align:middle;margin-bottom:3px;margin-right:3px;">扩展应用</a>';
-//			$(".nav_right").css("width","285px");
-//			$(".nav_right").append(plugHtml);
-//		}
-//	});
+    $.getJSON(baseUrl,{op:"get",context:createContext("basic"),key:$.cookie("key")},function(data){
+		checkresult(data);
+		if(data.result==0){
+			var hrefUrl = 'http://pcdnapi.youku.com/pcdn/market/index?pid='+encodeURIComponent(data.data.crypid)+'&rkey='+encodeURIComponent(data.data.rkey);
+			var plugHtml = '<a href="'+hrefUrl+'" id="gotoPlug" target="_blank" style="width:85px;color:#ffff99;">扩展应用</a>';
+			$.getJSON("http://pcdnapi.youku.com/pcdn/sysconf/entry?callback=?",{pid:data.data.crypid},function(datatmp){
+			    if(datatmp.code==0 && typeof(datatmp.data.plugin) != "underfined" && datatmp.data.plugin==1){
+			        $(".nav_right").css("width","285px");
+			        $(".nav_right").append(plugHtml);
+				}
+			});
+		}
+	});
 });

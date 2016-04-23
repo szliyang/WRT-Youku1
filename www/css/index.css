@@ -39,14 +39,6 @@
 .off_rest{top:4px;left: 110px;}
 .off_meter{top:31px;left: 182px;}
 .router_right{width:321px;height: 93px;float:left;background: url(../images/right.png) 0 0 no-repeat;margin-top: 108px;position: relative;}
-/* .router_min{width:210px;height: 20px;position: absolute;top:9px;left: 39px} */
-/* .wangsu_left{width:88px;height: 20px;margin-right: 11px;} */
-/* .wangsu_left img,.wangsu_right img{float: left;width:18px;height: 18px;margin-right: 5px} */
-/* .wangsu_left span{float: left;text-align: right;height: 20px;font-size: 12px;color: #ffffff;padding-right: 3px} */
-/* .wangsu_left b{float:left;font-size: 12px;color: #7bd2e6;font-weight: normal} */
-/* .wangsu_right{width:88px;height: 20px;} */
-/* .wangsu_right span{float: left;text-align: right;height: 20px;font-size: 12px;color: #ffffff;padding-right: 3px} */
-/* .wangsu_right b{float:left;font-size: 12px;color: #7bd2e6;font-weight: normal} */
 
 .router_righthover{width:321px;height: 93px;float:left;background: url(../images/right.png) 0 0 no-repeat;margin-top: 108px;position: relative;}
 .router_righthover:hover{background: url(../images/right_hove.png) 0 0 no-repeat;}
@@ -125,118 +117,6 @@
 .preloadyougold{width:504px;height: 179px;padding-top: 70px; margin: 125px auto 0;background: url(../images/purse.png) 0 0 no-repeat;display: block}
 .preloadyougold p{width:504px;height: 18px;line-height: 18px;text-align: center;font-size: 12px;color:#777777;margin-top: 8px}
 .loadingbig{display: block;width:32px;height: 32px;background: url(../images/loading_big.gif) 0 0 no-repeat;margin:0px auto 0;}
-/**花呗收益
-.coins{width:970px;height: 378px;margin: 0px auto 0;position: relative;overflow:hidden;}
-.coins_bg{width: 603px; height: 378px;background: url(../images/jinbi.png) 0 0 no-repeat;margin-top:-3px;margin-left:233px;position: relative;overflow:hidden;}
-.youjinbi_top{margin-left:55px;width:400px;}
-.lvjing{width:457px;height: 132px;position: absolute;top:111px;left: 187px}
-.caiyun{width: 292px;height:121px;background: url(../images/yun.png) 0 0 no-repeat;position: absolute;top:0;left: 0;z-index: 50}
-.mohu{width:298px;height: 80px;background: url(../images/mohu.png) 0 0 no-repeat;position: absolute;top:55px;left: 162px;z-index: 5}
-.close_bi{width: 10px;height: 10px;background: url(../images/bi2.png) 0 0 no-repeat;position: absolute;top:26px;left: 204px;}
-.close_bi:hover{background: url(../images/b3.png) 0 0 no-repeat;}
-.m_text1{font-size: 12px;color: #ff4400;margin: 35px 0 0 68px}
-.m_text2{font-size: 12px;color: #b8b8b8;margin: 4px 0 0 56px}
-.m_text3{font-size: 12px;color: #b8b8b8;margin: 4px 0 0 18px}
-
-.lieji{float: left;width:89px;height: 41px;border-right: 1px #d8d8d8 solid;}
-.zuotian{width:89px;height: 23px;line-height: 33px;font-size: 18px;color: #333333;text-align: center}
-.zuo_tian{width:89px;height: 18px;line-height: 23px;font-size: 12px;color: #a09f9f;text-align: center}
-.today{width:163px;height: 62px;float: left;}
-.today strong{display: block;width:163px;text-align: center;font-size: 34px;line-height: 36px; color: #ff4400;font-weight: normal}
-.today p{width:163px;height: 18px;line-height: 21px;text-align: center;font-size: 12px;color: #777777}
-.youjinbi_top2 .today strong{display: block;width:163px;text-align: center;font-size: 28px;line-height: 36px; color: #ff4400;font-weight: normal}
-.youjinbi_top2{margin-left:85px;padding-bottom:15px;}
-.youjinbi_top2 .shouyi{font-size: 12px;width:343px;float: left;text-align: center}
-.youjinbi_top2 .shouyi b{font-weight: normal;color: #ff4400;font-size: 12px}
-.zongji{float: left;width:89px;height: 41px;border-left: 1px #d8d8d8 solid;}
-.yijiaru{font-size: 12px;width:343px;float: left;text-align: center;margin-top: 0px;margin-left: 5px;font-size: 12px;color: #777777}
-.youjinbi_top2 .shouyi a{font-size: 12px;color: #59a6d0}
-.can_jk,can_jk2{width: 162px;height: 40px;}
-.youjinbi_top3 .yicanjia{width: 162px;height: 40px;float:left;margin-left: 70px;margin-right: 10px}
-.youjinbi_top3 .yicanjia .n1{width: 162px;font-size: 12px;color:#777777;text-align: center}
-.youjinbi_top3 .yicanjia .n2{width: 162px;font-size: 18px;color:#ff4400;text-align: center;margin-top: 7px}
-.youjinbi_top3 .shouyi{font-size: 12px;width:343px;float: left;text-align: center;margin: 20px 0px 10px 36px;}
-.youjinbi_top3 .yiquxiao{font-size: 12px;width:343px;float: left;text-align: center;margin: 20px 0 10px 30px;;font-size: 12px;color: #777777}
-.youjinbi_top3 .yicanjia .n3{width: 162px;font-size: 12px;color:#777777;text-align: center}
-.youjinbi_top3 .yicanjia .n4{width: 162px;font-size:18px;color:#ff4400;text-align: center;margin-top: 7px}
-.youjinbi_top3 .shouyi a{font-size: 12px;color: #59a6d0}.can_jk{width: 150px;height: 40px;}
-.zuo_zong{width:89px;height: 23px;line-height:33px;font-size: 18px;color: #333333;text-align: center}
-.zuo_ri{width:89px;height: 18px;line-height: 23px;font-size: 12px;color: #a09f9f;text-align: center}
-.guanli_jinbi{width:300px;height: 50px;display:block;background:#ff4400;line-height: 50px;text-align: center;color: #fff;font-size: 18px;margin-left:105px;overflow:hidden;}
-.guanli_jinbi:hover{background: #fa2e00}
-.bangding_zong{width:360px;height: 13px;float: left;margin: 13px 0 0 65px;font-size: 12px;line-height: 13px}
-.bangding_zong span{float: left;color: #777777}
-.zuo_ye{float: left;height: 13px;padding:0 10px 0 5px;color: #59a6d0;}
-.cunru{float: left;padding:0 10px 0 0;color: #59a6d0}
-.youjinbi{float:left;padding:0 0 0 10px;color: #59a6d0;border-left: 1px #d8d8d8 solid;}
-.tips{width:325px;height: 16px;float: left;margin: 5px 0 0 106px;color: #777777;font-size: 12px;line-height: 16px}
-.tips span{float: left;width:300px;}
-.tips a{float: left;width:16px;height: 16px;background: url(../images/tip.png) 0 0 no-repeat;}
-.text_nei{width:34px;height: 16px;line-height: 16px;text-align: center;font-size: 12px;color: #999;position: absolute;top:182px;right: 27px}
-.tan_moshi{width:15px;height: 15px;position:absolute;top:182px;right: 10px}
-.yibangding{display: block;width:100%;height:191px;overflow:hidden;position:absolute;left:0;top:175px;}
-.weibangding{display:block}
-
-.zhuanqian_Pattern{width:542px;height:350px;background: #fff;position: relative;display: none}
-.Close_Button{width:33px;height:33px;position: absolute;top:0px;right: 0px;background: url(../images/de_close.png) 0 0 no-repeat;}
-.Close_Button:hover{background: url(../images/hover.png) 0 0 no-repeat;}
-.Conservative{width:462px;margin: 0 auto;overflow: hidden}
-.Conservative p{width:456px;height: 28px;line-height: 28px;float:left;margin-top: 31px;margin-bottom: 3px}
-.Conservative p strong{float: left;margin-right: 10px; font-size: 14px;color: #777777;}
-.Conservative p span{float: left;font-size: 12px;color: #777777;}
-.user{width:480px;height:18px;line-height: 18px;float: left;margin-top: 20px}
-.default_btn{float: left;width:16px;height:16px;background: url(../images/rb.png) center center no-repeat;cursor: pointer;margin-top: 2px;} 
-.user .cur_active{float: left;width:16px;height:16px;background: url(../images/ra.png) center center no-repeat;cursor: pointer;margin-top: 2px;}
-.user b{font-size: 14px;color: #333333;float: left;margin-left: 6px;margin-right: 10px;font-weight: normal}
-.user i{font-style: normal;font-size:12px;color: #777777}
-.determine{width:260px;height: 40px;margin:32px auto 0;}
-.Confirmation{float:left;width:120px;height:40px;line-height: 40px;text-align: center;font-size: 14px;color: #fff;background: #19b2d5;margin-right: 20px;}
-.Cancel_btn{float:left;width:120px;height:40px;line-height: 40px;text-align: center;font-size: 14px;color: #fff;background: #8cd8ea;}
-.Confirmation:hover{background: #00a4cd}
-.Cancel_btn:hover{background: #66c8e1}
-
-.guding_tan{width:500px;height: 288px;background:#fff;position: relative;z-index: 1000;display: none}
-.guding_tan .btn_ced{width:33px;height:33px;position: absolute;top:0px;right: 0px;background: url(../images/de_close.png) 0 0 no-repeat;}
-.guding_tan .btn_ced:hover{background: url(../images/hover.png) 0 0 no-repeat;}
-.guding_tan h2{padding-top: 38px;font-size:14px;color:#a9a9a9;padding-left: 40px; }
-.guding_tan h2 b{font-weight: normal;font-size: 12px;color:#999}
-.guding_tan p{width: 410px;padding-left: 40px; font-size: 14px;color:#656565;margin-top: 15px}
-.tuichu{width:300px;height: 40px;margin:30px auto;}
-.tuichu a{float: left;height: 40px;line-height: 40px;text-align: center}
-.mk12{width: 140px;background: #19b2d5;color: #fff;font-size: 14px}
-.mk12:hover{background: #00a4cd}
-.mk13{width: 140px;margin-left: 20px;background: #8cd8ea;color: #f2fafc;font-size: 14px}
-.mk13:hover{background: #66c8e1}
-.guding_tan .ww3 span{letter-spacing:6px; margin-right:-4px; }
-
-.tui_chu{width:500px;height: 260px;padding-left: 40px; background:#fff;position: relative;}
-.bu_bdtn{width:33px;height:33px;position: absolute;top:0px;right: 0px;background: url(../images/de_close.png) 0 0 no-repeat;}
-.bu_bdtn:hover{background: url(../images/hover.png) 0 0 no-repeat;}
-.tui_chu h2{padding-top: 38px;font-size:14px;color:#a9a9a9;}
-.tui_chu h2 b{font-weight: normal;font-size: 12px;color:#cacaca}
-.tui_chu p{width: 450px;font-size: 14px;color:#656565;margin-top: 15px}
-
-.myzhidao{display: block;width:200px;height: 40px;line-height: 40px;text-align: center;color:#fff;background: #19b2d5;float: left;margin: 27px 0 0 128px}
-
-
-.guding_yi{width:410px;height: 310px;background: #fff;position: relative;z-index: 1000}
-
-.abn{width:33px;height:33px;position: absolute;top:0px;right: 0px;background: url(../images/de_close.png) 0 0 no-repeat;}
-
-.abn:hover{background: url(../images/hover.png) 0 0 no-repeat;}
-.guding_yi h2{width: 100%;padding: 36px 0 0 43px;font-size: 14px;color:#777777}
-.guding_yi p{padding: 20px 0 0 43px;font-size: 14px;width: 100%;color: #333333}
-.guding_yi dl{width: 100%;padding: 23px 0 0 43px;font-size: 14px; }
-.guding_yi dl dd{width:336px;height: 22px;padding-left: 10px; line-height: 22px;background:url(../images/titt.png) left center no-repeat;color: #bbbbbb}
-.guding_yi dl dt{color:#333333}
-.bang_te{width: 260px;height: 40px;margin:26px auto}
-.bac_1{float: left;width: 120px;height: 40px;line-height: 40px;text-align: center;background: #19b2d5;color: #fff;margin-right: 20px;}
-.bac_2{float: left;width: 120px;height: 40px;line-height: 40px;text-align: center;background: #8cd8ea;color: #ebf8fb;}
-.taidi{width:460px;margin:28px auto 0;border-top: 1px #bbbbbb solid;}
-
-.taidi p{width: 100%;text-align: center;color: #777777;font-size: 12px;padding-top: 20px}
-.taidi p a{color: #3399cc;}
-**/
 
 /**测速和收益弹层样式**/
 .standIncome{width: 560px;height: 545px;background: #fff;position: fixed;z-index:4000;left:32%;top:5%;display:none;}
@@ -315,26 +195,12 @@
 .commonFloat .alipayBCancel{display:inline-block;width:120px;height: 40px;line-height: 40px;text-align: center;color:#f8fdfe;background: #8cd8ea;}
 .commonFloat .alipayBCancel:hover{background: #66c8e1;}
 
-/**花呗钱袋内容样式
-.addedhb_text{font-size: 12px;width:343px;float: left;text-align: center;margin-top: 0px;margin-left: 5px;font-size: 12px;color: #777777;}
-.tobindyoukuBut{width:300px;height: 50px;display:block;background:#ff4400;line-height: 50px;text-align: center;color: #fff;font-size: 16px;margin-left:53px;overflow:hidden;}
-.fi_hb_status{float:left;margin-left: 35px;}
-.fi_hb_status .fh_status{width: 162px;font-size: 12px;color:#777777;text-align: center}
-.fi_hb_status .fh_content{width: 162px;font-size: 18px;color:#ff4400;text-align: center;margin-top: 7px}
-.fi_hb_repayment{border-left: 1px #d8d8d8 solid;float:left;width:80px;}
-.fi_hb_repayment .fh_title{font-size: 12px;color: #777777;text-align: center;}
-.fi_hb_repayment .fh_repayment{font-size: 18px;color: #333333;text-align: center;margin-top: 7px;}
-.fi_hb_count{border-left: 1px #d8d8d8 solid;float:left;width: 80px;}
-.fi_hb_count .fh_title{font-size: 12px;color: #777777;text-align: center;}
-.fi_hb_count .fh_money_count{font-size: 18px;color: #333333;text-align: center;margin-top: 7px;}
-.fi_hb_exit{text-align:center;color:#777;margin:20px 0 10px 0;}
-.fi_hb_exit .fi_hb_e_detail{font-size: 12px;color: #59a6d0;padding:0px 5px;}
-.fi_hb_exit .exitplanpageurl_hb{font-size: 12px;color: #59a6d0;padding:0 5px;}**/
-
 /**网络链接超时显示**/
 #preloadbandwidth{position:fixed;z-index:5000;width:32px;height:32px;left:0;top:0;display:none;}
 
-
+/**自动升级提示**/
+.upgradeSet{width:100%;position:relative;height:50px;line-height:50px;background:#bae8f2;text-align:center;font-size:14px;display:none;}
+.upgradeSet .upButStyle{margin-left:20px;color:#3399cc;cursor:pointer;}
 
 
 

@@ -3,26 +3,27 @@
 <head>
 <meta charset="utf-8">
 <title>优酷土豆路由宝</title>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/doT.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20151111"></script>
- <link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/popup.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/tab.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/form.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/widget.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/System.css?ver=20151111">
- <script type="text/javascript" charset="utf-8"  src="js/page.js"></script>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/tab.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/form.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/widget.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/System.css?ver=20160121">
+<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/doT.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/page.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/upgrade.js?ver=20160121"></script>
 </head>
 <body>
   <div class="header_body" style="min-width: 1250px;">
@@ -258,7 +259,7 @@
 			 <input type="text" maxlength="2" value="22" id="hourfrom" data-rules="required|integer|range=0,23"  data-required-error="时间不能为空" data-integer-error="请输入数字" data-range-error="时间错误"/>&nbsp;:&nbsp;
 			 <input type="text" maxlength="2" value="00" id="minfrom" data-rules="required|integer|range=0,59"  data-required-error="时间不能为空" data-integer-error="请输入数字" data-range-error="时间错误"/>&nbsp;~&nbsp;
 			 <input type="text" maxlength="2" value="08" id="hourto" data-rules="required|integer|range=0,23"  data-required-error="时间不能为空" data-integer-error="请输入数字" data-range-error="时间错误"/>&nbsp;:&nbsp;
-			 <input type="text" maxlength="2" value="00" id="minto" data-rules="required|integer|range=0,59|sparetime"  data-required-error="时间不能为空" data-integer-error="请输入数字" data-range-error="时间错误" data-sparetime-error="起始时间不能相同"/></div>
+			 <input type="text" maxlength="2" value="00" id="minto" data-rules="required|integer|range=0,59|sparetime"  data-required-error="时间不能为空" data-integer-error="请输入数字" data-range-error="时间错误" data-sparetime-error="开始和结束时间不能相同"/></div>
 		     <span class="error-tip" id="LightErr" style="visibility:hidden;top:208px;left:506px;"></span>
 		     <div class="baocun_nt save-btn" id="saveLight">保 存</div>
 		     

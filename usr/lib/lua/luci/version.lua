@@ -11,4 +11,4 @@ else
 end
 
 luciname    = "LuCI 0.11 Branch"
-luciversion = "2.0.1201.63462"
+luciversion = "2.1.0420.5035"

@@ -1,5 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
+input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px white inset;}
 .setModel{width: 890px;margin:25px auto;background:#F8F8F8;padding:35px 0px;}
 .setModel .model{float:left;margin-right:24px;position:relative;}
 .switch{font-size: 14px;color: #999;width:60px;}
@@ -28,7 +29,7 @@
 .tongguo .activ_co{float: left;width: 16px;height: 16px;cursor: pointer;margin-top:8px;margin-right: 6px; }
 .tongguo .hRadio_Checked {background:url(../images/ra.png) 0 0 no-repeat}
 .close_bn{float: left;width: 60px;height: 30px;background: url(../images/kaiqi.png) 0 0 no-repeat;cursor: pointer}
-.close_ba{float: left;width: 236px;height: 30px;margin-left: 10px; line-height: 30px}
+.close_ba{float: left;width: 600px;height: 30px;margin-left: 10px; line-height: 30px}
 .close_wifioff{height: 30px;line-height: 30px;color:#999;}
 .activ{float: left;width: 16px;height: 16px;cursor: pointer;margin-top:8px;margin-right: 6px; }
 .hRadio{background:url(../images/rb.png) 0 0 no-repeat}
@@ -59,14 +60,14 @@
 .select_Gray .select span{border:1px #eeeeee solid;color: #bbbbbb;background: url(../images/san.png) 74px center no-repeat;cursor: default;}
 .select_Gray .yincang .checkbox{width:12px;height: 12px;border: 2px #eeeeee solid;background: none;cursor: default;}
 .select_Gray .yincang .chbox-val{color: #bbbbbb}
-.timeslot{margin-top: 6px;margin-left: 24px;height: 24px;}
-.timeslot_set{float:left;margin-left:10px;margin-top:-4px;display:none;}
+.timeslot{margin-top: 6px;height: 24px;}
+.timeslot_set{float:left;margin-top:-4px;display:none;}
 .timeslot_set .t_s_time{width:28px;height:22px;border:1px solid #DDD;text-align: center;font-size:12px;}
 .timeslot_set .t_s_label{width: 8px;height: 22px;display: inline-block;margin: 4px 5px 0px 8px;}
-#timeslot_model{margin-top:-5px;margin-left:15px;display:none;}
+#timeslot_model{margin-top:-5px;margin-left:15px;display:none;width:70px;}
 #timeslot_model .show{width:60px;height: 24px;padding-left: 8px;border: 1px #ddd solid;font-size: 12px;line-height: 24px;cursor: pointer;background: url(../images/xiala.png) 90% center no-repeat;display: block;background-color: #fff;}
-#timeslot_model .dropList {width: 68px;overflow-x: hidden;height:99px;top:25px;}
-.activ_wife{width:306px;overflow: hidden}
+#timeslot_model .dropList {width: 68px;overflow-x: hidden;height:66px;top:25px;}
+.activ_wife{width:700px;overflow: hidden}
 .timeslot_set .show{width:30px;height: 24px;padding-left: 8px;border: 1px #ddd solid;font-size: 12px;line-height: 24px;cursor: pointer;background: url(../images/xiala.png) 90% center no-repeat;display: block;background-color: #fff;}
 .timeslot_set .dropList{width: 48px;overflow-x: hidden;height: 231px;top: 21px;}
 .timeslot_set .select{width:40px;}

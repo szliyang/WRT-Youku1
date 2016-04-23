@@ -226,7 +226,7 @@ function setTxpwrMode(wifiIndex,mode)
     return true
 end
 
-function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, txpwr, hidden, on)	
+function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, onlychannel, hidden, on)	
 	local network = LuciNetwork.init()
     local LuciUtil = require("luci.util")
     local wifiNet = network:get_wifinet(_wifiNameForIndex(wifiIndex))
@@ -234,38 +234,34 @@ function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, txpwr,
     if CommonFunc.isStrNil(wifiNet) then
         return "false"
     end
+	
     if wifiDev then
         if not CommonFunc.isStrNil(channel) then
             if tonumber(channel) > 0 then
               wifiDev:set("channel", channel)
               wifiDev:set("autoch", 0)
-			  if wifiIndex == 1 then
-				  LuciOS.execute(commonConfig.SET_CHANNAL..tostring(tonumber(channel)).." >/dev/null 2>/dev/null & ")
-			  else
-				  LuciOS.execute(commonConfig.SET_CHANNAL_5G..tostring(tonumber(channel)).." >/dev/null 2>/dev/null & ")
+			  if onlychannel then
+				  if wifiIndex == 1 then
+					  LuciOS.execute("sleep 2 && "..commonConfig.SET_CHANNAL..tostring(tonumber(channel)).." >/dev/null 2>/dev/null & ")
+				  else
+					  LuciOS.execute("sleep 2 && "..commonConfig.SET_CHANNAL_5G..tostring(tonumber(channel)).." >/dev/null 2>/dev/null & ")
+				  end
 			  end
             else
               wifiDev:set("channel", "auto")
               wifiDev:set("autoch", 2)
-			  if wifiIndex == 1 then
-				  LuciOS.execute(commonConfig.SET_CHANNAL.."0 >/dev/null 2>/dev/null & ")
-				  LuciOS.execute("iwpriv ra0 set AutoChannelSel=2 >/dev/null 2>/dev/null & ")
-			  else
-				  LuciOS.execute(commonConfig.SET_CHANNAL_5G.."0 >/dev/null 2>/dev/null & ")
-				  LuciOS.execute("iwpriv rai0 set AutoChannelSel=2  >/dev/null 2>/dev/null & ")
+			  if onlychannel then
+				  if wifiIndex == 1 then
+					  LuciOS.execute("sleep 2 && "..commonConfig.SET_CHANNAL.."0 >/dev/null 2>/dev/null & ")
+					  LuciOS.execute("sleep 2 && iwpriv ra0 set AutoChannelSel=2 >/dev/null 2>/dev/null & ")
+				  else
+					  LuciOS.execute("sleep 2 && "..commonConfig.SET_CHANNAL_5G.."0 >/dev/null 2>/dev/null & ")
+					  LuciOS.execute("sleep 2 && iwpriv rai0 set AutoChannelSel=2  >/dev/null 2>/dev/null & ")
+				  end
 			  end
             end
         end
 		
-        if not CommonFunc.isStrNil(txpwr) then
-	        txpwr = tostring(tonumber(txpwr))
-            wifiDev:set("txpower",txpwr);
-			if wifiIndex == 1 then
-	            LuciOS.execute(commonConfig.SET_TXPWR..txpwr.." >/dev/null 2>/dev/null & ")
-			else
-			    LuciOS.execute(commonConfig.SET_TXPWR_5G..txpwr.." >/dev/null 2>/dev/null & ")
-			end
-        end
         if not CommonFunc.isStrNil(on) then
             if on ==  "true" or on == "1" then
                 wifiDev:set("disabled", "0")
@@ -281,6 +277,9 @@ function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, txpwr,
         wifiNet:set("ssid",ssid)
         wifiNet:set("encryption",encryption)
 	    wifiNet:set("key",password)
+		if wifiIndex == 1 then
+		    changeGuestSsid(ssid)
+		end
     end
     
     if not CommonFunc.isStrNil(hidden) then
@@ -334,6 +333,9 @@ function getWifiBasicInfo(wifiIndex)
         end                                                             
     )
 	
+	if wifiIndex == 1 then
+	    result.guestMode = "false"
+	end
 	LuciUci:foreach("wireless","wifi-iface",                                  
         function(s)                                                     
             if s ~= nil and s.ifname == netname then
@@ -347,7 +349,6 @@ function getWifiBasicInfo(wifiIndex)
             end
 			
 			if wifiIndex == 1 then
-			    result.guestMode = "false"
 			    if s ~= nil and s.ifname == "ra1" then
 			        result.guestSSID = s.ssid
 					if result.status == "false" or s.disabled == "1" then
@@ -510,14 +511,33 @@ function turnWifiOff(wifiIndex)
         dev:set("disabled", "1")
         wifiNet:set("disabled", nil)
         network:commit("wireless")
-        --CommonFunc.forkRestartWifi()
         return true
     end
     return false
 end
 
+function changeGuestSsid(ssidtmp)
+	local network = LuciNetwork.init()
+    local wifiDev = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(1),".")[1])
+    local wifiNet2 = wifiDev:get_wifinets()[2]
+    if wifiNet2 then
+	    local ssidname = ""
+		if ssidtmp ~= "" and string.len(ssidtmp) >= 1 and string.len(ssidtmp) < 25 then
+			ssidname = ssidtmp.."_Guest"
+		elseif ssidtmp ~= "" and string.len(ssidtmp) >=25 then
+			ssidname = string.sub(ssidtmp, 1, 24).."_Guest"
+		else
+			ssidname = "Youku_Router_Guest"
+		end
+		
+		wifiNet2:set("ssid",ssidname)
+		network:save("wireless")
+        network:commit("wireless")
+	end
+end
+
 function setGuestModeOn()
-    local samplewifiinfo = getWifiSimpleInfo(1)
+    local samplewifiinfo = getWifiBasicInfo(1)
 	--get wifi name
 	local ssidtmp = samplewifiinfo["name"] 
     local ssidname = ""
@@ -528,28 +548,24 @@ function setGuestModeOn()
 	else
         ssidname = "Youku_Router_Guest"
     end
+
+    local LuciUtil = require("luci.util")
+    local interface = "public"
 	
     local network = LuciNetwork.init()
     local wifiDev = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(1),".")[1])
     local wifiNet2 = wifiDev:get_wifinets()[2]
     if wifiNet2 then
-        local disable = wifiNet2:get("disabled")
 		wifiNet2:set("ssid",ssidname)
-        if not CommonFunc.isStrNil(disable) and disable == "1" then
-		    wifiNet2:set("disabled", "0")
-			wifiNet2:set("hidden","0")			
-        elseif not CommonFunc.isStrNil(disable) and disable == "0" then
-		    wifiNet2:set("hidden","0")
-        end
+		wifiNet2:set("network",interface)
+		wifiNet2:set("encryption","none")
+		wifiNet2:set("disabled", "0")
+	    wifiNet2:set("hidden","0")			
 		network:save("wireless")
         network:commit("wireless")
-		--LuciOS.execute(commonConfig.GUEST_MODE_UP)
         return 
     end
-  
-  local LuciUtil = require("luci.util")
-  local interface = "public"
-  
+
   local restartflg = 0
   if not CommonFunc.isExistNetworkPublic() then
       addPublicNetwork()
@@ -650,16 +666,11 @@ function setGuestModeOff()
     local wifiNet2 = wifiDev:get_wifinets()[2]
     if wifiNet2 then
         local disable = wifiNet2:get("disabled")
-        if not CommonFunc.isStrNil(disable) and disable == "1" then
-		    wifiNet2:set("hidden","1")
-            network:commit("wireless")
-            return 
-        elseif not CommonFunc.isStrNil(disable) and disable == "0" then
-		    wifiNet2:set("disabled", "1")
-			wifiNet2:set("hidden","1")
-            network:commit("wireless")
-            return
-        end
+		wifiNet2:set("disabled", "1")
+	    wifiNet2:set("hidden","1")
+		network:save("wireless")
+        network:commit("wireless")
+        return
     end
 	return
 end

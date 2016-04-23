@@ -3,78 +3,79 @@
 <head>
 <meta charset="utf-8">
 <title>优酷土豆路由宝</title>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.form.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20151111"></script>
- <script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20151111"></script>
- <link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/popup.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/tab.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/widget.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="css/System.css?ver=20151111">
- <link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20151111">
-<script src="js/jquery.tabs.js?ver=20151111"></script>
+<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/widget.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/System.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/upgrade.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20160121">
+<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.form.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="extend/js/common.js?ver=20160121"></script>
+<script src="js/jquery.tabs.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/upgrade.js?ver=20160121"></script>
 
 </head>
 <body>
 <div class="header_body" style="min-width: 1250px;">
     <div class="logo"></div>
     <div class="nav">
-       <ul class="nav_top" id="topmenu">
-        <li><a href="##" dataurl="dashboard.html" class="topmenu">首页</a></li>
-        <li><a href="##" dataurl="wan.html" class="topmenu">连网设置</a></li>
-        <li><a href="##" dataurl="wireless.html" class="topmenu">Wi-Fi设置</a></li>
-        <li><a href="##" dataurl="device.html" class="topmenu">设备管理</a></li>
-        <li class="current"><a href="##" dataurl="advanced_setting.html" class="topmenu current">更多设置</a></li>
-       </ul>
+		<ul class="nav_top" id="topmenu">
+			<li><a href="##" dataurl="dashboard.html" class="topmenu">首页</a></li>
+			<li><a href="##" dataurl="wan.html" class="topmenu">连网设置</a></li>
+			<li><a href="##" dataurl="wireless.html" class="topmenu">Wi-Fi设置</a></li>
+			<li><a href="##" dataurl="device.html" class="topmenu">设备管理</a></li>
+			<li class="current"><a href="##" dataurl="advanced_setting.html" class="topmenu current">更多设置</a></li>
+       	</ul>
     </div>
     <div class="nav_right"></div>
 </div>
-     <div class="nav-con">
-      <ul class="nav-lists clearfix">
+<div class="nav-con">
+	<ul class="nav-lists clearfix">
         <li ><a href="##" dataurl="advanced_setting.html" class="topmenu">高级设置</a></li>
         <li class="current"><a href="##" dataurl='upgrade.html' class="topmenu current">系统升级</a></li>
         <li><a href="##" dataurl='password.html' class="topmenu">管理密码</a></li>
         <li class="lisd "><a href="##" dataurl='reboot_reset.html' class="topmenu">重启与恢复</a></li>
-      </ul>
+    </ul>
     </div>
-   <div class="box box_top">
+   	<div class="box box_top">
 	<ul class="tab_menu">
-		<li class="current"><a href="###">升级检查</a></li>
-		<li><a href="###">手动升级</a></li>
+		<li class="current leftindex" data-index=""><a href="###">升级检查</a></li>
+		<li class="leftindex" data-index=""><a href="###">手动升级</a></li>
+		<li class="leftindex" data-index="autoupgrade"><a href="###">自动升级</a></li>
 	</ul>
 	<iframe name="iframeUpload" id="iframeUpload" style="display:none"></iframe>
 	<div class="tab_box">
-		<div class="tab_guan">
-		    <div class="neiwang">当前版本：<span id="versionNow"></span></div>
-		   <div class="jiancexin" id="checkIng">
-		       <img src="images/loading.gif">
-		       <p>正在检测更新...</p>
-		   </div>
-		   <div class="zuixinban" id="checkResult">
-		       <img src="images/ji.png">
-		       <p>您的系统已经是最新版，无需更新！</p>
-		       <a href="##" class="chongxinjian" id="resetCheck">重新检测</a>
-		   </div>
+		<div class="tab_guan indexpage">
+			<div class="neiwang">当前版本：<span id="versionNow"></span></div>
+		   	<div class="jiancexin" id="checkIng">
+		       	<img src="images/loading.gif">
+		       	<p>正在检测更新...</p>
+		   	</div>
+		   	<div class="zuixinban" id="checkResult">
+		       	<img src="images/ji.png">
+		       	<p>您的系统已经是最新版，无需更新！</p>
+		       	<a href="##" class="chongxinjian" id="resetCheck">重新检测</a>
+		   	</div>
 		    <div class="wendingban" id="currentVer">
-		       <img src="images/ji.png">
-		       <p>检测到新版本：<span id="ver-now"></span><span id="update-size"></span></p>
-		       <dl>
-		           <p class="tp1">更新内容：</p>
-                   <ul id="updatereference" style="width:450px;margin-left:10px;"><li></li></ul>
-		       </dl>
+		       	<img src="images/ji.png">
+		       	<p>检测到新版本：<span id="ver-now"></span><span id="update-size"></span></p>
+		       	<dl>
+		           	<p class="tp1">更新内容：</p>
+                   	<ul id="updatereference" style="width:450px;margin-left:10px;"><li></li></ul>
+		       	</dl>
 		        <a href="##" class="chongxinjian" id="atOnceUpate">立即升级</a>
-		   </div>
+		   	</div>
 		</div>
-		<div class="neiwang_fu hide" id="manualUpdate">
+		<div class="neiwang_fu hide indexpage" id="manualUpdate">
 		    <div class="neiwang">手动上传升级包</div>
 			<form name="uploadForm" id="uploadForm" method="post" enctype="multipart/form-data" >
 		    <div class="xuanze">
@@ -89,6 +90,20 @@
                 </div>
 		    </div>
 			</form>
+		</div>
+		<div class="autoUpgrade hide indexpage" id="">
+			<div class="neiwang">自动升级设置</div>
+			<div class="auContent">
+			    <div class="switch">
+		     		<span class="guanbi switchStyle"></span>
+				</div>
+				<div class="au_remind" style="">路由宝将在夜间空闲状态时自动升级到最新版</div>
+				<a class="saveAUBut">保 存</a>
+			</div>
+			<div class="loadingDiv">
+		       	<img src="images/loading.gif">
+		       	<p>正在保存...</p>
+		   	</div>
 		</div>
 	</div>
     </div>
@@ -151,6 +166,23 @@
 $('.box').Tabs({event:'click',callback:null});
 checkcookie();
 
+var tmpstr = window.location.href;
+if(tmpstr.match("autoupgrade")){
+	$(".tab_menu").find(".leftindex").removeClass("current");
+	$(".tab_menu").find('li[data-index="autoupgrade"]').addClass("current");
+	var currIndex = $(".tab_menu").find('li[data-index="autoupgrade"]').index();
+	$(".tab_box").find(".indexpage").eq(currIndex).removeClass("hide").siblings().removeClass("hide").addClass("hide");
+}
+
+$('.switchStyle').on("click",function(){
+	var _this = $(this);
+	if(_this.hasClass("guanbi")){
+		_this.removeClass("guanbi");
+	}else{
+		_this.addClass("guanbi");
+	}
+});
+
 setLightPanel($(".biaozhun"));
 function setLightPanel(p){
  var lc=p.find(".biao_left");
@@ -169,6 +201,8 @@ function setLightPanel(p){
  });
 }
 
+var commonPid = "";//pid
+
 $.getJSON(baseUrl,
     {op:"get",
      context:createContext("network"),
@@ -179,10 +213,77 @@ $.getJSON(baseUrl,
 		  $("#youkuversion").html(data.data.curver);
 		  $("#wanmac").html(data.data.MacAddr);
 		  $("#wanIP").html(data.data.wanIP);
-	   }
-    });
+		  commonPid = data.data.crypid;
+		  getIsAuto(data.data.crypid);
+	}
+});
 
-function checkupdate(){
+/**检查是否自动更新**/
+function getIsAuto(_pid){
+	$.ajax({
+		url: "http://pcdnapi.youku.com/pcdn/update/config?pid="+urlencode(_pid),
+		dataType: 'jsonp', 
+		timeout: 10000,
+		success: function(json){
+			checkresult(json);
+			if (json.code == 0) {
+				var switchAuto = json.data.auto;
+				if (switchAuto == 1) {
+					$(".autoUpgrade").find(".switchStyle").removeClass("guanbi");
+					$(".autoUpgrade").find(".au_remind").html("路由宝将在夜间空闲状态时自动升级到最新版");
+				}else{
+					$(".autoUpgrade").find(".switchStyle").removeClass("guanbi").addClass("guanbi");
+					$(".autoUpgrade").find(".au_remind").html("开启后，路由宝将在夜间空闲状态时自动升级到最新版");
+				}
+			}
+		}
+	});
+}
+
+/**保存是否自动更新**/
+$(".autoUpgrade").on("click",".saveAUBut",function(){
+	changeAUStyle("loading");
+	var switchVal = $(".autoUpgrade").find(".switchStyle").hasClass("guanbi") ? 0 : 1;
+	$.ajax({
+		url: "http://pcdnapi.youku.com/pcdn/update/config?pid="+urlencode(commonPid)+"&auto="+urlencode(switchVal),
+		dataType: 'jsonp', 
+		timeout: 10000,
+		success: function(json){
+			changeAUStyle("result");
+			checkresult(json);
+			if (json.code == 0) {
+				popup.tip("设置成功！");
+				if (json.data.auto == 1) {
+					$(".autoUpgrade").find(".switchStyle").removeClass("guanbi");
+					$(".autoUpgrade").find(".au_remind").html("路由宝将在夜间空闲状态时自动升级到最新版");
+				}else{
+					$(".autoUpgrade").find(".switchStyle").removeClass("guanbi").addClass("guanbi");
+					$(".autoUpgrade").find(".au_remind").html("开启后，路由宝将在夜间空闲状态时自动升级到最新版");
+				}
+				
+			}else{
+				popup.tip("设置失败！");
+			}
+		},error:function(){
+			popup.tip("设置失败！");
+			changeAUStyle("result");
+		}
+	});
+});
+
+/**loading显示**/
+function changeAUStyle(style){
+	if (style == "loading") {
+		$(".autoUpgrade").find(".auContent").hide();
+		$(".autoUpgrade").find(".loadingDiv").show();
+	}else if(style == "result"){
+		$(".autoUpgrade").find(".auContent").show();
+		$(".autoUpgrade").find(".loadingDiv").hide();
+	}
+	
+}
+
+function checkupdateCurr(){
   $("#checkIng").show();
   $("#currentVer").hide(); 
   $("#checkResult").hide();
@@ -213,10 +314,10 @@ function checkupdate(){
   var timer=null;
   var upgradeflag = false;
   var progressupnum = 0;
-  checkupdate();
+  checkupdateCurr();
   
   $('#resetCheck').on('click',function(){
-    checkupdate();
+	checkupdateCurr();
   });
   
   $('#atOnceUpate').on('click',function(){

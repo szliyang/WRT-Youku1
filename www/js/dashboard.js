@@ -24,7 +24,7 @@ $(document.body).ready(function(){
 	setDevPos();
 	
 	$(window).resize(function() {
-	  setDevPos(); 
+		setDevPos(); 
 	});
 	
 	checkcookie();
@@ -62,17 +62,6 @@ $(document.body).ready(function(){
         });
 	}
 
-	/**点击花呗还款计划“详情”链接
-	$(".min_hj").on("click","#alipay_hb_float",function(){
-		popup.showId("alipay_hb_float",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-205px",marginTop:"-155px"},
-			closeBtn:".close",okBtn:".alipayOk",
-			okBtnClick:function(a,b){
-				popup.close(a,b,"hide"); 
-			}		
-		 }); 
-	});**/
-	
-	
 	//打开面板
 	$('#routerFeaturesPanel').find('.btn').on('click',function(){
 		var that=$(this);
@@ -111,11 +100,6 @@ $(document.body).ready(function(){
 		$("#click_event").show();
 	});
 		   
-//	$("#router_bhover").on("click",".optimization",function(){
-//		speedObject.getUpSpeed();//获得pid之后，开始调用云端接口获取上行数据信息；、
-//		popup.showId("preloadbandwidth",{layerCss:{position:"fixed",left:"50%",top:"50%"}});
-//	})
-	
 	$('.hover_show').on("click",function(){
 		window.location.href="device.html";
 	});
@@ -124,45 +108,7 @@ $(document.body).ready(function(){
 		window.location.href="wan.html";
 	});
 	 
-//	 $(".min_hj").delegate("#addplanpageurl1","click",function(){
-//		 if(bindedrouterflag == 1){
-//			 window.open(innerNetBaseSet.addfixedurl,"_blank");
-//		 }else{
-//			 popup.showId("tobindbox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-205px",marginTop:"-155px"},
-//				closeBtn:".abn",okBnt:".bac_1",cancelBtn:".bac_2",
-//				okBtnClick:function(a,b){
-//					popup.close(a,b,"hide"); 
-//					window.open("https://yun.youku.com/user/bind/entry?from=web"+innerNetBaseSet.pcdnurltokenwithssid,"_blank");
-//				}		
-//			 }); 
-//		 }
-//	 });
-	 
-//	 $("#addplanpageurl2").on("click",function(){
-//		 if(bindedrouterflag){
-//			 popup.close($("#accuploadmode"),popup.getoverLay(),"hide");
-//			 commitenableflag=true;	 
-//			 window.open(innerNetBaseSet.addfixedurl,"_blank");	 
-//		 }else{
-//			 popup.hide($("#accuploadmode"),popup.getoverLay(),"hide");
-//			 commitenableflag=true;	 
-//			 popup.showId("tobindbox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-205px",marginTop:"-155px"},
-//				closeBtn:".abn",okBnt:".bac_1",cancelBtn:".bac_2",
-//				okBtnClick:function(a,b){
-//					popup.close(a,b,"hide"); 
-//					window.open("https://yun.youku.com/user/bind/entry?from=web"+innerNetBaseSet.pcdnurltokenwithssid,"_blank");
-//				}		
-//			 }); 
-//		 }
-//	 });
-	 
-//	 $("#accuploadmode").delegate(".Conservative>div","click",function(){
-//		 $(".Conservative>div").find(".radiovalue").removeClass("cur_active").addClass("default_btn");
-//		 $(this).find(".radiovalue").removeClass("default_btn").addClass("cur_active");
-//		 accmodevalue = $(this).attr("data-panel")
-//	 });  
-	 
-	 $(".set-btn .mode-btn").on("click",function(){
+	$(".set-btn .mode-btn").on("click",function(){
 		if(commitenableflag){
 			commitenableflag = false;
 			var lightmode = "0";
@@ -255,155 +201,95 @@ $(document.body).ready(function(){
 	});
 	 
 	$(".min_hj").delegate(".tan_moshi","click",function(){
+		$("#stException").hide();
 		speedObject.getUpSpeed();//获得pid之后，开始调用云端接口获取上行数据信息；
 		popup.showId("preloadbandwidth",{layerCss:{position:"fixed",left:"50%",top:"50%"}});
 	});
 	
-	/**
-	$(".min_hj").delegate(".tan_moshi","click",function(){
-		if(commitenableflag){
-			commitenableflag = false;
-			if(inplanflag==0){
-				popup.showId("accuploadmode",{
-					layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-271px",marginTop:"-135px"},closeBtn:".close",okBnt:".ok",cancelBtn:".cancel",
-					okBtnClick:function(a,b){
-						popup.close(a,b,"hide"); 
-						if(innerNetBaseSet.accmode != accmodevalue){
-							var setParam = {};
-							setParam.accmode = accmodevalue;
-							$.getJSON(baseUrl,{op:"set",context:createSetContext(setParam),key:$.cookie("key")},function (data) {
-								commitenableflag=true;
-								checkresult(data);
-								if( accmodevalue == "3" ){
-									$("#accmode").html('激进');
-								}else if( accmodevalue == "2" ){
-									$("#accmode").html('平衡');
-								}else{
-									$("#accmode").html('保守');
-								} 
-								innerNetBaseSet.accmode = accmodevalue;
-							});
-						}else{
-							commitenableflag=true;
-						} 
-					},
-					cancelBtnClick:function(a,b){
-						commitenableflag=true;  	    
-					}
-				});
-			}else if(inplanflag==1){
-				popup.showId("accuploadmode2",{
-					layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-250px",marginTop:"-130px"},
-					closeBtn:".btn_ced",okBnt:".mk12",cancelBtn:".mk13",
-					okBtnClick:function(a,b){
-						commitenableflag=true;
-						window.open(innerNetBaseSet.quitfixedurl,"_blank");
-						popup.close(a,b,"hide"); 				
-					},
-					cancelBtnClick:	function(a,b){
-						commitenableflag=true;  	    
-					}		
-				});
-				
-			}else{
-				popup.showId("accuploadmode3",{
-					layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-250px",marginTop:"-130px"},
-					closeBtn:".bu_bdtn",okBnt:".myzhidao",cancelBtn:".mk13",
-					okBtnClick:function(a,b){
-						commitenableflag=true; 
-						popup.close(a,b,"hide"); 				
-					},
-					cancelBtnClick:	function(a,b){
-						commitenableflag=true;  	    
-					}		
-				});
-			}	
-		}
-	});**/
+//	var timer=null;
+//	var upgradeflag = false;
+//	var progressupnum = 0;
 
-	var timer=null;
-	var upgradeflag = false;
-	var progressupnum = 0;
+//	function checkupdate(){
+//		$.getJSON(baseUrl,{op:"upgrade",context:createContext("check"),key:$.cookie("key")}, function(data){
+//			if ($("#YKRouterOverLayId").length<=0 || ($("#YKRouterOverLayId").length>0 && $("#YKRouterOverLayId").is(":hidden"))) {
+//				console.log(data);
+//				checkresult(data);
+//				var hasupdate = data.data["hasupdate"];
+//				if (hasupdate == "1"){
+//					
+//					$("#ver-now").html(data.data["newver"]);
+//					$("#update-size").html("("+data.data["size"]+")");
+//					var ref = data.data["descforweb"];
+//					if (ref != ""){
+//						 $("#updatereference").html('<li>' + ref + '</li>');
+//					}
+//									
+//					popup.showId("updatebox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},closeBtn:".close",okBnt:".ok",cancelBtn:".cancel",
+//						okBtnClick:function(a,b){
+//							popup.hide(a,b,"hide");
+//							popup.showId("shengjitanceng",{layerCss:{position:"fixed",left:"50%", top:"50%", marginLeft:"-220px", marginTop:"-101px"},closeBtn:".close" });
+//								$("#baras").css("width","0%");
+//								$("#baras").animate({width:"100%"},480000,'linear',function(){
+//									popup.close($("#shengjitanceng"),"","hide");
+//								});
+//							$.getJSON(baseUrl, {op:"upgrade", context:createContext("start"), key:$.cookie("key")},function(data){
+//								checkresult(data);
+//								if (data['result'] == "0"){
+//									window.setTimeout(function(){getprocess();},500);
+//								}    
+//							});				    
+//						},
+//						cancelBtnClick:	function(a,b){
+//							var setParam = {};
+//							setParam.setupdatetime = "true"; 
+//							$.getJSON(baseUrl, {op:"set", context:createSetContext(setParam), key:$.cookie("key")},function(data){
+//								checkresult(data);
+//							});				    
+//						}
+//					});
+//				}
+//			}
+//		});
+//	}
 
-	function checkupdate(){
-		$.getJSON(baseUrl,{op:"upgrade",context:createContext("check"),key:$.cookie("key")}, function(data){
-			if ($("#YKRouterOverLayId").length<=0 || ($("#YKRouterOverLayId").length>0 && $("#YKRouterOverLayId").is(":hidden"))) {
-				checkresult(data);
-				var hasupdate = data.data["hasupdate"];
-				if (hasupdate == "1"){
-					
-					$("#ver-now").html(data.data["newver"]);
-					$("#update-size").html("("+data.data["size"]+")");
-					var ref = data.data["descforweb"];
-					if (ref != ""){
-						 $("#updatereference").html('<li>' + ref + '</li>');
-					}
-									
-					popup.showId("updatebox",{layerCss:{position:"fixed",left:"50%",top:"50%", marginLeft:"-220px",marginTop:"-101px"},closeBtn:".close",okBnt:".ok",cancelBtn:".cancel",
-						okBtnClick:function(a,b){
-							popup.hide(a,b,"hide");
-							popup.showId("shengjitanceng",{layerCss:{position:"fixed",left:"50%", top:"50%", marginLeft:"-220px", marginTop:"-101px"},closeBtn:".close" });
-								$("#baras").css("width","0%");
-								$("#baras").animate({width:"100%"},480000,'linear',function(){
-									popup.close($("#shengjitanceng"),"","hide");
-								});
-							$.getJSON(baseUrl, {op:"upgrade", context:createContext("start"), key:$.cookie("key")},function(data){
-								checkresult(data);
-								if (data['result'] == "0"){
-									window.setTimeout(function(){getprocess();},500);
-								}    
-							});				    
-						},
-						cancelBtnClick:	function(a,b){
-							var setParam = {};
-							setParam.setupdatetime = "true"; 
-							$.getJSON(baseUrl, {op:"set", context:createSetContext(setParam), key:$.cookie("key")},function(data){
-								checkresult(data);
-							});				    
-						}		
-					});
-				}
-			}
-		});
-	}
-
-	var updateokflag = true;
-	var timeout;
-
-	function getprocess(){
-		$.getJSON(baseUrl, {op:"upgrade", context:createContext("progress"), key:$.cookie("key")},
-		function(data){ 
-		   checkresult(data);
-		   if (data.result == "0"){
-			   var persent = data.data['persent']; 
-			   if (parseInt(persent) == 100 && updateokflag){
-				   updateokflag = false;
-				   getprocess();
-				   timeout = setTimeout(function(){cycleChackState(5000);},200000);
-			   }else{
-				   getprocess();
-			   } 
-		   }else{
-			   if(data.result == "10032"){
-				   $("#online_error").html("下载失败，请重新检测升级版本！")
-			   }else{
-				   $("#online_error").html("更新失败，请稍后重新检测升级版本！") 
-			   }
-			   $("#baras").stop();
-			   if(timeout){
-				   clearTimeout(timeout);
-			   }
-			   updateokflag = true;
-			   popup.hide($("#shengjitanceng"),"","hide");
-			   popup.showId("onlineerrbox",{layerCss:{position:"fixed",left:"50%", top:"50%", marginLeft:"-220px", marginTop:"-101px"},
-				   closeBtn:".close",okBnt:".ok",
-				   okBtnClick:function(a,b){
-					   popup.close(a,b,"hide");
-				   } 
-			   });
-		   	}
-		});
-	}
+//	var updateokflag = true;
+//	var timeout;
+//
+//	function getprocess(){
+//		$.getJSON(baseUrl, {op:"upgrade", context:createContext("progress"), key:$.cookie("key")},
+//		function(data){ 
+//		   checkresult(data);
+//		   if (data.result == "0"){
+//			   var persent = data.data['persent']; 
+//			   if (parseInt(persent) == 100 && updateokflag){
+//				   updateokflag = false;
+//				   getprocess();
+//				   timeout = setTimeout(function(){cycleChackState(5000);},200000);
+//			   }else{
+//				   getprocess();
+//			   } 
+//		   }else{
+//			   if(data.result == "10032"){
+//				   $("#online_error").html("下载失败，请重新检测升级版本！")
+//			   }else{
+//				   $("#online_error").html("更新失败，请稍后重新检测升级版本！") 
+//			   }
+//			   $("#baras").stop();
+//			   if(timeout){
+//				   clearTimeout(timeout);
+//			   }
+//			   updateokflag = true;
+//			   popup.hide($("#shengjitanceng"),"","hide");
+//			   popup.showId("onlineerrbox",{layerCss:{position:"fixed",left:"50%", top:"50%", marginLeft:"-220px", marginTop:"-101px"},
+//				   closeBtn:".close",okBnt:".ok",
+//				   okBtnClick:function(a,b){
+//					   popup.close(a,b,"hide");
+//				   } 
+//			   });
+//		   	}
+//		});
+//	}
 	
 	$(".min_hj").delegate(".close_bi","click",function(){ 
 		$(".lvjing").hide();
@@ -447,7 +333,7 @@ $(document.body).ready(function(){
 				innerNetBaseSet.creditmode = data.data.creditmode;	
 				innerNetBaseSet.wifiname = data.data.wifi.name;	
 				
-				
+				autoUpgrade.checkAuto(data.data.crypid);//检查是否自动更新信息
 				
 				var constatus = data.data.toweb;
 				if(constatus == '1'){
@@ -465,8 +351,6 @@ $(document.body).ready(function(){
 					$(".router_righthover").hide();
 					$(".coins").hide();
 					$(".weilianwang").show();
-//					$("#pursetext").html("未连接互联网&nbsp;<a href='wan.html' style='color:#5da9d3;'>连网设置</a>");
-//					$(".purse").show();
 					var _html = '<div class="purse"><span class="not_p"></span><p id="pursetext">未连接互联网&nbsp;<a href="wan.html" style="color:#5da9d3;">连网设置</a></p></div> ';
 					$(".min_hj").html(_html);
 				}
@@ -495,12 +379,26 @@ $(document.body).ready(function(){
 						}
 
 					}else{
-						$("#visitorsModel").find(".wifi_opens").hide();
-						$("#wifiStrength").find(".wifiqiangdu").hide();
-						$("#visitorsModel").find(".fangke_close").show();
-						$("#wifiStrength").find(".closing").show();
-						featuresPanel.find(".btn[data-panel='wifiStrength']").html('<span class="wifi_colse"></span>');
-						featuresPanel.find(".btn[data-panel='visitorsModel']").html('<span class="visitor_wifi_colse"></span>');
+						if (data.data.wifi_5G && data.data.wifi_5G.status=="true") {
+							$("#visitorsModel").find(".fangke_close").hide();
+							$("#wifiStrength").find(".closing").hide();
+							$("#wifiStrength").find(".wifiqiangdu").show();
+							$("#visitorsModel").find(".wifi_opens").show();
+						  
+							innerNetBaseSet.strengthmode = data.data.wifi.strengthmode;
+							$(".wifiqiangdu>div").find(".active_rida").removeClass("active_rida_cur");
+							var activeitem = $(".wifiqiangdu>div").find("span[data-value="+data.data.wifi.strengthmode+"]");
+							activeitem.addClass("active_rida_cur");
+							featuresPanel.find(".btn[data-panel='wifiStrength']").html('<span class="'+activeitem.attr("data-class")+'"></span>');
+						}else{
+							$("#visitorsModel").find(".wifi_opens").hide();
+							$("#wifiStrength").find(".wifiqiangdu").hide();
+							$("#visitorsModel").find(".fangke_close").show();
+							$("#wifiStrength").find(".closing").show();
+							featuresPanel.find(".btn[data-panel='wifiStrength']").html('<span class="wifi_colse"></span>');
+							featuresPanel.find(".btn[data-panel='visitorsModel']").html('<span class="visitor_wifi_colse"></span>');
+						}
+						
 					}	
 							  
 				}  
@@ -523,46 +421,19 @@ $(document.body).ready(function(){
 					innerNetBaseSet.lighttime = data.data.lighttime;   
 				}
 			  
-				if(data.data.checkupdatetime && data.data.checkupdatetime == "true"){
-					window.setTimeout(function(){checkupdate()}, 5000);
-				}
+//				if(data.data.checkupdatetime && data.data.checkupdatetime == "true"){
+//					window.setTimeout(function(){checkupdate()}, 5000);
+//				}
 				$("#youkuversion").html(data.data.curver);
 				$("#wanmac").html(data.data.MacAddr);
 				$("#wanIP").html(data.data.wanIP);
 				saveincookie(data.data.curver,data.data.MacAddr,data.data.wanIP);
-			  
-				
 				
 				commitenableflag = true;
 			}
 		});
 	}
 	
-	/**添加链接
-	function addLink(){
-		var urlparam = "pid=" + urlencode(urlencode(netObject.crypid))+ "&wifiname=" + urlencode(netObject.wifi.name);
-		if (netObject.wan && netObject.wan.proto && netObject.wan.proto == "pppoe"){
-			urlparam += "&pppoe=1";
-		}else{
-			urlparam += "&pppoe=0";
-		}
-		if (netObject.curver) {
-			urlparam += "&version="+netObject.curver;
-		}
-		
-		innerNetBaseSet.addfixedurl = "https://yjb.youku.com/pcdn/about/fixed_income.html?fromwhere=1&" + urlparam;
-		innerNetBaseSet.quitfixedurl = "https://yjb.youku.com/pcdn/about/fixed_income/quit.html?" + urlparam;
-		var paramurl = "&nickname=" + urlencode(netObject.wifi.name) + "&rkey=" + netObject.rkey;
-		$("#guanlijinbi1").attr("href", "http://pcdnapi.youku.com/pcdn/entry/index?from=credits");
-		$("#guanlijinbi2").attr("href", "https://yun.youku.com/user/bind/entry?from=web"+paramurl);
-		$("#bangdingusername").attr("href", "http://pcdnapi.youku.com/pcdn/entry/index?from=credits");
-		$("#bangdingbtn2").attr("href", "https://yun.youku.com/user/bind/entry?from=web"+paramurl);
-		$("#exitplanpageurl").attr("href",innerNetBaseSet.quitfixedurl);
-		$("#exitplanpageurl_hb").attr("href",innerNetBaseSet.quitfixedurl);
-		
-	}**/
-	
-
 	function refreshdata_yougold(){
 		$.getJSON(baseUrl,{op:"get",context:createContext("network"),key:$.cookie("key")},function(data){
 			checkresult(data);
@@ -588,11 +459,6 @@ $(document.body).ready(function(){
 						$(".weilianwang").hide();
 						$(".router_righthover").show(); 
 						getCoinFromServer();
-//						$(".purse").hide();
-//						$(".preloadyougold").show();
-//						window.setTimeout(function(){
-//							getCoinFromServer();
-//						}, 3000);
 					}
 					if (data.data.acc_up_rate <= 0) {
 						$(".forIncomeCount").text("0");
@@ -618,38 +484,6 @@ $(document.body).ready(function(){
 		});
 	}
 
-	/**检查绑定状态，改为云端后，不需要此方法检查。云端已经处理好。
-	function checkbindstate(){
-		var rkeyvalue = innerNetBaseSet.rkey;
-		$.getJSON("https://yun.youku.com/user/check_bindinfo?callback=?", 
-		{pid:innerNetBaseSet.pid,
-		 rkey:urldecode(rkeyvalue)},
-		  function(retdata){
-			if(retdata && retdata.code==0){
-				var username = retdata.data.name;
-				if(username.length > 10){
-					username = username.substr(0,8) + "...";			    
-				}
-				$("#bangdingusername").html(username);
-				$("#bangdinguser2").hide();
-				$("#bangdingbtn2").hide();
-				$("#guanlijinbi2").hide();
-				$("#guanlijinbi1").show();
-				$("#bangdinguser1").show();
-				$("#bangdingusername").show();
-				bindedrouterflag = true;
-			}else{
-				$("#guanlijinbi1").hide();
-				$("#bangdinguser1").hide();
-				$("#bangdingusername").hide();
-				$("#guanlijinbi2").show();
-				$("#bangdinguser2").show();
-				$("#bangdingbtn2").show();
-				bindedrouterflag = false;
-			}
-	  });
-	}**/
-
 	function formatyougold(orgstr){
 		var targetnum = parseInt(orgstr);
 		var re=/(\d{1,3})(?=(\d{3})+(?:$|\.))/g;
@@ -664,169 +498,6 @@ $(document.body).ready(function(){
 		}
 		return targetstr;
 	}
-
-	/**
-	function getCreditsInfo(){
-		$(".coins").hide(); 
-		$(".purse").hide();
-		$(".preloadyougold").show();
-		$.ajax({type: "GET",
-		 url: "https://yjb.youku.com/pcdn/about/peer.json?callback=?",
-		 cache: false,
-		 data: {pid:urlencode(innerNetBaseSet.pid)},
-		 dataType: "json",
-		 timeout: 10000,
-		 success: function(data){
-			 var retcode = data['code'];
-			 $(".preloadyougold").hide();
-			 var totalcoin = "0";
-			 if(retcode == "0"){
-				if (data.data.result.devUserUcoin){
-					$("#credits_lastday").html(formatyougold(data.data.result.devUserUcoin.day_before1.toString()));			
-					totalcoin = data.data.result.devUserUcoin.ucoin.toString();
-				}else{
-					$("#credits_lastday").html("0");
-				}
-				
-				if (data.data.result.devDateFlow){
-					var todaycoin = data.data.result.devDateFlow.ucoin.toString();
-					totalcoin = (parseInt(totalcoin) + parseInt(todaycoin)).toString();
-					$("#total_credits").html(formatyougold(totalcoin.toString()));
-					$("#total_credits2").html(formatyougold(totalcoin.toString()));
-					$("#credits_today").html(formatyougold(todaycoin.toString()));
-					inplanflag = 0;
-					if (data.data.result.devDateFlow.contract){
-						var fixedtype = data.data.result.devDateFlow.contract.fixed_type.toString();
-						var typestring = "未知套餐";
-						if(fixedtype=="1"){
-							$("#gudingmode").show();
-							$("#guanggaomode").hide();
-							typestring = "套餐A（每天100优金币）";
-						}else if(fixedtype=="2"){
-							$("#gudingmode").hide();
-							$("#guanggaomode").show();
-							$(".n4").html("优酷视频免广告特权");
-							typestring = "套餐B（优酷视频免广告特权）";
-						}else{
-							$("#gudingmode").hide();
-							$("#guanggaomode").show();
-							$(".n4").html("未知套餐");
-							typestring = "未知套餐";
-						}
-						$("#quxiaomode").hide();
-						var state = data.data.result.devDateFlow.contract.state.toString();
-						var start_date = data.data.result.devDateFlow.contract.start_date;
-						start_date = getDateStr(start_date);
-						var end_date = data.data.result.devDateFlow.contract.end_date;
-						var end_date_sl = end_date + 1000;
-						end_date = getDateStr(end_date);
-						end_date_sl = getDateStr(end_date_sl);
-						if (state=="2"){
-							inplanflag = 2;
-							$("#quxiaomode").html("已退出固定收益计划，"+end_date_sl+"生效");
-							$("#quxiaomode").show();
-							$("#quxiaohref").hide();
-						}else{
-							inplanflag = 1;
-							$("#quxiaomode").hide();
-							$("#quxiaohref").show();
-						}
-						var date_type = data.data.result.devDateFlow.contract.date_type.toString();
-						var datatypestr = "未知";
-						if(date_type=="2"){
-							datatypestr = "1个月";
-						}else if(date_type=="4"){
-							datatypestr = "半年";
-						}else if(date_type=="5"){
-							datatypestr = "1年";
-						}else if(date_type=="1"){
-							datatypestr = "7天";
-						}
-						
-						$("#fixedtypestr1").html("套餐类型&nbsp;:&nbsp;" + typestring);
-						$("#fixeddatetype").html("套餐期限&nbsp;:&nbsp;" + datatypestr);
-						$("#fixeddatetime").html("<span>有效期:</span>" + start_date + "至" + end_date);
-						$("#fixedtypestr2").html("当前套餐类型：" + typestring);
-						$("#fixeddatetime2").html(end_date_sl + "生效，生效后赚钱模式为“平衡”");
-						
-						var addandokflag = data.data.result.devDateFlow.contract.showState.toString();
-						if(addandokflag=="2" || addandokflag=="3"){
-							$("#jiarumode2").show();
-							$("#jiarumode").show();
-							$("#jiarumode1").hide();
-							$("#jiarumode3").hide();
-//							$(".youjinbi_top2").hide();
-//							$(".youjinbi_top3").show();	
-						}else if(addandokflag=="1"){
-							$("#jiarumode1").html("已加入固定收益计划，"+start_date+"生效");
-							$("#jiarumode3").html("已加入固定收益计划，"+start_date+"生效");
-							$("#jiarumode1").show();
-							$("#jiarumode3").show();
-							$("#jiarumode2").hide();
-							$("#jiarumode").hide();
-//							$(".youjinbi_top2").show();
-//							$(".youjinbi_top3").hide();
-							inplanflag = 0;
-						}	
-					}else{
-						if(fixedEnable==1){
-							$("#jiarumode2").show();
-						    $("#jiarumode").show();
-							$(".taidi").show();
-						}else{
-							$("#jiarumode2").hide();
-						    $("#jiarumode").hide();
-							$(".taidi").hide();
-							$("#guanlijinbi2").css("margin-top","0px");
-							$(".zhuanqian_Pattern").css("height","280px");
-						}
-						$("#jiarumode1").hide();
-						$("#jiarumode3").hide();
-//						$(".youjinbi_top2").show();
-//						$(".youjinbi_top3").hide();
-					}
-				}else{
-					$("#total_credits").html(formatyougold(totalcoin.toString()));
-					$("#total_credits2").html(formatyougold(totalcoin.toString()));
-					$("#credits_today").html("0");
-				}
-				
-				if(inplanflag==0 && innerNetBaseSet.creditmode=="fixed"){
-					setcreditmode("normal");
-				}else if(inplanflag!=0 && innerNetBaseSet.creditmode=="normal"){
-					setcreditmode("fixed");
-				}
-				
-				$("#exitplanpageurl").attr("href",innerNetBaseSet.quitfixedurl);
-				$("#exitplanpageurl_hb").attr("href",innerNetBaseSet.quitfixedurl);
-				if(totalcoin=="0" && preheatshowflg){
-					$(".lvjing").show();
-				}
-				$(".purse").hide();
-				$(".coins").show(); 			
-			 }else if(retcode == "11"){
-				$("#credits_today").html("0");
-				$("#credits_lastday").html("0");
-				$("#total_credits").html("0");
-				if(preheatshowflg){
-					$(".lvjing").show();
-				}
-				$(".purse").hide();
-				$(".coins").show(); 
-			 }else{ 
-				$(".coins").hide();
-				$("#pursetext").html("未获取优金币数据，请检查网络连接是否正常或刷新页面。");
-				$(".purse").show();
-			 }
-		   },
-		   error: function(data){
-				$(".preloadyougold").hide();	
-				$(".coins").hide(); 
-				$("#pursetext").html("未获取优金币数据，请检查网络连接是否正常或刷新页面。");
-				$(".purse").show();			
-		   }
-	   });
-	 }**/
 
 	function setcreditmode(mode){
 		var setParam = {};
@@ -869,10 +540,6 @@ $(document.body).ready(function(){
 						$(".weilianwang").show();
 					}
 				  
-//				  var mode = data.data.accmode;
-//				  innerNetBaseSet.accmode = mode;
-//				  accmodevalue = mode;	  
-			   
 				  if(data.data && data.data.wifi){
 					  if(data.data.wifi.status=="true"){
 						  $("#visitorsModel").find(".fangke_close").hide();
@@ -897,12 +564,25 @@ $(document.body).ready(function(){
 						  }
 
 					  }else{
-						  $("#visitorsModel").find(".wifi_opens").hide();
-						  $("#wifiStrength").find(".wifiqiangdu").hide();
-						  $("#visitorsModel").find(".fangke_close").show();
-						  $("#wifiStrength").find(".closing").show();
-						  featuresPanel.find(".btn[data-panel='wifiStrength']").html('<span class="wifi_colse"></span>');
-						  featuresPanel.find(".btn[data-panel='visitorsModel']").html('<span class="visitor_wifi_colse"></span>');
+						  if (data.data.wifi_5G && data.data.wifi_5G.status=="true") {
+							  $("#visitorsModel").find(".fangke_close").hide();
+							  $("#wifiStrength").find(".closing").hide();
+							  $("#wifiStrength").find(".wifiqiangdu").show();
+							  $("#visitorsModel").find(".wifi_opens").show();
+							  
+							  innerNetBaseSet.strengthmode = data.data.wifi.strengthmode;
+							  $(".wifiqiangdu>div").find(".active_rida").removeClass("active_rida_cur");
+							  var activeitem = $(".wifiqiangdu>div").find("span[data-value="+data.data.wifi.strengthmode+"]");
+							  activeitem.addClass("active_rida_cur");
+							  featuresPanel.find(".btn[data-panel='wifiStrength']").html('<span class="'+activeitem.attr("data-class")+'"></span>');
+						  }else{
+							  $("#visitorsModel").find(".wifi_opens").hide();
+							  $("#wifiStrength").find(".wifiqiangdu").hide();
+							  $("#visitorsModel").find(".fangke_close").show();
+							  $("#wifiStrength").find(".closing").show();
+							  featuresPanel.find(".btn[data-panel='wifiStrength']").html('<span class="wifi_colse"></span>');
+							  featuresPanel.find(".btn[data-panel='visitorsModel']").html('<span class="visitor_wifi_colse"></span>');
+						  }
 					  }	
 					  innerNetBaseSet.wifiname = data.data.wifi.name;			  
 				  }  
@@ -925,9 +605,9 @@ $(document.body).ready(function(){
 					   innerNetBaseSet.lighttime = data.data.lighttime;   
 				  }
 				  
-				  if(data.data.checkupdatetime && data.data.checkupdatetime == "true"){
-					   window.setTimeout(function(){checkupdate()}, 5000);
-				  }
+//				  if(data.data.checkupdatetime && data.data.checkupdatetime == "true"){
+//					   window.setTimeout(function(){checkupdate()}, 5000);
+//				  }
 				  $("#youkuversion").html(data.data.curver);
 				  $("#wanmac").html(data.data.MacAddr);
 				  $("#wanIP").html(data.data.wanIP);
@@ -1022,6 +702,71 @@ $(document.body).ready(function(){
 		var timer=null;
 		timer=setInterval(function(){refreshdata();},5000);
 	},5000);
+	
+	/**-----------自动升级部分开始------------**/
+	var autoUpgrade = new Object();
+	var autoTimer = null;
+	/**是否提示自动升级**/
+	autoUpgrade.checkAuto = function(_pid){
+		$.ajax({
+			url: "http://pcdnapi.youku.com/pcdn/update/config?pid="+urlencode(_pid),
+			dataType: 'jsonp', 
+			timeout: 10000,
+			success: function(json){
+				checkresult(json);
+				if (json.code == 0) {
+					autoUpgrade.auto = json.data.auto;
+					if (json.data.set == 0) {//显示自动升级提示
+						$(".upgradeSet").slideDown(500);
+						autoUpgrade.autoCloseUpgrade();
+					}else{//不显示自动升级提示
+						$(".upgradeSet").hide();
+					}
+				}
+			}
+		});
+	}
+	
+	autoUpgrade.autoCloseUpgrade = function(){
+		if (autoTimer) {
+			clearTimeout(autoTimer);
+		}
+		autoTimer = setTimeout(function(){
+			$(".upgradeSet").slideUp(500);
+		}, 10000);
+	}
+	
+	/**自动升级忽略按钮**/
+	$(".upgradeSet").on("click",".hideUpgrade",function(){
+		$(".upgradeSet").slideUp(500);
+		$.ajax({
+			url: "http://pcdnapi.youku.com/pcdn/update/config?pid="+urlencode(innerNetBaseSet.pid)+"&auto="+urlencode(autoUpgrade.auto),
+			dataType: 'jsonp', 
+			timeout: 10000,
+			success: function(json){
+				checkresult(json);
+				if (json.code == 0) {
+					//保存成功
+				}
+			}
+		});
+	})
+	/**自动升级查看按钮**/
+	$(".upgradeSet").on("click",".toUpgrade",function(){
+		$.ajax({
+			url: "http://pcdnapi.youku.com/pcdn/update/config?pid="+urlencode(innerNetBaseSet.pid)+"&auto="+urlencode(autoUpgrade.auto),
+			dataType: 'jsonp', 
+			timeout: 10000,
+			success: function(json){
+				checkresult(json);
+				if (json.code == 0) {
+					location.href = 'upgrade.html?pagemode=autoupgrade&t='+new Date().getTime();
+				}
+			}
+		});
+	})
+	
+	/**-----------自动升级部分结束------------**/
 	
 	
 	/**-----------带宽自运营部分开始------------**/
@@ -1346,29 +1091,54 @@ $(document.body).ready(function(){
             success:function (data) {
             	checkresult(data);
     			var returnData = data;
-    			if(returnData.result==0){
+    			if(returnData.result == 0){
     				isMaking = true;//是不是测速中
     				speedObject.makeAnimate(speedObject.createRandom());
     				speedTimer = setTimeout(function(){speedObject.checkingSpeed()}, 3000);
+    			}else if(returnData.result == -1){
+    				$("#stException").show();
+    				speedObject.changeScale(0);
+    				speedObject.timeoutUI();
+    				if (animatet) {clearInterval(animatet);}
+    				if (speedTimer) {clearTimeout(speedTimer);}
+    				isMaking = false;
     			}else{
+    				speedObject.changeScale(0);
     				speedObject.speedTestError();
     				speedObject.resitingUI();
+    				if (animatet) {clearInterval(animatet);}
+    				if (speedTimer) {clearTimeout(speedTimer);}
+    				isMaking = false;
     			}
                 
             },error:function () {
+            	speedObject.changeScale(0);
             	if (animatet) {clearInterval(animatet);}
 				if (speedTimer) {clearTimeout(speedTimer);}
             	$(".standIncome").find("#yunSucc").hide();
 				$(".standIncome").find("#yunError").show();
 				$(".bottomText").hide();
-				
+				isMaking = false;
 				return false;
             }
         });
 	}
-	
+	var currSpingTime = 0;
+	var errortimes = 0;
 	speedObject.checkingSpeed = function(){
 		if (speedTimer) {clearTimeout(speedTimer);}
+		currSpingTime++;
+		if(currSpingTime > 15){//测速时间超时
+			$("#stException").show();
+			speedObject.changeScale(0);
+			speedObject.timeoutUI();
+			if (animatet) {clearInterval(animatet);}
+			if (speedTimer) {clearTimeout(speedTimer);}
+			currSpingTime = 0;
+			isMaking = false;
+			return false;
+		}
+		
 		$.ajax({  
 			type: "get",
             dataType: "json",
@@ -1392,19 +1162,41 @@ $(document.body).ready(function(){
     					isContinueRun = false;//继续随机效果停止
     					isMaking = false;//是不是测速中，false为非测速中
     					speedObject.makeAnimate(speedObject.findScale(sdtemp));
+    					currSpingTime = 0;
     				}
+    			}else if(returnData.result == -1){
+    				currSpingTime = 0;
+    				$("#stException").show();
+    				speedObject.changeScale(0);
+    				speedObject.timeoutUI();
+    				if (animatet) {clearInterval(animatet);}
+    				if (speedTimer) {clearTimeout(speedTimer);}
+    				isMaking = false;
     			}else{
+    				currSpingTime = 0;
+    				speedObject.changeScale(0);
     				$(".standIncome").find("#yunSucc").hide();
     				$(".standIncome").find("#yunError").show();
     				$(".bottomText").hide();
+    				if (animatet) {clearInterval(animatet);}
+    				if (speedTimer) {clearTimeout(speedTimer);}
+    				isMaking = false;
     			}
             },error:function () {
-            	if (animatet) {clearInterval(animatet);}
-				if (speedTimer) {clearTimeout(speedTimer);}
-            	$(".standIncome").find("#yunSucc").hide();
-				$(".standIncome").find("#yunError").show();
-				$(".bottomText").hide();
-				return false;
+				if(errortimes > 1){
+					currSpingTime = 0;
+					speedObject.changeScale(0);
+					if (animatet) {clearInterval(animatet);}
+					if (speedTimer) {clearTimeout(speedTimer);}
+					$(".standIncome").find("#yunSucc").hide();
+					$(".standIncome").find("#yunError").show();
+					$(".bottomText").hide();
+					isMaking = false;
+					return false;	
+				}else{
+					speedObject.checkingSpeed();
+					errortimes++;
+				}
             }
         });
 	}
@@ -1418,7 +1210,7 @@ $(document.body).ready(function(){
 				var tempObj = linkArr[i];
 				if (tempObj.has_link == 1) {
 					if (serverDataObj.fixed_income_tips.state == 1) {
-						_html += '<a href="'+innerNetBaseSet.addfixedurl+'" target="_blank">'+tempObj.tip+'</a>';
+						_html += '<a href="'+innerNetBaseSet.addfixedurl+'" target="_blank" style="color:#ff4400;">'+tempObj.tip+'</a>';
 					}else if(serverDataObj.fixed_income_tips.state > 1){
 						_html += '<a href="'+innerNetBaseSet.quitfixedurl+'" target="_blank">'+tempObj.tip+'</a>';
 					}
@@ -1469,6 +1261,11 @@ $(document.body).ready(function(){
 		}else{
 			currDom.removeClass("testing").html('检测上行带宽');
 		}
+		$(".testOperate").find(".saveBut").removeClass("testing_save");
+	}
+	
+	speedObject.timeoutUI = function(){
+		$(".testOperate").find(".testBut").removeClass("testing").html('再测一次');
 		$(".testOperate").find(".saveBut").removeClass("testing_save");
 	}
 	
@@ -1570,6 +1367,7 @@ $(document.body).ready(function(){
 		if ($(this).hasClass("testing")) {
 			return false;
 		}
+		$("#stException").hide();
     	speedObject.checkSpeedStart();
     });
 	

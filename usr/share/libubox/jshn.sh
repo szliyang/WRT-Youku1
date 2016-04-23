@@ -181,6 +181,22 @@ json_dump() {
 	jshn "$@" ${JSON_PREFIX:+-p "$JSON_PREFIX"} -w 
 }
 
+json_dump_key() {
+    local target=$1
+	json_get_type type "$target"
+	case "$type" in
+		object|array)
+			json_get_var cur "$target"
+            jshn -k $cur -w
+		;;
+		*)
+			[ -n "$_json_no_warning" ] || \
+				echo "WARNING: Variable '$target' does not exist or is not an array/object"
+			return 1
+		;;
+	esac
+}
+
 json_get_type() {
 	local __dest="$1"
 	local __cur

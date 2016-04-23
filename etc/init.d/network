@@ -55,10 +55,6 @@ restart() {
 	trap '' TERM
 	stop "$@"
 	start "$@"
-
-    # add by xiongying for compatible of L1 light GPIO problem.
-    light all system
-    /usr/sbin/check_svc.sh check led
 }
 
 shutdown() {

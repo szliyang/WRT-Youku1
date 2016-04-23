@@ -32,6 +32,16 @@ help()
 EOF
 }
 
+is_L2()
+{
+    factory=`sn_youku r | cut -c 19-24`
+    if [ $factory == '003000' ]; then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
 ##################################################################
 #this is invoked by /etc/init.d/youku
 start() 
@@ -56,6 +66,12 @@ start()
     ubus call network.interface.wan6 down
     uci set network.wan6.proto=none
     uci commit
+
+    # FIXME, bug of yktacc
+    local n=$(is_L2)
+    if [ "$n" == "1" ]; then
+        rmmod yktacc
+    fi
 
     ylog "rc.main start finished ..."
     return 0

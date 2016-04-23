@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+
+CONF=/etc/qosmanager/prio.conf
+start() {
+	if [ -e "$CONF" ]; then
+		qosmanager start $CONF
+		echo "Start" > /var/run/qos.state
+	fi
+}
+
+stop() {
+	if [ -e "$CONF" ]; then
+		qosmanager stop $CONF
+		echo "Stop" > /var/run/qos.state
+	fi
+}

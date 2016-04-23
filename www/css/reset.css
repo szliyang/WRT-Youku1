@@ -15,7 +15,10 @@ html {overflow-y: scroll;}
 .clearfix { *zoom:1; }  
 body{font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;}
 
-
+input:-webkit-autofill {
+ -webkit-box-shadow: 0 0 0px 1000px white inset;
+ -webkit-text-fill-color: #333;
+}
 
 
 

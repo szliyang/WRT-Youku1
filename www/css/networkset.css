@@ -20,42 +20,42 @@ body{background: #e8f7fb;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJh
 .kelong .divselect{z-index: 200}
 #divselect2{width:409px}
 .divselect span{width:164px; height:30px;line-height:30px; display:block; color:#333; cursor:pointer;font-style:normal;
-padding-left:4px; padding-right:30px; border:1px solid #bbbbbb; 
+padding-left:7px; padding-right:30px; border:1px solid #bbbbbb; 
 background:#fff url(../images/xiala.png) no-repeat 183px center;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;}
 .divselect ul{width:198px;border:1px solid #19b2d5; background-color:#ffffff; position:absolute; z-index:500; margin-top:-1px; display:none;}
 .divselect ul li{height:30px; line-height:30px;}
 .divselect ul li a{display:block; height:30px; color:#555; text-decoration:none; padding-left:10px; padding-right:10px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;}
 .divselect ul li a:hover{background-color:#19b2d5;color:#fff;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;}
-.outset-label{height:30px;line-height:30px; margin-right:12px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777}
-.outset-labelme{height:30px;line-height:30px; width: 54px;text-align: right;margin-right:12px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777}
+.outset-label{margin-left: -27px;width: 110px;text-align:right;height:30px;line-height:30px; margin-right:12px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777}
+.outset-labelme{margin-left: -27px;width: 110px;text-align:right;height:30px;line-height:30px;text-align: right;margin-right:12px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777}
 .select_tie2 .outset-label{color:#ddd}
 .select-panel{width: 306px;height:30px;position:relative;margin-top: 25px;}
 .comn-input{width:182px;height:30px;border: 1px #bbbbbb solid;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777;padding: 0 8px;}
 .item-in{width:16px;height:16px;background: url(../images/ico.png) 0 0 no-repeat;position: absolute;left:274px;top:10px}
 .item-in2{width:16px;height:16px;background: url(../images/ico5.png) 0 0 no-repeat;position: absolute;left:274px;top:10px}
 .error-tip{width:160px;height: 26px;line-height: 26px;color: #cc6666;padding-left: 25px; border:2px #fbdbdb solid;overflow:hidden;position: absolute;background:#fff5f5 url(../images/wu.png) 5px center no-repeat;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;left:54px;z-index:1000;top:-44px;}
-.sets {width: 302px;float: left;height: 18px;overflow: hidden;margin-top: 20px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;margin-left: 66px}
+.sets {width: 302px;float: left;height: 18px;overflow: hidden;margin-top: 20px;text-align:center;}
+.sets .setImg{vertical-align: middle;margin-bottom:2px;margin-left:5px;}
+.sets .advSetBut{cursor:pointer;}
 .sets a{float:left;width:16px;height: 16px;background: url(../images/chang.png) 0 0 no-repeat;margin-right: 12px}
 .sets3 .sets2{float:left;width:12px;height: 12px;border: 2px #eeeeee solid; margin-right: 12px}
 .sets a:hover{background: url(../images/xuan.png) 0 0 no-repeat;}
-.sets .dianji{background: url(../images/xuazhong.png) 0 0 no-repeat;}
-.sets .dianji:hover{background: url(../images/xuazhong.png) 0 0 no-repeat;}
+.sets .dianji{}
 .kelong{float: left;margin-left: -29px;margin-top: 20px;position: relative}
 .shuoming{width:16px;height: 16px;background: url(../images/ico.png) 0 0 no-repeat;position: absolute;top:9px;left: 304px;z-index:1000; cursor: pointer}
 .select_tie .kelong_hidden{display: none}
 .kelong .outset-label{float:left}
-.kelong .outset-label_p{margin-right: 10px}
 .sets3 strong{color: #ddd}
 .kelong p{float: left;width: 473px;padding-left: 92px; line-height: 20px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;color:#c0c0c0}
-.select-pane{float: left;margin-left: -36px;margin-top: 20px;position: relative;width: 446px;}
+.select-pane{float: left;margin-top: 20px;position: relative;width: 446px;}
 .select-pane .comn-input{color:#333333;font-size: 12px;line-height: 30px;}
-.zidingyi{float: left;margin-left:17px;margin-top: 20px;overflow: hidden;width: 505px}
-.outset-labere{ height:30px;line-height:30px;margin-right:12px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777}
-.guanbi{width:60px;height: 30px;background: url(../images/close.png) 0 0 no-repeat;cursor: pointer}
-.text{height:30px;line-height:30px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777;padding-left: 12px}
+.zidingyi{float: left;margin-top: 20px;width: 505px}
+.outset-labere{width:110px;text-align:right;margin-left:-27px; height:30px;line-height:30px;margin-right:12px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777}
+.guanbi{width:60px;height: 30px;background: url(../images/close.png) 0 0 no-repeat;cursor: pointer;margin-right:10px;}
+.text{height:30px;line-height:30px;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;float: left;color:#777777;}
 /* 开启按钮clsss名*/
 .zidingyi .closed{background: url(../images/kaiqi.png) 0 0 no-repeat;}
-.shouxuan{float: left;margin-left:45px;width:326px;display: none;*position: relative;left: 45px;}
+.shouxuan{float: left;width:326px;display: none;*position: relative;}
 .baocun{width: 200px;height:40px;line-height: 40px;text-align: center;background: #19b2d5;float: left;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;color:#fff;margin-top:30px;cursor: pointer;margin-left: 66px;margin-bottom: 42px}
 .baocun:hover{background: #00a4cd}
 .baocun_p{width: 200px;height:40px;line-height: 40px;text-align: center;background: #cbd2d8;float: left;font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;font-size: 12px;color:#fff;margin-top:30px;display: block;margin-left: 67px;margin-bottom: 42px}
@@ -280,6 +280,10 @@ a.upload-img:hover{background-color: #00a4cd;}
 .dropList{border: 1px #19b2d5 solid;border-top: 0; overflow: auto; position: absolute; top:31px; width: 88px;  background: #ffffff; z-index: 99; padding-top: 5px; padding-bottom: 2px; display: none;}
 .dropList li{ height: 32px;line-height: 30px;margin: 0px 0px;width: 63px;padding-left: 8px; font-size: 12px; cursor: pointer;border-bottom: solid 1px #f6f9fb;}
 .dropList li:hover{color:#fff;background: #19b2d5}
+.select-open .options{display:block!important;}
+#iphone2 .dropList{border: 1px #19b2d5 solid;overflow: auto; position: absolute; top:31px; width: 210px;  background: #ffffff; z-index: 99; padding-top: 5px; padding-bottom: 2px; display: none;}
+#iphone2 .dropList li{ height: 32px;line-height: 30px;margin: 0px 0px;width: 180px;padding-left: 8px; font-size: 12px; cursor: pointer;border-bottom: solid 1px #f6f9fb;}
+#iphone2 .dropList li:hover{color:#fff;background: #19b2d5}
 
 .select-open .sel-val{border:1px #19b2d5 solid;border-bottom: none;}
 .select-open .options{display: block;width: 88px;top: 31px;padding: 0px 0px;height: 165px;overflow-y: auto;border: solid 1px #19b2d5;}
@@ -334,7 +338,7 @@ a.upload-img:hover{background-color: #00a4cd;}
 .jiebang{color: #3399cc;}
 .biaoge .w4{margin-top: 6px}
 .biaoge .closed{width:60px;height: 30px;background: url(../images/kaiqi.png) 0 0 no-repeat;cursor: pointer}
-.biaoge .guanbi{width:60px;height: 30px;background: url(../images/close.png) 0 0 no-repeat;float: left;cursor: pointer}
+.biaoge .guanbi{width:60px;height: 30px;background: url(../images/close.png) 0 0 no-repeat;float: left;cursor: pointer;}
 .biaoge .zhuihui_ash .feifazi{display: none}
 
 .biaoge .zhuihui_ash .w1_con .colu .bian_ji,.biaoge .zhuihui_ash .w1_con .colu .que_ding{display: none}
@@ -361,7 +365,7 @@ a.upload-img:hover{background-color: #00a4cd;}
  
 .login-submit:hover{background: #3aaf00}
 .pw-holder{position: absolute;top: 42px;left: 10px;color: #bfbfbf;z-index:14;}
-.lianwang-holder{position: absolute;top: 7px;left: 73px;color: #bfbfbf;font-size:12px;z-index:14;}
+.lianwang-holder{position: absolute;top: 7px;left: 103px;color: #bfbfbf;font-size:12px;z-index:14;}
 .err-tip{width:156px;height: 26px;line-height: 26px; background-color: #fff5f5;border: solid 1px #f1c4c0; color: #cc6666;position:absolute;left:0;top:0}  
 .err-tip .icon-warn{height: 16px;line-height: 16px; width:126px;display: block;font-size: 12px; background: url(../images/wu.png) center left no-repeat;margin:4px 0 0 8px;padding-left: 20px}
 .skip-panel{width:300px;height: 18px;line-height: 18px;text-align: center;color: #46a0cf;font-size: 12px;display: block;margin-top: 30px}  
@@ -721,11 +725,11 @@ background:#fff url(../images/t_v.png) no-repeat 183px center;font-family:"Micro
 
 .bag_ib:hover{background: #00a4cd;}
 .bag_ib2:hover{background:#66c8e1}
-.daiku{width:415px;height: 16px; margin:20px 0 20px 0;float: left;display:none}
+.daiku{width:415px;margin:20px 0 20px 0;float: left;display:none}
 .daiku p{float:left;font-size: 12px;color:#bbbbbb;margin-right: 30px}
 .daiku p span{font-size: 12px;color: #777777;padding-right: 10px}
 .min_li{float:left;width:137px;height: 18px;background: url(../images/su.gif) 76px center no-repeat;font-size: 12px}
-.Complete{width:476px;float: left;height: 30px;margin: 20px 0 20px 0;display: none;}
+.Complete{width:100%;float: left;height: 30px;margin: 20px 0 20px 0;display: none;}
 
 .current_t{height:30px;float: left}
 .Speed_t{height:30px;float: left;color:#777777;font-size: 12px;margin-right: 15px;line-height: 30px}

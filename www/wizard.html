@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <title>优酷土豆路由宝</title>
-<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/tab.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/widget.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20151111">
-<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20151111">
-<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20151111"></script>
-<script type="text/javascript" charset="utf-8"  src="extend/js/setup_common.js?ver=20151111"></script>
+<link rel="stylesheet" type="text/css" href="css/reset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/popup.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/tab.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/widget.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="css/networkset.css?ver=20160121">
+<link rel="stylesheet" type="text/css" href="extend/css/hefot.css?ver=20160121">
+<script type="text/javascript" charset="utf-8"  src="js/jquery.min.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.base64.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.cookie.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/jquery.tabs.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/public.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/json2.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/validate.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/nodeClick.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="js/popup.js?ver=20160121"></script>
+<script type="text/javascript" charset="utf-8"  src="extend/js/setup_common.js?ver=20160121"></script>
 <style>
 .wifi_icon{text-align: center;margin:20px auto 0px;}
 .wifi_icon img{width:100%;}
@@ -50,7 +50,7 @@
             <span class="user-tip2" id="pppoeStateNotice">已连网</span>
         </div>
         <div class="select_tie  clearfix">
-        <div class="item">
+        <div class="item" style="margin-left:-29px;">
             <label class="outset-label">连网类型 :</label>
 			<div class="select-overlay" id="disableSelectConnType" style="display:none;"></div>
             <div id="divselect" class="divselect">
@@ -63,23 +63,23 @@
           </div>
         </div>
         
-       <div class="mima net-panel">
+       <div class="mima net-panel" style="margin-left:-29px;">
             <div class="select-panel clearfix">
             <label class="outset-label" for="netUser">宽带账号 :</label>
 			<span class="lianwang-holder">请输入宽带账号</span>
-            <input type="text" id="netUser" class="comn-input g" data-rules="required" data-required-error="宽带账号不能为空">
+            <input type="text" id="netUser" class="comn-input g" data-rules="required" data-required-error="宽带账号不能为空" autocomplete="off">
             <a href="##" class="item-in"  id="helpNetAcc"></a>
 			<div class="error-tip" style="margin-left:11px;top:-33px;display:none;"></div>
         </div>
          <div class="select-panel">
             <label class="outset-label" for="netUser">宽带密码 :</label>
             <span class="lianwang-holder">请输入宽带密码</span>
-            <input type="password" id="netPass"  class="comn-input g" data-rules="required"  data-required-error="宽带密码不能为空">
+            <input type="password" id="netPass"  class="comn-input g" data-rules="required"  data-required-error="宽带密码不能为空" autocomplete="off">
             <a href="##" class="item-in" id="helpNetAcc2"></a>
 			<div class="error-tip" style="margin-left:11px;top:-33px;display:none;"></div>
         </div>
        </div>
-       <div class="jingtai_yincang net-panel ">
+       <div class="jingtai_yincang net-panel " style="margin-left:-29px;">
             <div class="select-panel clearfix">
             <label class="outset-labelme outset-labelme_d" for="netUser">IP地址 :</label>
 			<span class="lianwang-holder">请输入IP地址</span>
@@ -100,24 +100,23 @@
         </div>
        </div>
         <div class="sets">
-            <a href="##" ></a>
-            <strong>高级设置</strong>
+            <strong class="advSetBut">高级设置<img alt="" src="images/xiala-right.png" class="setImg"></strong>
         </div>
         <div class="kelong kelong_hidden">
-           <label class="outset-label" style="margin-left:-24px;">MAC地址克隆操作 :</label>
+           <label class="outset-label" style="margin-left:-27px;">MAC地址克隆操作 :</label>
             <div id="divselect2" class="divselect divselect222">
-              <span class="label">不克隆MAC地址</span>
+              <span class="label">使用出厂MAC地址</span>
               <ul class="list">
-                 <li><a selectid="1" data-panel="当前路由的MAC地址 :" data-value="">不克隆MAC地址</a></li>
-                 <li><a selectid="2" data-panel="当前设备的MAC地址 :" data-value="">克隆当前设备的MAC地址</a></li>
-                 <li><a selectid="3" data-panel="路由出厂的MAC地址 :" data-value="">使用路由出厂MAC地址</a></li>
-                 <li><a selectid="4" data-panel="手动输入的MAC地址 :" data-value="">手动输入MAC地址</a></li>
+                 <li><a selectid="3" data-panel="使用出厂MAC地址 :" data-value="">使用出厂MAC地址</a></li>
+                 <li><a selectid="1" data-panel="使用当前MAC地址 :" data-value="">使用当前MAC地址</a></li>
+                 <li><a selectid="2" data-panel="克隆为当前管理设备MAC地址 :" data-value="">克隆为当前管理设备MAC地址</a></li>
+                 <li><a selectid="4" data-panel="手动输入MAC地址:" data-value="">手动输入MAC地址</a></li>
               </ul>
           </div>
         <span class="shuoming"></span>
         <div class="select-pane">
-            <label class="outset-label" for="netUser" id="WancurMacLabel">当前路由的MAC地址 :</label>
-            <input type="text" value="" class="comn-input" id="WaninputMacVal" data-rules="required|mac" data-required-error="MAC地址不能为空" data-mac-error="MAC地址格式不正确">
+            <label class="outset-label" for="netUser" id="WancurMacLabel">MAC地址 :</label>
+            <input type="text" value="" class="comn-input" id="WaninputMacVal" data-rules="required|mac" data-required-error="MAC地址不能为空" data-mac-error="MAC地址格式不正确" disabled>
 			<div class="error-tip" style="margin-left:75px;top:-33px;display:none;"></div>
         </div>
         <div class="zidingyi">
@@ -353,17 +352,18 @@ divselect.on("click","[data-panel]",function(e){
 	wanprotovalue = $(this).attr("selectid");
 	if (wanprotovalue=="3"){
 	    $(".sets>a").addClass("dianji");
-		$(".sets").hide();
+	    $(".setImg").hide();
 		$('.kelong').removeClass("kelong_hidden");
 		$('#dnsreference').html("使用静态IP连网方式时，必须设置DNS，否则会导致无法上网。");
 	    $('.zidingyi').show();
-	    $('.guanbi').hide();
 	    $(".shouxuan").show();
+	    $('.guanbi').addClass("closed").hide();
 	}else{
 	    $(".sets").show();
+	    $(".setImg").show();
 		$('#dnsreference').html("DNS用于解析网站，通常网络运营商会帮我们解析，建议关闭。");
-		$('.guanbi').addClass("closed");
-	    $('.guanbi').show();
+		$('.guanbi').removeClass("closed").show();
+	    $(".shouxuan").hide();
 	}
 	e.stopPropagation();
 });
@@ -372,7 +372,11 @@ divselect2.on("click","[data-panel]",function(e){
 	divselect2.find(".label").text($(this).text());
 	divselect2.find(".list").hide();
 	divselect2.find(".label").removeClass("open");
-	$("#WancurMacLabel").text($(this).attr("data-panel"));
+	if ($(this).attr("data-value") != "") {
+		$("#WaninputMacVal").attr("disabled",true);
+	}else{
+		$("#WaninputMacVal").attr("disabled",false);
+	}
 	$("#WaninputMacVal").val($(this).attr("data-value"));
 	wanmacvalue = $(this).attr("selectid");
 	e.stopPropagation();
@@ -407,30 +411,33 @@ function setDivselect(index){
 	divselect.find(".label").removeClass("open")
 	$("div."+selecteditem.attr("data-panel")).show();
 	if (wanprotovalue=="3"){
-	    $(".sets>a").addClass("dianji");
-		$(".sets").hide();
+		$(".sets>a").addClass("dianji");
+	    $(".setImg").hide();
 		$('.kelong').removeClass("kelong_hidden");
 		$('#dnsreference').html("设置静态IP模式时，必须设置DNS，否则会导致无法上网。");
 	    $('.zidingyi').show();
-	    $('.guanbi').hide();
 	    $(".shouxuan").show();
+		$('.guanbi').addClass("closed").hide();
 	}else{
 	    $(".sets").show();
+	    $(".setImg").show();
 		$('#dnsreference').html("DNS用于解析网站，通常网络运营商会帮我们解析，建议关闭。");
-		$('.guanbi').addClass("closed");
-	    $('.guanbi').show();
+		$('.guanbi').removeClass("closed").show();
+	    $(".shouxuan").hide();
 	}
 };
 
-$("#GuestModeForm").find(".sets>a").on("click",function(){
+$("#GuestModeForm").find(".advSetBut").on("click",function(){
 	var _this=$(this);
 	if(wanprotovalue != "3"){
 		if(_this.hasClass("dianji")){
 		  	_this.removeClass("dianji");
+		  	$(this).find(".setImg").attr("src","images/xiala-right.png");
 		  	$('.kelong').addClass("kelong_hidden");
 		  	$('.guanbi').removeClass("closed");
 		  	$(".shouxuan").hide();
 		}else{
+			$(this).find(".setImg").attr("src","images/xiala.png");
 		  	_this.addClass("dianji");
 		 	$('.kelong').removeClass("kelong_hidden");
 		}
@@ -497,6 +504,19 @@ function checkwanconnect(){
 		}
 		if(data.result==0){
 	      	if(data.data && data.data.wanstate){
+	      		var wanclone = wanmacvalue = data.data.wan.wanclone;
+	      		if (wanclone == "1") {
+	      			$("#WaninputMacVal").val(data.data.wan.localmac);
+				}else if(wanclone == "2"){
+					$("#WaninputMacVal").val(data.data.wan.remotemac);
+				}else if(wanclone == "3"){
+					$("#WaninputMacVal").val(data.data.wan.initmac);
+				}else if (wanclone == "4") {
+					$("#WaninputMacVal").val(data.data.wan.localmac);
+				}
+	      		var currCloneText = $("#divselect2").find("a[selectid="+wanclone+"]").text();
+	      		$("#divselect2").find(".label").text(currCloneText);
+	      		
 		      	var wanstate = data.data.wanstate;
 		      	if(wanstate=="0"){
 					$("#GuestModeForm").addClass("hidden_form");
@@ -809,6 +829,7 @@ function submitConnType(){
 		}else {
 			requestObj.wan_mac="default";
 		}
+    	requestObj.wanclone = wanmacvalue;
  
     	if($('.guanbi').hasClass("closed") || wanprotovalue=="3"){
 	    	requestObj.dns_switch = "1";

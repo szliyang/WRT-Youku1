@@ -96,7 +96,7 @@ function httpdispatch(request, prefix)
 		fromtype = "remote"
 	end
 	
-	local result = youkuinterface.checkAnddoing(params)
+	local result,retcmdstr = youkuinterface.checkAnddoing(params)
 
     local content = ""
     if fromtype == "app" then
@@ -118,5 +118,9 @@ function httpdispatch(request, prefix)
     luci.http.write(content)
 
 	luci.http.close()
+	
+	if retcmdstr ~= nil and retcmdstr ~= "" then
+	    LuciOS.execute("sleep 2 && /usr/sbin/check_svc.sh"..retcmdstr.." >/dev/null 2>/dev/null &")
+	end
     http_request_log(request,"finished")
 end

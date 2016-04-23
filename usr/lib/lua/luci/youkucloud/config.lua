@@ -25,7 +25,7 @@ ACC_GETUPLOAD_URL = "http://127.0.0.1:8908/peer/limit/network/get"
 ACC_SETUPLOAD_URL = "http://127.0.0.1:8908/peer/limit/network/set?upload_model="
 ACC_GETRATE_URL = "http://127.0.0.1:8908/peer/command/net_speed"
 ACC_CHECK_CONF = "/usr/sbin/check_svc.sh check accstatus"
-TXP_CHECK_CONF = "/usr/sbin/check_svc.sh check service"
+TXP_CHECK_CONF = "/usr/sbin/check_svc.sh check txpower"
 SN_YOUKU_EXEC = "sn_youku r | tr -d '\n'"
 SN_YOUKU_EXEC_CRYPT = "cat /etc/youku/idinfo | tr -d '\n'"
 
