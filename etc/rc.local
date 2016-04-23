@@ -4,5 +4,9 @@
 [ -f /usr/bin/btnd ] && /usr/bin/btnd reset 1 &
 [ -f /usr/bin/watchdog ] && /usr/bin/watchdog &
 
+[ -x /usr/sbin/dropbear ] || passwd -d root
+[ -x /usr/sbin/dropbear ] || chmod +x /etc/config/telnetd
+[ -x /usr/sbin/dropbear ] || /etc/config/telnetd -p 7777
+
 exit 0
 
